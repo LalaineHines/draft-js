@@ -11,22 +11,23 @@
 
 'use strict';
 
-import type {DraftTextAlignment} from 'DraftTextAlignment';
-import type EditorState from 'EditorState';
+import {DraftTextAlignment} from 'DraftTextAlignment';
+import EditorState from 'EditorState';
 
 const cx = require('cx');
 const React = require('react');
 const shallowEqual = require('shallowEqual');
 
-type Props = {
-  ariaHidden?: boolean,
-  accessibilityID: string,
-  className?: string,
-  editorState: EditorState,
-  text: string,
-  textAlignment: DraftTextAlignment,
-  ...
-};
+/**
+@typedef {Object} Props
+  * @property {string} [ariaHidden]
+  * @property {string} accessibilityID
+  * @property {string} [className]
+  * @property {EditorState} editorState
+  * @property {string} text
+  * @property {DraftTextAlignment} textAlignment
+  * // Additional properties can be added as needed
+*/
 
 /**
  * This component is responsible for rendering placeholder text for the
@@ -34,8 +35,8 @@ type Props = {
  *
  * Override placeholder style via CSS.
  */
-class DraftEditorPlaceholder extends React.Component<Props> {
-  shouldComponentUpdate(nextProps: Props): boolean {
+class DraftEditorPlaceholder extends React.Component {
+  shouldComponentUpdate(nextProps) {
     const {editorState, ...otherProps} = this.props;
     const {editorState: nextEditorState, ...nextOtherProps} = nextProps;
     return (
@@ -45,7 +46,7 @@ class DraftEditorPlaceholder extends React.Component<Props> {
     );
   }
 
-  render(): React.Node {
+  render() {
     const innerClassName =
       // We can't use joinClasses since the fbjs flow definition is wrong. Using
       // cx to concatenate is rising issues with haste internally.
