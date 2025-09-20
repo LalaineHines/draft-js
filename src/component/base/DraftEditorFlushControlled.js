@@ -11,7 +11,8 @@
 
 const ReactDOMComet = require('ReactDOMComet');
 
-const flushControlled: void | ((fn: () => void) => void) =
+/** @type {void | ((fn: () => void) => void)} */
+let flushControlled;
   ReactDOMComet.unstable_flushControlled;
 
 module.exports = flushControlled;
