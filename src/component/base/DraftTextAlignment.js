@@ -11,4 +11,8 @@
 
 'use strict';
 
-export type DraftTextAlignment = 'left' | 'center' | 'right';
+export const DraftTextAlignment = {
+    LEFT: 'left',
+    CENTER: 'center',
+    RIGHT: 'right'
+};
