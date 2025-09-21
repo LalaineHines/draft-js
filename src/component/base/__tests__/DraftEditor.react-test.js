@@ -59,7 +59,7 @@ test('must has editorKey same as props', () => {
 });
 
 describe('ariaDescribedBy', () => {
-  function getProps(elem: React.Node) {
+  function getProps(React, Node) {
     const r = shallow.render(elem);
     const ec = r.props.children[1].props.children;
     return ec.props;
@@ -70,7 +70,7 @@ describe('ariaDescribedBy', () => {
       const props = getProps(
         <DraftEditor editorState={editorState} onChange={() => {}} />,
       );
-      expect(props).toHaveProperty('aria-describedby', undefined);
+      expect(props).toHaveProperty('aria-describedBy', undefined);
     });
 
     test('can be set to something arbitrary', () => {
@@ -81,7 +81,7 @@ describe('ariaDescribedBy', () => {
           ariaDescribedBy="abc"
         />,
       );
-      expect(props).toHaveProperty('aria-describedby', 'abc');
+      expect(props).toHaveProperty('aria-describedBy', 'abc');
     });
 
     test('can use special token', () => {
@@ -92,7 +92,7 @@ describe('ariaDescribedBy', () => {
           ariaDescribedBy="abc {{editor_id_placeholder}} xyz"
         />,
       );
-      expect(props).toHaveProperty('aria-describedby', 'abc  xyz');
+      expect(props).toHaveProperty('aria-describedBy', 'abc  xyz');
     });
   });
 
@@ -106,7 +106,7 @@ describe('ariaDescribedBy', () => {
           placeholder="place"
         />,
       );
-      expect(props).toHaveProperty('aria-describedby', 'placeholder-X');
+      expect(props).toHaveProperty('aria-describedBy', 'placeholder-X');
     });
 
     test('can be set to something arbitrary', () => {
@@ -119,7 +119,7 @@ describe('ariaDescribedBy', () => {
           ariaDescribedBy="abc"
         />,
       );
-      expect(props).toHaveProperty('aria-describedby', 'abc');
+      expect(props).toHaveProperty('aria-describedBy', 'abc');
     });
 
     test('can use special token', () => {
@@ -132,7 +132,7 @@ describe('ariaDescribedBy', () => {
           ariaDescribedBy="abc {{editor_id_placeholder}} xyz"
         />,
       );
-      expect(props).toHaveProperty('aria-describedby', 'abc placeholder-X xyz');
+      expect(props).toHaveProperty('aria-describedBy', 'abc placeholder-X xyz');
     });
   });
 });
