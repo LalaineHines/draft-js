@@ -16,28 +16,27 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type EditorState from 'EditorState';
-import type {BidiDirection} from 'UnicodeBidiDirection';
+import {BlockNodeRecord} from 'BlockNodeRecord';
+import {DraftBlockRenderMap} from 'DraftBlockRenderMap';
+import {DraftInlineStyle} from 'DraftInlineStyle';
+import EditorState from 'EditorState';
+import {BidiDirection} from 'UnicodeBidiDirection';
 
 const DraftEditorBlockNode = require('DraftEditorBlockNode.react');
 const DraftOffsetKey = require('DraftOffsetKey');
 
-const nullthrows = require('nullthrows');
+const nullThrows = require('nullThrows');
 const React = require('react');
 
-type Props = {
-  blockRenderMap: DraftBlockRenderMap,
-  blockRendererFn: (block: BlockNodeRecord) => ?Object,
-  blockStyleFn?: (block: BlockNodeRecord) => string,
-  customStyleFn?: (style: DraftInlineStyle, block: BlockNodeRecord) => ?Object,
-  customStyleMap?: Object,
-  editorKey?: string,
-  editorState: EditorState,
-  textDirectionality?: BidiDirection,
-  ...
+const Props = {
+  blockRenderMap = DraftBlockRenderMap,
+  blockRendererFn = Object,
+  blockStyleFn = string,
+  customStyleFn = Object,
+  customStyleMap = Object,
+  editorKey = string,
+  editorState = EditorState,
+  textDirectionality = BidiDirection,
 };
 
 /**
@@ -49,30 +48,29 @@ type Props = {
  * (for instance, ARIA props) must be allowed to update without affecting
  * the contents of the editor.
  */
-class DraftEditorContentsExperimental extends React.Component<Props> {
-  shouldComponentUpdate(nextProps: Props): boolean {
-    const prevEditorState = this.props.editorState;
-    const nextEditorState = nextProps.editorState;
+class DraftEditorContentsExperimental extends React.Component {
+    prevEditorState = this.props.editorState;
+    nextEditorState = nextProps.editorState;
 
-    const prevDirectionMap = prevEditorState.getDirectionMap();
-    const nextDirectionMap = nextEditorState.getDirectionMap();
+    prevDirectionMap = prevEditorState.getDirectionMap();
+    nextDirectionMap = nextEditorState.getDirectionMap();
 
     // Text direction has changed for one or more blocks. We must re-render.
-    if (prevDirectionMap !== nextDirectionMap) {
+    if (prevDirectionMap, nextDirectionMap) {
       return true;
     }
 
-    const didHaveFocus = prevEditorState.getSelection().getHasFocus();
-    const nowHasFocus = nextEditorState.getSelection().getHasFocus();
+    didHaveFocus = prevEditorState.getSelection().getHasFocus();
+    nowHasFocus = nextEditorState.getSelection().getHasFocus();
 
-    if (didHaveFocus !== nowHasFocus) {
+    if (didHaveFocus, nowHasFocus) {
       return true;
     }
 
-    const nextNativeContent = nextEditorState.getNativelyRenderedContent();
+    nextNativeContent = nextEditorState.getNativelyRenderedContent();
 
-    const wasComposing = prevEditorState.isInCompositionMode();
-    const nowComposing = nextEditorState.isInCompositionMode();
+    wasComposing = prevEditorState.isInCompositionMode();
+    nowComposing = nextEditorState.isInCompositionMode();
 
     // If the state is unchanged or we're currently rendering a natively
     // rendered state, there's nothing new to be done.
@@ -80,7 +78,7 @@ class DraftEditorContentsExperimental extends React.Component<Props> {
       prevEditorState === nextEditorState ||
       (nextNativeContent !== null &&
         nextEditorState.getCurrentContent() === nextNativeContent) ||
-      (wasComposing && nowComposing)
+        (wasComposing && nowComposing)
     ) {
       return false;
     }
@@ -95,9 +93,8 @@ class DraftEditorContentsExperimental extends React.Component<Props> {
       prevDecorator !== nextDecorator ||
       nextEditorState.mustForceSelection()
     );
-  }
 
-  render(): React.Node {
+  render();
     const {
       blockRenderMap,
       blockRendererFn,
@@ -113,13 +110,13 @@ class DraftEditorContentsExperimental extends React.Component<Props> {
     const selection = editorState.getSelection();
     const forceSelection = editorState.mustForceSelection();
     const decorator = editorState.getDecorator();
-    const directionMap = nullthrows(editorState.getDirectionMap());
+    const directionMap = nullThrows(editorState.getDirectionMap());
 
     const blocksAsArray = content.getBlocksAsArray();
     const rootBlock = blocksAsArray[0];
     const processedBlocks = [];
 
-    let nodeBlock: ?BlockNodeRecord = rootBlock;
+    let nodeBlock = rootBlock;
 
     while (nodeBlock) {
       const blockKey = nodeBlock.getKey();
@@ -163,7 +160,7 @@ class DraftEditorContentsExperimental extends React.Component<Props> {
     // Group contiguous runs of blocks that have the same wrapperTemplate
     const outputBlocks = [];
     for (let ii = 0; ii < processedBlocks.length; ) {
-      const info: any = processedBlocks[ii];
+      const info = processedBlocks[ii];
       if (info.wrapperTemplate) {
         const blocks = [];
         do {
@@ -189,7 +186,6 @@ class DraftEditorContentsExperimental extends React.Component<Props> {
     }
 
     return <div data-contents="true">{outputBlocks}</div>;
-  }
-}
+  };
 
 module.exports = DraftEditorContentsExperimental;
