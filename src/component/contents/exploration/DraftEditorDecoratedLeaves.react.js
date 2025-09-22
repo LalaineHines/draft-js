@@ -14,11 +14,11 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type ContentState from 'ContentState';
-import type {DraftDecoratorType} from 'DraftDecoratorType';
-import type {BidiDirection} from 'UnicodeBidiDirection';
-import type {Set} from 'immutable';
+import {BidiDirection} from 'UnicodeBidiDirection';
+import {BlockNodeRecord} from 'BlockNodeRecord';
+import ContentState from 'ContentState';
+import {DraftDecoratorType} from 'DraftDecoratorType';
+import {Set} from 'immutable';
 
 const DraftOffsetKey = require('DraftOffsetKey');
 const UnicodeBidi = require('UnicodeBidi');
@@ -26,20 +26,19 @@ const UnicodeBidiDirection = require('UnicodeBidiDirection');
 
 const React = require('react');
 
-type Props = {
+const Props = {
   block: BlockNodeRecord,
-  children: ?$ReadOnlyArray<React.Node>,
+  children: $ReadOnlyArray,
   contentState: ContentState,
   decorator: DraftDecoratorType,
   decoratorKey: string,
   direction: BidiDirection,
   text: string,
-  leafSet: Set<any>,
-  ...
+  leafSet: Set,
 };
 
-class DraftEditorDecoratedLeaves extends React.Component<Props> {
-  render(): React.Node {
+class DraftEditorDecoratedLeaves extends React.Component {
+  render() {
     const {
       block,
       children,
