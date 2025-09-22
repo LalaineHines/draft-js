@@ -14,11 +14,11 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type ContentState from 'ContentState';
-import type {DraftDecoratorType} from 'DraftDecoratorType';
-import type SelectionState from 'SelectionState';
-import type {BidiDirection} from 'UnicodeBidiDirection';
+import {BidiDirection} from 'UnicodeBidiDirection';
+import {BlockNodeRecord} from 'BlockNodeRecord';
+import ContentState from 'ContentState';
+import {DraftDecoratorType} from 'DraftDecoratorType';
+import SelectionState from 'SelectionState';
 
 const DraftEditorDecoratedLeaves = require('DraftEditorDecoratedLeaves.react');
 const DraftEditorLeaf = require('DraftEditorLeaf.react');
@@ -30,23 +30,22 @@ const React = require('react');
 
 const {List} = Immutable;
 
-type Props = {
+const Props = {
   block: BlockNodeRecord,
-  children: ?Array<React.Node>,
+  children: Array,
   contentState: ContentState,
   customStyleFn: Function,
   customStyleMap: Object,
-  decorator: ?DraftDecoratorType,
+  decorator: DraftDecoratorType,
   direction: BidiDirection,
   forceSelection: boolean,
   hasSelection: boolean,
   selection: SelectionState,
-  tree: List<any>,
-  ...
+  tree: List,
 };
 
-class DraftEditorNode extends React.Component<Props> {
-  render(): React.Node {
+class DraftEditorNode extends React.Component {
+  render() {
     const {
       block,
       contentState,
