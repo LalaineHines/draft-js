@@ -11,14 +11,14 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type ContentState from 'ContentState';
-import type {DraftDecoratorComponentProps} from 'DraftDecorator';
-import type {DraftDecoratorType} from 'DraftDecoratorType';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type SelectionState from 'SelectionState';
-import type {BidiDirection} from 'UnicodeBidiDirection';
-import type {List} from 'immutable';
+import {BlockNodeRecord} from 'BlockNodeRecord';
+import ContentState from 'ContentState';
+import {DraftDecoratorComponentProps} from 'DraftDecorator';
+import {DraftDecoratorType} from 'DraftDecoratorType';
+import {DraftInlineStyle} from 'DraftInlineStyle';
+import SelectionState from 'SelectionState';
+import {BidiDirection} from 'UnicodeBidiDirection';
+import {List} from 'immutable';
 
 const DraftEditorLeaf = require('DraftEditorLeaf.react');
 const DraftOffsetKey = require('DraftOffsetKey');
@@ -33,38 +33,36 @@ const getScrollPosition = require('getScrollPosition');
 const getViewportDimensions = require('getViewportDimensions');
 const invariant = require('invariant');
 const isHTMLElement = require('isHTMLElement');
-const nullthrows = require('nullthrows');
+const nullThrows = require('nullThrows');
 const React = require('react');
 
 const SCROLL_BUFFER = 10;
 
-type Props = {
+const Props = {
   block: BlockNodeRecord,
   blockProps?: Object,
-  blockStyleFn: (block: BlockNodeRecord) => string,
+  blockStyleFn: (BlockNodeRecord) => string,
   contentState: ContentState,
-  customStyleFn?: (style: DraftInlineStyle, block: BlockNodeRecord) => ?Object,
+  customStyleFn?: (DraftInlineStyle, BlockNodeRecord) => Object,
   customStyleMap: Object,
-  decorator: ?DraftDecoratorType,
+  decorator: DraftDecoratorType,
   direction: BidiDirection,
   forceSelection: boolean,
   offsetKey: string,
   preventScroll?: boolean,
   selection: SelectionState,
   startIndent?: boolean,
-  tree: List<any>,
+  tree: List,
   ...
 };
 
 /**
  * Return whether a block overlaps with either edge of the `SelectionState`.
  */
-const isBlockOnSelectionEdge = (
-  selection: SelectionState,
-  key: string,
-): boolean => {
+function isBlockOnSelectionEdge(selection,
+  key) {
   return selection.getAnchorKey() === key || selection.getFocusKey() === key;
-};
+}
 
 /**
  * The default block renderer for a `DraftEditor` component.
@@ -72,10 +70,10 @@ const isBlockOnSelectionEdge = (
  * A `DraftEditorBlock` is able to render a given `ContentBlock` to its
  * appropriate decorator and inline style components.
  */
-class DraftEditorBlock extends React.Component<Props> {
-  _node: ?HTMLDivElement;
+class DraftEditorBlock extends React.Component {
+  _node;
 
-  shouldComponentUpdate(nextProps: Props): boolean {
+  shouldComponentUpdate(nextProps) {
     return (
       this.props.block !== nextProps.block ||
       this.props.tree !== nextProps.tree ||
@@ -97,7 +95,7 @@ class DraftEditorBlock extends React.Component<Props> {
    * parent, and adjust it to align the entire block to the bottom of the
    * scroll parent.
    */
-  componentDidMount(): void {
+  componentDidMount() {
     if (this.props.preventScroll) {
       return;
     }
@@ -142,7 +140,7 @@ class DraftEditorBlock extends React.Component<Props> {
     }
   }
 
-  _renderChildren(): Array<React.Node> {
+  _renderChildren() {
     const block = this.props.block;
     const blockKey = block.getKey();
     const text = block.getText();
@@ -189,7 +187,7 @@ class DraftEditorBlock extends React.Component<Props> {
           return leaves;
         }
 
-        const decorator = nullthrows(this.props.decorator);
+        const decorator = nullThrows(this.props.decorator);
 
         const DecoratorComponent = decorator.getComponentForKey(decoratorKey);
         if (!DecoratorComponent) {
@@ -210,7 +208,7 @@ class DraftEditorBlock extends React.Component<Props> {
           this.props.direction,
         );
 
-        const commonProps: DraftDecoratorComponentProps = {
+        const commonProps = {
           contentState: this.props.contentState,
           decoratedText,
           dir,
@@ -233,7 +231,7 @@ class DraftEditorBlock extends React.Component<Props> {
       .toArray();
   }
 
-  render(): React.Node {
+  render() {
     const {direction, offsetKey} = this.props;
     const className = cx({
       'public/DraftStyleDefault/block': true,
