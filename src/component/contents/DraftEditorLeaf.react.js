@@ -11,9 +11,9 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type SelectionState from 'SelectionState';
+import {BlockNodeRecord} from 'BlockNodeRecord';
+import {DraftInlineStyle} from 'DraftInlineStyle';
+import SelectionState from 'SelectionState';
 
 const DraftEditorTextNode = require('DraftEditorTextNode.react');
 
@@ -23,21 +23,21 @@ const React = require('react');
 const setDraftEditorSelection =
   require('setDraftEditorSelection').setDraftEditorSelection;
 
-type CSSStyleObject = {[property: string]: string | number, ...};
+const CSSStyleObject = {property, string, number};
 
-type CustomStyleMap = {[name: string]: CSSStyleObject, ...};
-type CustomStyleFn = (
-  style: DraftInlineStyle,
-  block: BlockNodeRecord,
-) => ?CSSStyleObject;
+const CustomStyleMap = {name, string, CSSStyleObject};
+const CustomStyleFn = (
+  style,
+  block,
+) => CSSStyleObject;
 
-type Props = {
+const Props = {
   // The block that contains this leaf.
   block: BlockNodeRecord,
   // Mapping of style names to CSS declarations.
   customStyleMap: CustomStyleMap,
   // Function that maps style names to CSS style objects.
-  customStyleFn?: CustomStyleFn,
+  customStyleFn: CustomStyleFn,
   // Whether to force the DOM selection after render.
   forceSelection: boolean,
   // Whether this leaf is the last in its block. Used for a DOM hack.
@@ -45,14 +45,13 @@ type Props = {
   offsetKey: string,
   // The current `SelectionState`, used to represent a selection range in the
   // editor
-  selection: ?SelectionState,
+  selection: SelectionState,
   // The offset of this string within its block.
   start: number,
   // The set of style(s) names to apply to the node.
   styleSet: DraftInlineStyle,
   // The full text to be rendered within this node.
   text: string,
-  ...
 };
 
 /**
@@ -64,7 +63,7 @@ type Props = {
  * DOM Selection API. In this way, top-level components can declaratively
  * maintain the selection state.
  */
-class DraftEditorLeaf extends React.Component<Props> {
+class DraftEditorLeaf extends React.Component {
   /**
    * By making individual leaf instances aware of their context within
    * the text of the editor, we can set our selection range more
@@ -75,9 +74,8 @@ class DraftEditorLeaf extends React.Component<Props> {
    * text nodes, this would be harder.
    */
 
-  leaf: ?HTMLElement;
 
-  _setSelection(): void {
+  _setSelection() {
     const {selection} = this.props;
 
     // If selection state is irrelevant to the parent block, no-op.
@@ -113,7 +111,7 @@ class DraftEditorLeaf extends React.Component<Props> {
     setDraftEditorSelection(selection, targetNode, blockKey, start, end);
   }
 
-  shouldComponentUpdate(nextProps: Props): boolean {
+  shouldComponentUpdate(nextProps) {
     const leafNode = this.leaf;
     invariant(leafNode, 'Missing leafNode');
     const shouldUpdate =
@@ -123,15 +121,15 @@ class DraftEditorLeaf extends React.Component<Props> {
     return shouldUpdate;
   }
 
-  componentDidUpdate(): void {
+  componentDidUpdate() {
     this._setSelection();
   }
 
-  componentDidMount(): void {
+  componentDidMount() {
     this._setSelection();
   }
 
-  render(): React.Node {
+  render() {
     const {block} = this.props;
     let {text} = this.props;
 
@@ -145,7 +143,7 @@ class DraftEditorLeaf extends React.Component<Props> {
 
     const {customStyleMap, customStyleFn, offsetKey, styleSet} = this.props;
     let styleObj = styleSet.reduce((map, styleName) => {
-      const mergedStyles: {textDecoration?: string, ...} = {};
+      const mergedStyles = {};
       const style = customStyleMap[styleName];
 
       if (style !== undefined && map.textDecoration !== style.textDecoration) {
