@@ -10,14 +10,14 @@
  */
 
 'use strict';
-import type {BlockMap} from 'BlockMap';
-import type {BlockNodeConfig} from 'BlockNode';
-import type CharacterMetadata from 'CharacterMetadata';
-import type {DraftBlockType} from 'DraftBlockType';
-import type {EntityRange} from 'EntityRange';
-import type {InlineStyleRange} from 'InlineStyleRange';
-import type {RawDraftContentBlock} from 'RawDraftContentBlock';
-import type {RawDraftContentState} from 'RawDraftContentState';
+import {BlockMap} from 'BlockMap';
+import {BlockNodeConfig} from 'BlockNode';
+import CharacterMetadata from 'CharacterMetadata';
+import {DraftBlockType} from 'DraftBlockType';
+import {EntityRange} from 'EntityRange';
+import {InlineStyleRange} from 'InlineStyleRange';
+import {RawDraftContentBlock} from 'RawDraftContentBlock';
+import {RawDraftContentState} from 'RawDraftContentState';
 
 const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
@@ -38,15 +38,15 @@ const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 
 const {List, Map, OrderedMap} = Immutable;
 
-type EntityKeyMap = {[key: number]: number};
+const EntityKeyMap = {[key: number]: number};
 
 const decodeBlockNodeConfig = (
-  block: RawDraftContentBlock,
-  entityKeyMap: EntityKeyMap,
-): BlockNodeConfig => {
+  block,
+  entityKeyMap,
+) => {
   const {key, type, data, text, depth} = block;
 
-  const blockNodeConfig: BlockNodeConfig = {
+  const blockNodeConfig = {
     text,
     depth: depth || 0,
     type: type || 'unstyled',
@@ -59,9 +59,9 @@ const decodeBlockNodeConfig = (
 };
 
 const decodeCharacterList = (
-  block: RawDraftContentBlock,
-  entityKeyMap: EntityKeyMap,
-): List<CharacterMetadata> => {
+  block,
+  entityKeyMap,
+) => {
   const {
     text,
     entityRanges: rawEntityRanges,
@@ -83,7 +83,7 @@ const decodeCharacterList = (
   );
 };
 
-const addKeyIfMissing = (block: RawDraftContentBlock): RawDraftContentBlock => {
+const addKeyIfMissing = (block) => {
   return {
     ...block,
     key: block.key || generateRandomKey(),
@@ -96,38 +96,29 @@ const addKeyIfMissing = (block: RawDraftContentBlock): RawDraftContentBlock => {
  * construct their links.
  */
 const updateNodeStack = (
-  stack: Array<
-    | any
-    | {
-        children?: Array<RawDraftContentBlock>,
-        data?: any,
-        depth: ?number,
-        entityRanges: ?Array<EntityRange>,
-        inlineStyleRanges: ?Array<InlineStyleRange>,
-        key: ?string,
-        parentRef: ContentBlockNode,
-        text: string,
-        type: DraftBlockType,
-        ...
+  stack {
+        children,
+        data,
+        depth,
+        entityRanges,
+        inlineStyleRanges,
+        key,
+        text,
+        type,
       },
-  >,
-  nodes: Array<any>,
-  parentRef: ContentBlockNode,
-): Array<
-  | any
-  | {
-      children?: Array<RawDraftContentBlock>,
-      data?: any,
-      depth: ?number,
-      entityRanges: ?Array<EntityRange>,
-      inlineStyleRanges: ?Array<InlineStyleRange>,
-      key: ?string,
-      parentRef: ContentBlockNode,
-      text: string,
-      type: DraftBlockType,
-      ...
-    },
-> => {
+  nodes,
+  parentRef,
+) {
+      children,
+      data,
+      depth,
+      entityRanges,
+      inlineStyleRanges,
+      key,
+      parentRef,
+      text,
+      type,
+    } => {
   const nodesWithParentRef = nodes.map(block => {
     return {
       ...block,
@@ -146,15 +137,15 @@ const updateNodeStack = (
  * blockMap will be created using depth ordering.
  */
 const decodeContentBlockNodes = (
-  blocks: Array<RawDraftContentBlock>,
-  entityMap: EntityKeyMap,
-): BlockMap => {
+  blocks,
+  entityMap,
+) => {
   return (
     blocks
       // ensure children have valid keys to enable sibling links
       .map(addKeyIfMissing)
       .reduce(
-        (blockMap: BlockMap, block: RawDraftContentBlock, index: number) => {
+        (blockMap, block, index) => {
           invariant(
             Array.isArray(block.children),
             'invalid RawDraftContentBlock can not be converted to ContentBlockNode',
@@ -169,7 +160,7 @@ const decodeContentBlockNodes = (
             prevSibling: index === 0 ? null : blocks[index - 1].key,
             nextSibling:
               index === blocks.length - 1 ? null : blocks[index + 1].key,
-            children: List(children.map((child: any) => child.key)),
+            children: List(children.map((child) => child.key)),
           });
 
           // push root node to blockMap
@@ -181,10 +172,10 @@ const decodeContentBlockNodes = (
           // start computing children nodes
           while (stack.length > 0) {
             // we pop from the stack and start processing this node
-            const node: any = stack.pop();
+            const node = stack.pop();
 
             // parentRef already points to a converted ContentBlockNode
-            const parentRef: ContentBlockNode = node.parentRef;
+            const parentRef = node.parentRef;
             const siblings = parentRef.getChildKeys();
             const index = siblings.indexOf(node.key);
             const isValidBlock = Array.isArray(node.children);
@@ -203,7 +194,7 @@ const decodeContentBlockNodes = (
             const contentBlockNode = new ContentBlockNode({
               ...decodeBlockNodeConfig(node, entityMap),
               parent: parentRef.getKey(),
-              children: List(children.map((child: any) => child.key)),
+              children: List(children.map((child) => child.key)),
               prevSibling: index === 0 ? null : siblings.get(index - 1),
               nextSibling:
                 index === siblings.size - 1 ? null : siblings.get(index + 1),
@@ -227,11 +218,11 @@ const decodeContentBlockNodes = (
 };
 
 const decodeContentBlocks = (
-  blocks: Array<RawDraftContentBlock>,
-  entityKeyMap: EntityKeyMap,
-): BlockMap => {
+  blocks,
+  entityKeyMap,
+) => {
   return OrderedMap(
-    blocks.map((block: RawDraftContentBlock) => {
+    blocks.map((block) => {
       const contentBlock = new ContentBlock(
         decodeBlockNodeConfig(block, entityKeyMap),
       );
@@ -241,9 +232,9 @@ const decodeContentBlocks = (
 };
 
 const decodeRawBlocks = (
-  rawState: RawDraftContentState,
-  entityKeyMap: EntityKeyMap,
-): BlockMap => {
+  rawState,
+  entityKeyMap,
+) => {
   const isTreeRawBlock = rawState.blocks.find(
     block => Array.isArray(block.children) && block.children.length > 0,
   );
@@ -273,11 +264,11 @@ const decodeRawBlocks = (
 };
 
 const decodeRawEntityMap = (
-  contentStateArg: ContentState,
-  rawState: RawDraftContentState,
-): {entityKeyMap: EntityKeyMap, contentState: ContentState} => {
+  contentStateArg,
+  rawState,
+) {entityKeyMap, contentState} => {
   const {entityMap: rawEntityMap} = rawState;
-  const entityKeyMap: {[string]: string} = {};
+  const entityKeyMap {string} = {};
   let contentState = contentStateArg;
 
   Object.keys(rawEntityMap).forEach(rawEntityKey => {
@@ -292,8 +283,8 @@ const decodeRawEntityMap = (
 };
 
 const convertFromRawToDraftState = (
-  rawState: RawDraftContentState,
-): ContentState => {
+  rawState,
+) => {
   invariant(Array.isArray(rawState.blocks), 'invalid RawDraftContentState');
 
   // decode entities
