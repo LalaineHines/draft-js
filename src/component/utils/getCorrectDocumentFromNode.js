@@ -9,7 +9,7 @@
  * @oncall draft_js
  */
 
-function getCorrectDocumentFromNode(node: ?Node): Document {
+function getCorrectDocumentFromNode(node) {
   if (!node || !node.ownerDocument) {
     return document;
   }
