@@ -13,13 +13,13 @@
   white-space: pre-wrap;
 }
 
-/* @noflip */
+/* @no-flip */
 .public/DraftStyleDefault/ltr {
   direction: ltr;
   text-align: left;
 }
 
-/* @noflip */
+/* @no-flip */
 .public/DraftStyleDefault/rtl {
   direction: rtl;
   text-align: right;
@@ -28,12 +28,12 @@
 /**
  * These rules provide appropriate text direction for counter pseudo-elements.
  */
-/* @noflip */
+/* @no-flip */
 .public/DraftStyleDefault/listLTR {
   direction: ltr;
 }
 
-/* @noflip */
+/* @no-flip */
 .public/DraftStyleDefault/listRTL {
   direction: rtl;
 }
@@ -54,52 +54,52 @@
  * create should look a lot like these.
  */
 
-/* @noflip */
+/* @no-flip */
 .public/DraftStyleDefault/depth0.public/DraftStyleDefault/listLTR {
   margin-left: 1.5em;
 }
 
-/* @noflip */
+/* @no-flip */
 .public/DraftStyleDefault/depth0.public/DraftStyleDefault/listRTL {
   margin-right: 1.5em;
 }
 
-/* @noflip */
+/* @no-flip */
 .public/DraftStyleDefault/depth1.public/DraftStyleDefault/listLTR {
   margin-left: 3em;
 }
 
-/* @noflip */
+/* @no-flip */
 .public/DraftStyleDefault/depth1.public/DraftStyleDefault/listRTL {
   margin-right: 3em;
 }
 
-/* @noflip */
+/* @no-flip */
 .public/DraftStyleDefault/depth2.public/DraftStyleDefault/listLTR {
   margin-left: 4.5em;
 }
 
-/* @noflip */
+/* @no-flip */
 .public/DraftStyleDefault/depth2.public/DraftStyleDefault/listRTL {
   margin-right: 4.5em;
 }
 
-/* @noflip */
+/* @no-flip */
 .public/DraftStyleDefault/depth3.public/DraftStyleDefault/listLTR {
   margin-left: 6em;
 }
 
-/* @noflip */
+/* @no-flip */
 .public/DraftStyleDefault/depth3.public/DraftStyleDefault/listRTL {
   margin-right: 6em;
 }
 
-/* @noflip */
+/* @no-flip */
 .public/DraftStyleDefault/depth4.public/DraftStyleDefault/listLTR {
   margin-left: 7.5em;
 }
 
-/* @noflip */
+/* @no-flip */
 .public/DraftStyleDefault/depth4.public/DraftStyleDefault/listRTL {
   margin-right: 7.5em;
 }
@@ -129,7 +129,7 @@
   position: relative;
 }
 
-/* @noflip */
+/* @no-flip */
 .public/DraftStyleDefault/orderedListItem.public/DraftStyleDefault/listLTR:before {
   left: -36px;
   position: absolute;
@@ -137,7 +137,7 @@
   width: 30px;
 }
 
-/* @noflip */
+/* @no-flip */
 .public/DraftStyleDefault/orderedListItem.public/DraftStyleDefault/listRTL:before {
   position: absolute;
   right: -36px;
