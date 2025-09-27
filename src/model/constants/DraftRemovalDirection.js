@@ -15,4 +15,4 @@
  * A type that allows us to avoid passing boolean arguments
  * around to indicate whether a deletion is forward or backward.
  */
-export type DraftRemovalDirection = 'backward' | 'forward';
+export const DraftRemovalDirection = 'backward' | 'forward';
