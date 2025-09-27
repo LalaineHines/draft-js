@@ -11,12 +11,12 @@
 
 'use strict';
 
-export type DraftEditorModes =
+export const DraftEditorModes =
   /**
    * `edit` is the most common mode for text entry. This includes most typing,
    * deletion, cut/copy/paste, and other behaviors.
    */
-  | 'edit'
+   'edit'
 
   /**
    * `composite` mode handles IME text entry.
