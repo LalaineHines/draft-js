@@ -11,18 +11,18 @@
 
 'use strict';
 
-import type {BlockNodeKey} from 'BlockNode';
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type ContentState from 'ContentState';
-import type {HTMLDir} from 'UnicodeBidiDirection';
+import {BlockNodeKey} from 'BlockNode';
+import {BlockNodeRecord} from 'BlockNodeRecord';
+import ContentState from 'ContentState';
+import {HTMLDir} from 'UnicodeBidiDirection';
 
 const React = require('react');
 
-export type DraftDecoratorStrategy = (
-  block: BlockNodeRecord,
-  callback: (start: number, end: number) => void,
-  contentState: ContentState,
-) => void;
+export const DraftDecoratorStrategy = (
+  block,
+  callback,
+  contentState,
+) => void
 
 /**
  * A DraftDecorator is a strategy-component pair intended for use when
@@ -39,11 +39,10 @@ export type DraftDecoratorStrategy = (
  *
  *   - "props": Props to be passed into the React component that will be used.
  */
-export type DraftDecorator = {
-  strategy: DraftDecoratorStrategy,
+ DraftDecorator {
+  strategy,
   component: Function,
-  props?: Object,
-  ...
+  props: Object,
 };
 
 /**
@@ -51,12 +50,12 @@ export type DraftDecorator = {
  * passed to all DraftDecoratorComponents if a Custom Block Component is not used.
  * Note that a component may also accept additional props outside of this list.
  */
-export type DraftDecoratorComponentProps = {
+export const DraftDecoratorComponentProps = {
   blockKey: BlockNodeKey,
-  children?: Array<React.MixedElement>,
+  children,
   contentState: ContentState,
   decoratedText: string,
-  dir: ?HTMLDir,
+  dir: HTMLDir,
   end: number,
   // Many folks mistakenly assume that there will always be an 'entityKey'
   // passed to a DecoratorComponent.
@@ -65,7 +64,7 @@ export type DraftDecoratorComponentProps = {
   // not have an entityKey. In those cases the entityKey will be null or
   // undefined. That's why `getEntityKeyAt()` is typed to return `?string`.
   // See https://github.com/facebook/draft-js/blob/2da3dcb1c4c106d1b2a0f07b3d0275b8d724e777/src/model/immutable/BlockNode.js#L51
-  entityKey: ?string,
+  entityKey: string,
   offsetKey: string,
   start: number,
 };
