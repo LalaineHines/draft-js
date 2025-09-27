@@ -13,7 +13,7 @@
 
 const NEWLINE_REGEX = /\r\n?|\n/g;
 
-function splitTextIntoTextBlocks(text: string): Array<string> {
+function splitTextIntoTextBlocks(text) {
   return text.split(NEWLINE_REGEX);
 }
 
