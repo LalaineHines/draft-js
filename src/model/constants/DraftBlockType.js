@@ -14,26 +14,26 @@
 /**
  * The list of default valid block types.
  */
-export type CoreDraftBlockType =
-  | 'unstyled'
-  | 'paragraph'
-  | 'header-one'
-  | 'header-two'
-  | 'header-three'
-  | 'header-four'
-  | 'header-five'
-  | 'header-six'
-  | 'unordered-list-item'
-  | 'ordered-list-item'
-  | 'blockquote'
-  | 'code-block'
-  | 'atomic'
-  | 'section'
-  | 'article';
+export const CoreDraftBlockType =
+  'unstyled'
+  'paragraph'
+  'header-one'
+  'header-two'
+  'header-three'
+  'header-four'
+  'header-five'
+  'header-six'
+  'unordered-list-item'
+  'ordered-list-item'
+  'blockquote'
+  'code-block'
+  'atomic'
+  'section'
+  'article';
 
 /**
  * User defined types can be of any valid string.
  */
-export type CustomBlockType = string;
+export const CustomBlockType = string;
 
-export type DraftBlockType = CoreDraftBlockType | CustomBlockType;
+export const DraftBlockType = CoreDraftBlockType | CustomBlockType;
