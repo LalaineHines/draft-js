@@ -11,13 +11,13 @@
 
 'use strict';
 
-import type {DraftHandleValue} from 'DraftHandleValue';
+import {DraftHandleValue} from 'DraftHandleValue';
 
 /**
  * Utility method for determining whether or not the value returned
  * from a handler indicates that it was handled.
  */
-function isEventHandled(value: DraftHandleValue): boolean {
+function isEventHandled(value) {
   return value === 'handled' || value === true;
 }
 
