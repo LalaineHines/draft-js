@@ -11,7 +11,7 @@
 
 'use strict';
 
-import type {DraftEditorCommand} from 'DraftEditorCommand';
+import {DraftEditorCommand} from 'DraftEditorCommand';
 
 const KeyBindingUtil = require('KeyBindingUtil');
 const Keys = require('Keys');
@@ -26,21 +26,21 @@ const shouldFixFirefoxMovement = isOSX && UserAgent.isBrowser('Firefox < 29');
 
 const {hasCommandModifier, isCtrlKeyCommand} = KeyBindingUtil;
 
-function shouldRemoveWord(e: SyntheticKeyboardEvent<>): boolean {
+function shouldRemoveWord(e) {
   return (isOSX && e.altKey) || isCtrlKeyCommand(e);
 }
 
 /**
  * Get the appropriate undo/redo command for a Z key command.
  */
-function getZCommand(e: SyntheticKeyboardEvent<>): ?DraftEditorCommand {
+function getZCommand(e) {
   if (!hasCommandModifier(e)) {
     return null;
   }
   return e.shiftKey ? 'redo' : 'undo';
 }
 
-function getDeleteCommand(e: SyntheticKeyboardEvent<>): ?DraftEditorCommand {
+function getDeleteCommand(e) {
   // Allow default "cut" behavior for PCs on Shift + Delete.
   if (!isOSX && e.shiftKey) {
     return null;
@@ -48,7 +48,7 @@ function getDeleteCommand(e: SyntheticKeyboardEvent<>): ?DraftEditorCommand {
   return shouldRemoveWord(e) ? 'delete-word' : 'delete';
 }
 
-function getBackspaceCommand(e: SyntheticKeyboardEvent<>): ?DraftEditorCommand {
+function getBackspaceCommand(e) {
   if (hasCommandModifier(e) && isOSX) {
     return 'backspace-to-start-of-line';
   }
@@ -58,9 +58,7 @@ function getBackspaceCommand(e: SyntheticKeyboardEvent<>): ?DraftEditorCommand {
 /**
  * Retrieve a bound key command for the given event.
  */
-function getDefaultKeyBinding(
-  e: SyntheticKeyboardEvent<>,
-): ?DraftEditorCommand {
+function getDefaultKeyBinding(e) {
   switch (e.keyCode) {
     case 66: // B
       return hasCommandModifier(e) ? 'bold' : null;
