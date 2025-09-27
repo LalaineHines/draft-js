@@ -13,7 +13,7 @@
 
 const Keys = require('Keys');
 
-function isSoftNewlineEvent(e: SyntheticKeyboardEvent<>): boolean {
+function isSoftNewlineEvent(e) {
   return (
     e.which === Keys.RETURN &&
     (e.getModifierState('Shift') ||
