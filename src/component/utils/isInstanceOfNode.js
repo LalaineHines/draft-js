@@ -9,13 +9,13 @@
  * @oncall draft_js
  */
 
-function isInstanceOfNode(target: ?EventTarget): boolean {
+function isInstanceOfNode(target) {
   // we changed the name because of having duplicate module provider (fbjs)
   if (!target || !('ownerDocument' in target)) {
     return false;
   }
   if ('ownerDocument' in target) {
-    const node: Node = (target: any);
+    const node = (target);
     if (!node.ownerDocument.defaultView) {
       return node instanceof Node;
     }
