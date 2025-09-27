@@ -11,13 +11,13 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type ContentState from 'ContentState';
-import type {DraftEntityMutability} from 'DraftEntityMutability';
-import type {DraftEntityType} from 'DraftEntityType';
-import type {RawDraftContentBlock} from 'RawDraftContentBlock';
-import type {RawDraftContentState} from 'RawDraftContentState';
-import type {RawDraftEntity} from 'RawDraftEntity';
+import {BlockNodeRecord} from 'BlockNodeRecord';
+import ContentState from 'ContentState';
+import {DraftEntityMutability} from 'DraftEntityMutability';
+import {DraftEntityType} from 'DraftEntityType';
+import {RawDraftContentBlock} from 'RawDraftContentBlock';
+import {RawDraftContentState} from 'RawDraftContentState';
+import {RawDraftEntity} from 'RawDraftEntity';
 
 const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
@@ -28,8 +28,8 @@ const encodeInlineStyleRanges = require('encodeInlineStyleRanges');
 const invariant = require('invariant');
 
 const createRawBlock = (
-  block: BlockNodeRecord,
-  entityStorageMap: {[key: string]: RawDraftEntity},
+  block,
+  entityStorageMap,
 ) => {
   return {
     key: block.getKey(),
@@ -43,10 +43,10 @@ const createRawBlock = (
 };
 
 const insertRawBlock = (
-  block: BlockNodeRecord,
-  entityMap: {[key: string]: RawDraftEntity},
-  rawBlocks: Array<RawDraftContentBlock>,
-  blockCacheRef: {...},
+  block,
+  entityMap,
+  rawBlocks,
+  blockCacheRef,
 ) => {
   if (block instanceof ContentBlock) {
     rawBlocks.push(createRawBlock(block, entityMap));
@@ -71,15 +71,15 @@ const insertRawBlock = (
 };
 
 const encodeRawBlocks = (
-  contentState: ContentState,
-  rawState: RawDraftContentState,
-): RawDraftContentState => {
+  contentState,
+  rawState,
+) => {
   const {entityMap} = rawState;
 
-  const rawBlocks: Array<RawDraftContentBlock> = [];
+  const rawBlocks = [];
 
   const blockCacheRef = {};
-  const entityCacheRef: {[string]: ?string} = {};
+  const entityCacheRef = {};
   let entityStorageKey = 0;
 
   contentState.getBlockMap().forEach(block => {
@@ -99,7 +99,7 @@ const encodeRawBlocks = (
         // where we will later on flip the entity map and populate it with
         // real entity, at this stage we just need to map back the entity
         // key used by the BlockNode
-        entityMap[stringifiedEntityKey] = (`${entityStorageKey}`: any);
+        entityMap[stringifiedEntityKey] = (`${entityStorageKey}`);
         entityStorageKey++;
       },
     );
@@ -116,18 +116,18 @@ const encodeRawBlocks = (
 // Flip storage map so that our storage keys map to global
 // DraftEntity keys.
 const encodeRawEntityMap = (
-  contentState: ContentState,
-  rawState: RawDraftContentState,
-): RawDraftContentState => {
+  contentState,
+  rawState,
+) => {
   const {blocks, entityMap} = rawState;
 
-  const rawEntityMap: {
-    [number]: {
-      data: any,
-      mutability: DraftEntityMutability,
-      type: DraftEntityType,
-    },
-  } = {};
+  const rawEntityMap {
+    number {
+      data,
+      mutability,
+      type,
+    }
+  };
 
   Object.keys(entityMap).forEach((key, index) => {
     const entity = contentState.getEntity(DraftStringKey.unstringify(key));
@@ -147,11 +147,11 @@ const encodeRawEntityMap = (
 };
 
 const convertFromDraftStateToRaw = (
-  contentState: ContentState,
-): RawDraftContentState => {
+  contentState,
+) => {
   let rawDraftContentState = {
     entityMap: {},
-    blocks: ([]: Array<RawDraftContentBlock>),
+    blocks: ([]),
   };
 
   // add blocks
