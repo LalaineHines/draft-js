@@ -24,7 +24,7 @@ const useNewlineChar = UserAgent.isBrowser('IE <= 11');
 /**
  * Check whether the node should be considered a newline.
  */
-function isNewline(node: Element): boolean {
+function isNewline(Element) {
   return useNewlineChar ? node.textContent === '\n' : node.tagName === 'BR';
 }
 
