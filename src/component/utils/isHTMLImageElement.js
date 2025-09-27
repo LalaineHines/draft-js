@@ -11,7 +11,7 @@
 
 const isElement = require('isElement');
 
-function isHTMLImageElement(node: ?Node): boolean {
+function isHTMLImageElement(node) {
   if (!node || !node.ownerDocument) {
     return false;
   }
