@@ -11,7 +11,7 @@
 
 const isElement = require('isElement');
 
-function isHTMLBRElement(node: ?Node): boolean {
+function isHTMLBRElement(node) {
   if (!node || !node.ownerDocument) {
     return false;
   }
