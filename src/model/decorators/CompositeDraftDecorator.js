@@ -11,9 +11,9 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type ContentState from 'ContentState';
-import type {DraftDecorator} from 'DraftDecorator';
+import {BlockNodeRecord} from 'BlockNodeRecord';
+import ContentState from 'ContentState';
+import {DraftDecorator} from 'DraftDecorator';
 
 const Immutable = require('immutable');
 
@@ -41,9 +41,9 @@ const DELIMITER = '.';
  * preserved and the new match is discarded.
  */
 class CompositeDraftDecorator {
-  _decorators: $ReadOnlyArray<DraftDecorator>;
+  _decorators;
 
-  constructor(decorators: $ReadOnlyArray<DraftDecorator>) {
+  constructor(decorators) {
     // Copy the decorator array, since we use this array order to determine
     // precedence of decoration matching. If the array is mutated externally,
     // we don't want to be affected here.
@@ -55,7 +55,7 @@ class CompositeDraftDecorator {
    * the given array. This does a reference check, so the decorators themselves
    * have to be the same objects.
    */
-  isCompositionOfDecorators(arr: $ReadOnlyArray<DraftDecorator>): boolean {
+  isCompositionOfDecorators(arr) {
     if (this._decorators.length !== arr.length) {
       return false;
     }
@@ -67,20 +67,20 @@ class CompositeDraftDecorator {
     return true;
   }
 
-  getDecorators(): $ReadOnlyArray<DraftDecorator> {
+  getDecorators() {
     return this._decorators;
   }
 
   getDecorations(
-    block: BlockNodeRecord,
-    contentState: ContentState,
-  ): List<?string> {
+    block,
+    contentState,
+  ) {
     const decorations = Array(block.getText().length).fill(null);
 
-    this._decorators.forEach((decorator: DraftDecorator, ii: number) => {
+    this._decorators.forEach((decorator, ii) => {
       let counter = 0;
       const strategy = decorator.strategy;
-      function getDecorationsChecker(start: number, end: number) {
+      function getDecorationsChecker(start, end) {
         // Find out if any of our matching range is already occupied
         // by another decorator. If so, discard the match. Otherwise, store
         // the component key for rendering.
@@ -95,12 +95,12 @@ class CompositeDraftDecorator {
     return List(decorations);
   }
 
-  getComponentForKey(key: string): Function {
+  getComponentForKey(key) {
     const componentKey = parseInt(key.split(DELIMITER)[0], 10);
     return this._decorators[componentKey].component;
   }
 
-  getPropsForKey(key: string): ?Object {
+  getPropsForKey(key) {
     const componentKey = parseInt(key.split(DELIMITER)[0], 10);
     return this._decorators[componentKey].props;
   }
@@ -111,10 +111,10 @@ class CompositeDraftDecorator {
  * array.
  */
 function canOccupySlice(
-  decorations: Array<?string>,
-  start: number,
-  end: number,
-): boolean {
+  decorations,
+  start,
+  end,
+) {
   for (let ii = start; ii < end; ii++) {
     if (decorations[ii] != null) {
       return false;
@@ -128,11 +128,11 @@ function canOccupySlice(
  * range.
  */
 function occupySlice(
-  targetArr: Array<?string>,
-  start: number,
-  end: number,
-  componentKey: string,
-): void {
+  targetArr,
+  start,
+  end,
+  componentKey,
+) {
   for (let ii = start; ii < end; ii++) {
     targetArr[ii] = componentKey;
   }
