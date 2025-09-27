@@ -11,10 +11,10 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type {EntityMap} from 'EntityMap';
+import {BlockNodeRecord} from 'BlockNodeRecord';
+import {DraftBlockRenderMap} from 'DraftBlockRenderMap';
+import {DraftInlineStyle} from 'DraftInlineStyle';
+import {EntityMap} from 'EntityMap';
 
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
@@ -70,7 +70,7 @@ const knownListItemDepthClasses = {
   [cx('public/DraftStyleDefault/depth4')]: 4,
 };
 
-const HTMLTagToRawInlineStyleMap: Map<string, string> = Map({
+const HTMLTagToRawInlineStyleMap = Map({
   b: 'BOLD',
   code: 'CODE',
   del: 'STRIKETHROUGH',
@@ -83,10 +83,10 @@ const HTMLTagToRawInlineStyleMap: Map<string, string> = Map({
   mark: 'HIGHLIGHT',
 });
 
-type BlockTypeMap = Map<string, string | Array<string>>;
+const BlockTypeMap = Map;
 
 /**
- * Build a mapping from HTML tags to draftjs block types
+ * Build a mapping from HTML tags to draft-js block types
  * out of a BlockRenderMap.
  *
  * The BlockTypeMap for the default BlockRenderMap looks like this:
@@ -106,9 +106,9 @@ type BlockTypeMap = Map<string, string | Array<string>>;
  *   })
  */
 const buildBlockTypeMap = (
-  blockRenderMap: DraftBlockRenderMap,
-): BlockTypeMap => {
-  const blockTypeMap: {[string]: any | Array<any | string>} = {};
+  blockRenderMap,
+) => {
+  const blockTypeMap = {};
 
   blockRenderMap.mapKeys((blockType, desc) => {
     const elements = [desc.element];
@@ -129,9 +129,9 @@ const buildBlockTypeMap = (
   return Map(blockTypeMap);
 };
 
-const detectInlineStyle = (node: Node): string | null => {
+const detectInlineStyle = (node) => {
   if (isHTMLElement(node)) {
-    const element: HTMLElement = (node: any);
+    const element = (node);
     // Currently only used to detect preformatted inline code
     if (element.style.fontFamily.includes('monospace')) {
       return 'CODE';
@@ -144,7 +144,7 @@ const detectInlineStyle = (node: Node): string | null => {
  * If we're pasting from one DraftEditor to another we can check to see if
  * existing list item depth classes are being used and preserve this style
  */
-const getListItemDepth = (node: HTMLElement, depth: number = 0): number => {
+const getListItemDepth = (node, depth = 0) => {
   Object.keys(knownListItemDepthClasses).some(depthClass => {
     if (node.classList.contains(depthClass)) {
       depth = knownListItemDepthClasses[depthClass];
@@ -155,13 +155,13 @@ const getListItemDepth = (node: HTMLElement, depth: number = 0): number => {
 
 /**
  * Return true if the provided HTML Element can be used to build a
- * Draftjs-compatible link.
+ * Draft-js-compatible link.
  */
-const isValidAnchor = (node: Node) => {
+const isValidAnchor = (node) => {
   if (!isHTMLAnchorElement(node)) {
     return false;
   }
-  const anchorNode: HTMLAnchorElement = (node: any);
+  const anchorNode = (node);
 
   if (
     !anchorNode.href ||
@@ -186,11 +186,11 @@ const isValidAnchor = (node: Node) => {
  * Return true if the provided HTML Element can be used to build a
  * Draftjs-compatible image.
  */
-const isValidImage = (node: Node): boolean => {
+const isValidImage = (node) => {
   if (!isHTMLImageElement(node)) {
     return false;
   }
-  const imageNode: HTMLImageElement = (node: any);
+  const imageNode = (node);
   return !!(
     imageNode.attributes.getNamedItem('src') &&
     imageNode.attributes.getNamedItem('src').value
@@ -202,14 +202,14 @@ const isValidImage = (node: Node): boolean => {
  * styles (font-weight, font-style and text-decoration).
  */
 const styleFromNodeAttributes = (
-  node: Node,
-  style: DraftInlineStyle,
-): DraftInlineStyle => {
+  node,
+  style,
+) => {
   if (!isHTMLElement(node)) {
     return style;
   }
 
-  const htmlElement: HTMLElement = (node: any);
+  const htmlElement = (node);
   const fontWeight = htmlElement.style.fontWeight;
   const fontStyle = htmlElement.style.fontStyle;
   const textDecoration = htmlElement.style.textDecoration;
@@ -243,7 +243,7 @@ const styleFromNodeAttributes = (
 /**
  * Determine if a nodeName is a list type, 'ul' or 'ol'
  */
-const isListNode = (nodeName: ?string): boolean =>
+const isListNode = (nodeName) =>
   nodeName === 'ul' || nodeName === 'ol';
 
 /**
@@ -253,19 +253,18 @@ const isListNode = (nodeName: ?string): boolean =>
  *  It is being used a temporary data structure by the
  *  ContentBlocksBuilder class.
  */
-type ContentBlockConfig = {
-  characterList: List<CharacterMetadata>,
-  data?: Map<any, any>,
-  depth?: number,
+const ContentBlockConfig = {
+  characterList: List,
+  data: Map,
+  depth: number,
   key: string,
   text: string,
   type: string,
-  children: List<string>,
-  parent: ?string,
-  prevSibling: ?string,
-  nextSibling: ?string,
-  childConfigs: Array<ContentBlockConfig>,
-  ...
+  children: List,
+  parent: string,
+  prevSibling: string,
+  nextSibling: string,
+  childConfigs: Array,
 };
 
 /**
@@ -292,30 +291,30 @@ class ContentBlocksBuilder {
 
   // The following attributes are used to accumulate text and styles
   // as we are walking the HTML node tree.
-  characterList: List<CharacterMetadata> = List();
-  currentBlockType: string = 'unstyled';
-  currentDepth: number = 0;
-  currentEntity: ?string = null;
-  currentText: string = '';
-  wrapper: ?string = null;
+  characterList = List();
+  currentBlockType = 'unstyled';
+  currentDepth = 0;
+  currentEntity = null;
+  currentText = '';
+  wrapper = null;
 
   // Describes the future ContentState as a tree of content blocks
-  blockConfigs: Array<ContentBlockConfig> = [];
+  blockConfigs = [];
 
   // The content blocks generated from the blockConfigs
-  contentBlocks: Array<BlockNodeRecord> = [];
+  contentBlocks = [];
 
   // Entity map use to store links and images found in the HTML nodes
-  contentState: ContentState = ContentState.createFromText('');
+  contentState = ContentState.createFromText('');
 
-  // Map HTML tags to draftjs block types and disambiguation function
-  blockTypeMap: BlockTypeMap;
-  disambiguate: (string, ?string) => ?string;
+  // Map HTML tags to draft-js block types and disambiguation function
+  blockTypeMap;
+  disambiguate;
 
   constructor(
-    blockTypeMap: BlockTypeMap,
-    disambiguate: (string, ?string) => ?string,
-  ): void {
+    blockTypeMap,
+    disambiguate,
+  ) {
     this.clear();
     this.blockTypeMap = blockTypeMap;
     this.disambiguate = disambiguate;
@@ -324,7 +323,7 @@ class ContentBlocksBuilder {
   /**
    * Clear the internal state of the ContentBlocksBuilder
    */
-  clear(): void {
+  clear() {
     this.characterList = List();
     this.blockConfigs = [];
     this.currentBlockType = 'unstyled';
@@ -339,7 +338,7 @@ class ContentBlocksBuilder {
   /**
    * Add an HTMLElement to the ContentBlocksBuilder
    */
-  addDOMNode(node: Node): ContentBlocksBuilder {
+  addDOMNode(node) {
     this.contentBlocks = [];
     this.currentDepth = 0;
     // Converts the HTML node to block config
@@ -360,10 +359,9 @@ class ContentBlocksBuilder {
    * Return the ContentBlocks and the EntityMap that corresponds
    * to the previously added HTML nodes.
    */
-  getContentBlocks(): {
-    contentBlocks: ?Array<BlockNodeRecord>,
-    entityMap: EntityMap,
-    ...
+  getContentBlocks() {
+    contentBlocks,
+    entityMap,
   } {
     if (this.contentBlocks.length === 0) {
       if (experimentalTreeDataSupport) {
@@ -385,7 +383,7 @@ class ContentBlocksBuilder {
    * Generate a new ContentBlockConfig out of the current internal state
    * of the builder, then clears the internal state.
    */
-  _makeBlockConfig(config: Object = {}): ContentBlockConfig {
+  _makeBlockConfig(config) {
     const key = config.key || generateRandomKey();
     const block = {
       key,
@@ -394,7 +392,7 @@ class ContentBlocksBuilder {
       characterList: this.characterList,
       depth: this.currentDepth,
       parent: null,
-      children: List<mixed>(),
+      children: List(),
       prevSibling: null,
       nextSibling: null,
       childConfigs: [],
@@ -409,12 +407,12 @@ class ContentBlocksBuilder {
   /**
    * Converts an array of HTML elements to a multi-root tree of content
    * block configs. Some text content may be left in the builders internal
-   * state to enable chaining sucessive calls.
+   * state to enable chaining successive calls.
    */
   _toBlockConfigs(
-    nodes: Array<Node>,
-    style: DraftInlineStyle,
-  ): Array<ContentBlockConfig> {
+    nodes,
+    style,
+  ) {
     const blockConfigs = [];
     for (let i = 0; i < nodes.length; i++) {
       const node = nodes[i];
@@ -472,7 +470,7 @@ class ContentBlocksBuilder {
           (blockType === 'unordered-list-item' ||
             blockType === 'ordered-list-item')
         ) {
-          const htmlElement: HTMLElement = (node: any);
+          const htmlElement = (node);
           this.currentDepth = getListItemDepth(htmlElement, this.currentDepth);
         }
 
@@ -535,7 +533,7 @@ class ContentBlocksBuilder {
   /**
    * Append a string of text to the internal buffer.
    */
-  _appendText(text: string, style: DraftInlineStyle) {
+  _appendText(text, style) {
     this.currentText += text;
     const characterMetadata = CharacterMetadata.create({
       style,
@@ -577,7 +575,7 @@ class ContentBlocksBuilder {
   /**
    * Add the content of an HTML text node to the internal state
    */
-  _addTextNode(node: Node, style: DraftInlineStyle) {
+  _addTextNode(node, style) {
     let text = node.textContent;
     const trimmedText = text.trim();
 
@@ -598,7 +596,7 @@ class ContentBlocksBuilder {
     this._appendText(text, style);
   }
 
-  _addBreakNode(node: Node, style: DraftInlineStyle) {
+  _addBreakNode(node, style) {
     if (!isHTMLBRElement(node)) {
       return;
     }
@@ -608,12 +606,12 @@ class ContentBlocksBuilder {
   /**
    * Add the content of an HTML img node to the internal state
    */
-  _addImgNode(node: Node, style: DraftInlineStyle) {
+  _addImgNode(node, style) {
     if (!isHTMLImageElement(node)) {
       return;
     }
-    const image: HTMLImageElement = (node: any);
-    const entityConfig: {[string]: string} = {};
+    const image = (node);
+    const entityConfig = {};
 
     imgAttr.forEach(attr => {
       const imageAttribute = image.getAttribute(attr);
@@ -646,17 +644,17 @@ class ContentBlocksBuilder {
    * blockConfig array.
    */
   _addAnchorNode(
-    node: Node,
-    blockConfigs: Array<ContentBlockConfig>,
-    style: DraftInlineStyle,
+    node,
+    blockConfigs,
+    style,
   ) {
     // The check has already been made by isValidAnchor but
     // we have to do it again to keep flow happy.
     if (!isHTMLAnchorElement(node)) {
       return;
     }
-    const anchor: HTMLAnchorElement = (node: any);
-    const entityConfig: {[string]: string} = {};
+    const anchor = (node);
+    const entityConfig = {};
 
     anchorAttr.forEach(attr => {
       const anchorAttribute = anchor.getAttribute(attr);
@@ -685,8 +683,8 @@ class ContentBlocksBuilder {
    * and generate the corresponding ContentBlockNode
    */
   _toContentBlocks(
-    blockConfigs: Array<ContentBlockConfig>,
-    parent: ?string = null,
+    blockConfigs,
+    parent = null,
   ) {
     const l = blockConfigs.length - 1;
     for (let i = 0; i <= l; i++) {
@@ -706,8 +704,8 @@ class ContentBlocksBuilder {
    */
 
   _hoistContainersInBlockConfigs(
-    blockConfigs: Array<ContentBlockConfig>,
-  ): List<ContentBlockConfig> {
+    blockConfigs,
+  ) {
     const hoisted = List(blockConfigs).flatMap(blockConfig => {
       // Don't mess with useful blocks
       if (blockConfig.type !== 'unstyled' || blockConfig.text !== '') {
@@ -728,7 +726,7 @@ class ContentBlocksBuilder {
    * Same as _toContentBlocks but replaces nested blocks by their
    * text content.
    */
-  _toFlatContentBlocks(blockConfigs: Array<ContentBlockConfig>) {
+  _toFlatContentBlocks(blockConfigs) {
     const cleanConfigs = this._hoistContainersInBlockConfigs(blockConfigs);
     cleanConfigs.forEach(config => {
       const {text, characterList} = this._extractTextFromBlockConfigs(
@@ -748,14 +746,13 @@ class ContentBlocksBuilder {
    * Extract the text and the associated inline styles form an
    * array of content block configs.
    */
-  _extractTextFromBlockConfigs(blockConfigs: Array<ContentBlockConfig>): {
-    text: string,
-    characterList: List<CharacterMetadata>,
-    ...
+  _extractTextFromBlockConfigs(blockConfigs) {
+    text,
+    characterList,
   } {
     const l = blockConfigs.length - 1;
     let text = '';
-    let characterList = List<CharacterMetadata>();
+    let characterList = List();
     for (let i = 0; i <= l; i++) {
       const config = blockConfigs[i];
       text += config.text;
@@ -774,17 +771,16 @@ class ContentBlocksBuilder {
 
 /**
  * Converts an HTML string to an array of ContentBlocks and an EntityMap
- * suitable to initialize the internal state of a Draftjs component.
+ * suitable to initialize the internal state of a Draft-js component.
  */
 const convertFromHTMLToContentBlocks = (
-  html: string,
-  DOMBuilder: Function = getSafeBodyFromHTML,
-  blockRenderMap?: DraftBlockRenderMap = DefaultDraftBlockRenderMap,
-): ?{
-  contentBlocks: ?Array<BlockNodeRecord>,
-  entityMap: EntityMap,
-  ...
-} => {
+  html,
+  DOMBuilder = getSafeBodyFromHTML,
+  blockRenderMap = DefaultDraftBlockRenderMap,
+) => {
+  contentBlocks,
+  entityMap,
+} {
   // Be ABSOLUTELY SURE that the dom builder you pass here won't execute
   // arbitrary code in whatever environment you're running this in. For an
   // example of how we try to do this in-browser, see getSafeBodyFromHTML.
@@ -795,10 +791,10 @@ const convertFromHTMLToContentBlocks = (
     .replace(REGEX_CR, '')
     .replace(REGEX_NBSP, SPACE)
     .replace(REGEX_CARRIAGE, '')
-    .replace(REGEX_ZWS, '');
+    .replace(REGEX_ZWS, ''),
 
   // Build a DOM tree out of the HTML string
-  const safeBody = DOMBuilder(html);
+  const safeBody = DOMBuilder(html),
   if (!safeBody) {
     return null;
   }
@@ -808,7 +804,7 @@ const convertFromHTMLToContentBlocks = (
 
   // Select the proper block type for the cases where the blockRenderMap
   // uses multiple block types for the same html tag.
-  const disambiguate = (tag: string, wrapper: ?string): ?string => {
+  const disambiguate = (tag, wrapper) => {
     if (tag === 'li') {
       return wrapper === 'ol' ? 'ordered-list-item' : 'unordered-list-item';
     }
