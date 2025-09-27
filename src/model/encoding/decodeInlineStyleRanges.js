@@ -11,23 +11,23 @@
 
 'use strict';
 
-import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type {InlineStyleRange} from 'InlineStyleRange';
+import {DraftInlineStyle} from 'DraftInlineStyle';
+import {InlineStyleRange} from 'InlineStyleRange';
 
 const UnicodeUtils = require('UnicodeUtils');
 
 const {OrderedSet} = require('immutable');
 const {substr} = UnicodeUtils;
 
-const EMPTY_SET = OrderedSet<mixed>();
+const EMPTY_SET = OrderedSet();
 
 /**
  * Convert to native JavaScript string lengths to determine ranges.
  */
 function decodeInlineStyleRanges(
-  text: string,
-  ranges?: Array<InlineStyleRange>,
-): Array<DraftInlineStyle> {
+  text,
+  ranges,
+) {
   const styles = Array(text.length).fill(EMPTY_SET);
   if (ranges) {
     ranges.forEach(range => {
