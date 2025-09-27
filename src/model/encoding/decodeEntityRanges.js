@@ -11,7 +11,7 @@
 
 'use strict';
 
-import type {EntityRange} from 'EntityRange';
+import {EntityRange} from 'EntityRange';
 
 const UnicodeUtils = require('UnicodeUtils');
 
@@ -21,9 +21,9 @@ const {substr} = UnicodeUtils;
  * Convert to native JavaScript string lengths to determine ranges.
  */
 function decodeEntityRanges(
-  text: string,
-  ranges: Array<EntityRange>,
-): Array<?string> {
+  text,
+  ranges,
+) {
   const entities = Array(text.length).fill(null);
   if (ranges) {
     ranges.forEach(range => {
