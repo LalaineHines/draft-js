@@ -11,19 +11,19 @@
 
 'use strict';
 
-import type DraftEditor from 'DraftEditor.react';
+import DraftEditor from 'DraftEditor.react';
 
 const invariant = require('invariant');
 const isHTMLElement = require('isHTMLElement');
 
-function getContentEditableContainer(editor: DraftEditor): HTMLElement {
+function getContentEditableContainer(editor) {
   const editorNode = editor.editorContainer;
   invariant(editorNode, 'Missing editorNode');
   invariant(
     isHTMLElement(editorNode.firstChild),
     'editorNode.firstChild is not an HTMLElement',
   );
-  const htmlElement = (editorNode.firstChild: any);
+  const htmlElement = (editorNode.firstChild);
   return htmlElement;
 }
 
