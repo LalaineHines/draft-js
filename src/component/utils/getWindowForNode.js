@@ -9,7 +9,7 @@
  * @oncall draft_js
  */
 
-function getWindowForNode(node: ?Node): Window {
+function getWindowForNode(node) {
   if (!node || !node.ownerDocument || !node.ownerDocument.defaultView) {
     return window;
   }
