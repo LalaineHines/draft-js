@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * Provides utilities for handling draftjs keys.
+ * Provides utilities for handling draft-js keys.
  *
  * @flow strict-local
  * @format
@@ -13,7 +13,7 @@
 
 'use strict';
 
-function notEmptyKey(key: ?string): boolean %checks {
+function notEmptyKey(key) {
   return key != null && key != '';
 }
 
