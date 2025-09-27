@@ -11,37 +11,37 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type {InlineStyleRange} from 'InlineStyleRange';
-import type {List} from 'immutable';
+import {BlockNodeRecord} from 'BlockNodeRecord';
+import {DraftInlineStyle} from 'DraftInlineStyle';
+import {InlineStyleRange} from 'InlineStyleRange';
+import {List} from 'immutable';
 
 const UnicodeUtils = require('UnicodeUtils');
 
 const findRangesImmutable = require('findRangesImmutable');
 
-const areEqual = (a: boolean, b: boolean) => a === b;
-const isTruthy = (a: boolean) => !!a;
-const EMPTY_ARRAY: Array<$FlowFixMe> = [];
+const areEqual = (a, b) => a === b;
+const isTruthy = (a) => !!a;
+const EMPTY_ARRAY = [];
 
 /**
  * Helper function for getting encoded styles for each inline style. Convert
  * to UTF-8 character counts for storage.
  */
-function getEncodedInlinesForType(
-  block: BlockNodeRecord,
-  styleList: List<DraftInlineStyle>,
-  styleToEncode: string,
-): Array<InlineStyleRange> {
+function getEncodedInlineForType(
+  block,
+  styleList,
+  styleToEncode,
+) {
   const ranges = [];
 
   // Obtain an array with ranges for only the specified style.
-  const filteredInlines = styleList
+  const filteredInline = styleList
     .map(style => style.has(styleToEncode))
     .toList();
 
   findRangesImmutable(
-    filteredInlines,
+    filteredInline,
     areEqual,
     // We only want to keep ranges with nonzero style values.
     isTruthy,
@@ -63,8 +63,8 @@ function getEncodedInlinesForType(
  * treated separately.
  */
 function encodeInlineStyleRanges(
-  block: BlockNodeRecord,
-): Array<InlineStyleRange> {
+  block,
+) {
   const styleList = block
     .getCharacterList()
     .map(c => c.getStyle())
@@ -72,7 +72,7 @@ function encodeInlineStyleRanges(
   const ranges = styleList
     .flatten()
     .toSet()
-    .map(style => getEncodedInlinesForType(block, styleList, style));
+    .map(style => getEncodedInlineForType(block, styleList, style));
 
   // $FlowFixMe[method-unbinding] added when improving typing for this parameters
   return Array.prototype.concat.apply(EMPTY_ARRAY, ranges.toJS());
