@@ -11,7 +11,7 @@
 
 const isElement = require('isElement');
 
-function isHTMLAnchorElement(node: ?Node): boolean {
+function isHTMLAnchorElement(node) {
   if (!node || !node.ownerDocument) {
     return false;
   }
