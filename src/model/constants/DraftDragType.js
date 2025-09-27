@@ -15,4 +15,4 @@
  * A type that allows us to avoid passing boolean arguments
  * around to indicate whether a drag type is internal or external.
  */
-export type DraftDragType = 'internal' | 'external';
+export const DraftDragType = 'internal' | 'external';
