@@ -11,9 +11,9 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type ContentState from 'ContentState';
-import type {List} from 'immutable';
+import {BlockNodeRecord} from 'BlockNodeRecord';
+import ContentState from 'ContentState';
+import {List} from 'immutable';
 
 /**
  * An interface for document decorator classes, allowing the creation of
@@ -21,22 +21,22 @@ import type {List} from 'immutable';
  *
  * See `CompositeDraftDecorator` for the most common use case.
  */
-export type DraftDecoratorType = interface {
+export const draftDecoratorType = interface {
   /**
    * Given a `ContentBlock`, return an immutable List of decorator keys.
    */
   getDecorations(
-    block: BlockNodeRecord,
-    contentState: ContentState,
-  ): List<?string>,
+    block,
+    contentState,
+  ),
   /**
    * Given a decorator key, return the component to use when rendering
    * this decorated range.
    */
-  getComponentForKey(key: string): Function,
+  getComponentForKey(key),
   /**
    * Given a decorator key, optionally return the props to use when rendering
    * this decorated range.
    */
-  getPropsForKey(key: string): ?Object,
+  getPropsForKey(key),
 };
