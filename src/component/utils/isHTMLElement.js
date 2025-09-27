@@ -9,7 +9,7 @@
  * @oncall draft_js
  */
 
-function isHTMLElement(node: ?Node): boolean {
+function isHTMLElement(node) {
   if (!node || !node.ownerDocument) {
     return false;
   }
