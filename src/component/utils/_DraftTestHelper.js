@@ -9,11 +9,11 @@
  * @oncall draft_js
  */
 
-const BLACK_LIST_PROPS = ['data-reactroot'];
+const BLACK_LIST_PROPS = ['data-react-root'];
 const transformSnapshotProps = (
-  node: any,
-  blackList: Array<string> = BLACK_LIST_PROPS,
-): any => {
+  node,
+  blackList = BLACK_LIST_PROPS,
+) => {
   const stack = [node];
   while (stack.length) {
     const node = stack.pop();
