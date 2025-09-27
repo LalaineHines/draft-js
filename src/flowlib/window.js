@@ -8,4 +8,4 @@
  * @format
  */
 
-declare type Window = any;
+declare Window = any;
