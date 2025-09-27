@@ -16,7 +16,7 @@ const MAX_ASCII_CHARACTER = 127;
  * "Source code should only include printable US-ASCII bytes"
  */
 const NonASCIIStringSnapshotSerializer = {
-  test(val: mixed): boolean {
+  test(val) {
     if (typeof val !== 'string') {
       return false;
     }
@@ -28,7 +28,7 @@ const NonASCIIStringSnapshotSerializer = {
     return false;
   },
 
-  print: (val: string): string => {
+  print: (val) => {
     return (
       '"' +
       val
@@ -40,7 +40,7 @@ const NonASCIIStringSnapshotSerializer = {
             : char;
         })
         .join('')
-        // Keep the same behaviour as Jest's regular string snapshot
+        // Keep the same behavior as Jest's regular string snapshot
         // serialization, which escapes double quotes.
         .replace(/"/g, '\\"') +
       '"'
