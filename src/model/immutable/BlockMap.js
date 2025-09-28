@@ -11,7 +11,7 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type {OrderedMap} from 'immutable';
+import {BlockNodeRecord} from 'BlockNodeRecord';
+import {OrderedMap} from 'immutable';
 
-export type BlockMap = OrderedMap<string, BlockNodeRecord>;
+export const BlockMap = OrderedMap;
