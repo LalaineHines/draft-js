@@ -11,8 +11,8 @@
 
 'use strict';
 
-import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
+import ContentState from 'ContentState';
+import SelectionState from 'SelectionState';
 
 const {notEmptyKey} = require('draftKeyUtils');
 
@@ -22,9 +22,9 @@ const {notEmptyKey} = require('draftKeyUtils');
  * and `SEGMENTED` entities should not be used for insertion behavior.
  */
 function getEntityKeyForSelection(
-  contentState: ContentState,
-  targetSelection: SelectionState,
-): ?string {
+  contentState,
+  targetSelection,
+) {
   let entityKey;
 
   if (targetSelection.isCollapsed()) {
@@ -56,7 +56,7 @@ function getEntityKeyForSelection(
  * Determine whether an entity key corresponds to a `MUTABLE` entity. If so,
  * return it. If not, return null.
  */
-function filterKey(contentState: ContentState, entityKey: ?string): ?string {
+function filterKey(contentState, entityKey) {
   if (notEmptyKey(entityKey)) {
     const entity = contentState.getEntity(entityKey);
     return entity.getMutability() === 'MUTABLE' ? entityKey : null;
