@@ -11,8 +11,7 @@
 
 'use strict';
 
-export type DraftRange = {
+export const DraftRange = {
   start: number,
   end: number,
-  ...
 };
