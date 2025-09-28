@@ -47,7 +47,7 @@ const SUPPORTED_TAGS = [
   'pre',
 ];
 
-const normalizeBlock = (block: $FlowFixMe) => {
+const normalizeBlock = (block) => {
   const {type, depth, text, characterList} = block;
 
   return {
@@ -58,9 +58,9 @@ const normalizeBlock = (block: $FlowFixMe) => {
   };
 };
 
-const toggleExperimentalTreeDataSupport = (enabled: $FlowFixMe) => {
+const toggleExperimentalTreeDataSupport = (enabled) => {
   jest.doMock('gkx', () => name => {
-    if (name === 'draftjs_paste_emojis') {
+    if (name === 'draft-js_paste_emojis') {
       return true;
     }
     if (name === 'draft_tree_data_support') {
@@ -76,12 +76,8 @@ beforeEach(() => {
 });
 
 const convertFromHTML = (
-  html_string: string | $TEMPORARY$string<'a\n'>,
-  config:
-    | void
-    | $TEMPORARY$object<{...}>
-    | $TEMPORARY$object<{experimentalTreeDataSupport: boolean}>
-    | $TEMPORARY$object<{experimentalTreeDataSupport: boolean, ...}>,
+  html_string,
+  config,
 ) => {
   const options = {
     ...DEFAULT_CONFIG,
@@ -100,8 +96,8 @@ const convertFromHTML = (
 };
 
 const AreTreeBlockNodesEquivalent = (
-  html_string: string,
-  config: $TEMPORARY$object<{...}> = {},
+  html_string,
+  config = {},
 ) => {
   const treeEnabled = (
     convertFromHTML(html_string, {
@@ -121,10 +117,8 @@ const AreTreeBlockNodesEquivalent = (
 };
 
 const assertConvertFromHTMLToContentBlocks = (
-  html_string: string,
-  config:
-    | $TEMPORARY$object<{...}>
-    | $TEMPORARY$object<{experimentalTreeDataSupport: boolean}> = {},
+  html_string,
+  config,
 ) => {
   expect(
     (convertFromHTML(html_string, config)?.contentBlocks || []).map(block =>
@@ -134,8 +128,8 @@ const assertConvertFromHTMLToContentBlocks = (
 };
 
 const testConvertingAdjacentHtmlElementsToContentBlocks = (
-  tag: string,
-  experimentalTreeDataSupport?: boolean = false,
+  tag,
+  experimentalTreeDataSupport = false,
 ) => {
   test(`must not merge tags when converting adjacent <${tag} />`, () => {
     const html_string = `
@@ -150,7 +144,7 @@ const testConvertingAdjacentHtmlElementsToContentBlocks = (
 };
 
 const testConvertingHtmlElementsToContentBlocksAndRootContentBlockNodesMatch = (
-  tag: string,
+  tag,
 ) => {
   test(`must convert root ContentBlockNodes to matching ContentBlock nodes for <${tag} />`, () => {
     expect(
@@ -405,7 +399,7 @@ test('Should preserve entities for whitespace-only content', () => {
   });
 });
 
-test('Should import recognised draft li depths when nesting disabled', () => {
+test('Should import recognized draft li depths when nesting disabled', () => {
   const html_string = `
     <ul>
       <li class="${cx('public/DraftStyleDefault/depth0')}">depth0</li>
@@ -420,7 +414,7 @@ test('Should import recognised draft li depths when nesting disabled', () => {
   });
 });
 
-test('Should *not* import recognised draft li depths when nesting enabled', () => {
+test('Should *not* import recognized draft li depths when nesting enabled', () => {
   const html_string = `
     <ul>
       <li class="${cx('public/DraftStyleDefault/depth0')}">depth0-0</li>
@@ -437,7 +431,7 @@ test('Should *not* import recognised draft li depths when nesting enabled', () =
 
 test('Should preserve spacing around inline tags', () => {
   const html_string = `
-    <span>Some<span> </span></span><i>stylised</i><span><span> </span></span><b>text</b>
+    <span>Some<span> </span></span><i>stylized</i><span><span> </span></span><b>text</b>
   `;
   assertConvertFromHTMLToContentBlocks(html_string, {
     experimentalTreeDataSupport: true,
@@ -572,7 +566,7 @@ test('Should import line breaks without creating a leading space', () => {
   });
 });
 
-test('Should import two blockquotes without extra line breaks', () => {
+test('Should import two block-quotes without extra line breaks', () => {
   const html_string = `
     <blockquote>
       <div>
@@ -592,7 +586,7 @@ test('Should import two blockquotes without extra line breaks', () => {
 
 test('Should recognize preformatted blocks', () => {
   const html_string = `
-    <meta charset='utf-8'><span style="font-family: system-ui, -apple-system, system-ui, &quot;.SFNSText-Regular&quot;, sans-serif; font-variant-ligatures: normal; white-space: pre-wrap; display: inline !important;">following some pre </span><span style="font-family: Menlo, Consolas, Monaco, monospace; white-space: pre-line;">some_code_stuff</span>
+    <meta charset='utf-8'><span style="font-family: system-ui, -apple-system, system-ui, &quot;.SFNSText-Regular&quot;, sans-serif; font-variant-ligatures: normal; white-space: pre-wrap; display: inline !important;">following some pre </span><span style="font-family: Monaco, monospace; white-space: pre-line;">some_code_stuff</span>
   `;
   assertConvertFromHTMLToContentBlocks(html_string, {
     experimentalTreeDataSupport: false,
@@ -601,7 +595,7 @@ test('Should recognize preformatted blocks', () => {
 
 test('Should recognize preformatted blocks mixed other styles', () => {
   const html_string = `
-    <meta charset='utf-8'><span style="font-family: system-ui, -apple-system, system-ui, &quot;.SFNSText-Regular&quot;, sans-serif; font-size: 14px; font-weight: 400; white-space: pre-wrap; display: inline !important;">example </span><span style="font-weight: 600; font-family: Menlo, Consolas, Monaco, monospace; white-space: pre-line;">bold</span><span style="font-family: Menlo, Consolas, Monaco, monospace; white-space: pre-line; font-weight: 400;"> and code</span>
+    <meta charset='utf-8'><span style="font-family: system-ui, -apple-system, system-ui, &quot;.SFNSText-Regular&quot;, sans-serif; font-size: 14px; font-weight: 400; white-space: pre-wrap; display: inline !important;">example </span><span style="font-weight: 600; font-family: Monaco, monospace; white-space: pre-line;">bold</span><span style="font-family: Monaco, monospace; white-space: pre-line; font-weight: 400;"> and code</span>
   `;
   assertConvertFromHTMLToContentBlocks(html_string, {
     experimentalTreeDataSupport: false,
