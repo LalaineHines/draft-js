@@ -11,10 +11,10 @@
 
 'use strict';
 
-import type {BlockMap} from 'BlockMap';
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type ContentState from 'ContentState';
-import type {DraftInsertionType} from 'DraftInsertionType';
+import {BlockMap} from 'BlockMap';
+import {BlockNodeRecord} from 'BlockNodeRecord';
+import ContentState from 'ContentState';
+import {DraftInsertionType} from 'DraftInsertionType';
 
 const ContentBlockNode = require('ContentBlockNode');
 
@@ -25,10 +25,10 @@ const invariant = require('invariant');
 const {OrderedMap, List} = Immutable;
 
 const transformBlock = (
-  key: ?string,
-  blockMap: BlockMap,
-  func: (block: ContentBlockNode) => ContentBlockNode,
-): void => {
+  key,
+  blockMap,
+  func,
+) => {
   if (!key) {
     return;
   }
@@ -43,12 +43,12 @@ const transformBlock = (
 };
 
 const updateBlockMapLinks = (
-  blockMap: BlockMap,
-  originalBlockToBeMoved: BlockNodeRecord,
-  originalTargetBlock: BlockNodeRecord,
-  insertionMode: DraftInsertionType,
-  isExperimentalTreeBlock: boolean,
-): BlockMap => {
+  blockMap,
+  originalBlockToBeMoved,
+  originalTargetBlock,
+  insertionMode,
+  isExperimentalTreeBlock,
+) => {
   if (!isExperimentalTreeBlock) {
     return blockMap;
   }
@@ -138,11 +138,11 @@ const updateBlockMapLinks = (
 };
 
 const moveBlockInContentState = (
-  contentState: ContentState,
-  blockToBeMoved: BlockNodeRecord,
-  targetBlock: BlockNodeRecord,
-  insertionMode: DraftInsertionType,
-): ContentState => {
+  contentState,
+  blockToBeMoved,
+  targetBlock,
+  insertionMode,
+) => {
   invariant(insertionMode !== 'replace', 'Replacing blocks is not supported.');
 
   const targetKey = targetBlock.getKey();
@@ -153,7 +153,7 @@ const moveBlockInContentState = (
   const blockMap = contentState.getBlockMap();
   const isExperimentalTreeBlock = blockToBeMoved instanceof ContentBlockNode;
 
-  let blocksToBeMoved: Array<BlockNodeRecord> = [blockToBeMoved];
+  let blocksToBeMoved = [blockToBeMoved];
   let blockMapWithoutBlocksToBeMoved = blockMap.delete(blockKey);
 
   if (isExperimentalTreeBlock) {
@@ -202,7 +202,7 @@ const moveBlockInContentState = (
 
   const slicedBlocks = blocksToBeMoved.map(block => [block.getKey(), block]);
 
-  let newBlocks = OrderedMap<string, BlockNodeRecord>();
+  let newBlocks = OrderedMap();
 
   if (insertionMode === 'before') {
     const blockBefore = contentState.getBlockBefore(targetKey);
