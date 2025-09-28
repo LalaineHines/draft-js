@@ -12,8 +12,8 @@
 
 'use strict';
 
-import type {DraftEntityMutability} from 'DraftEntityMutability';
-import type {DraftEntityType} from 'DraftEntityType';
+import {DraftEntityMutability} from 'DraftEntityMutability';
+import {DraftEntityType} from 'DraftEntityType';
 
 const Immutable = require('immutable');
 
@@ -23,7 +23,7 @@ const DraftEntityInstanceRecord = (Record({
   type: 'TOKEN',
   mutability: 'IMMUTABLE',
   data: Object,
-}): any);
+}), any);
 
 /**
  * An instance of a document entity, consisting of a `type` and relevant
@@ -37,15 +37,15 @@ const DraftEntityInstanceRecord = (Record({
  * a hovercard.
  */
 class DraftEntityInstance extends DraftEntityInstanceRecord {
-  getType(): DraftEntityType {
+  getType() {
     return this.get('type');
   }
 
-  getMutability(): DraftEntityMutability {
+  getMutability() {
     return this.get('mutability');
   }
 
-  getData(): Object {
+  getData() {
     return this.get('data');
   }
 }
