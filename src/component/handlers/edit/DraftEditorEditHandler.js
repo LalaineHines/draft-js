@@ -11,7 +11,7 @@
 
 'use strict';
 
-import type DraftEditor from 'DraftEditor.react';
+import DraftEditor from 'DraftEditor.react';
 
 const UserAgent = require('UserAgent');
 
@@ -31,8 +31,8 @@ const onSelect = require('editOnSelect');
 const isChrome = UserAgent.isBrowser('Chrome');
 const isFirefox = UserAgent.isBrowser('Firefox');
 
-const selectionHandler: (e: DraftEditor) => void =
-  isChrome || isFirefox ? onSelect : (e: DraftEditor) => {};
+const selectionHandler =
+  isChrome || isFirefox ? onSelect : (e) => {};
 
 const DraftEditorEditHandler = {
   onBeforeInput,
@@ -47,7 +47,7 @@ const DraftEditorEditHandler = {
   onKeyDown,
   onPaste,
   onSelect,
-  // In certain cases, contenteditable on chrome does not fire the onSelect
+  // In certain cases, content-editable on chrome does not fire the onSelect
   // event, causing problems with cursor positioning. Therefore, the selection
   // state update handler is added to more events to ensure that the selection
   // state is always synced with the actual cursor positions.
