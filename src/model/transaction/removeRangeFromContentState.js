@@ -11,12 +11,12 @@
 
 'use strict';
 
-import type {BlockMap} from 'BlockMap';
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type CharacterMetadata from 'CharacterMetadata';
-import type ContentBlock from 'ContentBlock';
-import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
+import {BlockMap} from 'BlockMap';
+import {BlockNodeRecord} from 'BlockNodeRecord';
+import CharacterMetadata from 'CharacterMetadata';
+import ContentBlock from 'ContentBlock';
+import ContentState from 'ContentState';
+import SelectionState from 'SelectionState';
 
 const ContentBlockNode = require('ContentBlockNode');
 
@@ -26,10 +26,10 @@ const Immutable = require('immutable');
 const {List, Map} = Immutable;
 
 const transformBlock = (
-  key: ?string,
-  blockMap: BlockMap,
-  func: (block: ContentBlockNode) => ContentBlockNode,
-): void => {
+  key,
+  blockMap,
+  func,
+) => {
   if (!key) {
     return;
   }
@@ -48,16 +48,16 @@ const transformBlock = (
  * children to make sure we do not leave any orphans behind
  */
 const getAncestorsKeys = (
-  blockKey: ?string,
-  blockMap: BlockMap,
-): Array<string> => {
+  blockKey,
+  blockMap,
+) => {
   const parents = [];
 
   if (!blockKey) {
     return parents;
   }
 
-  let blockNode: ?(BlockNodeRecord | ContentBlock | ContentBlockNode) =
+  let blockNode =
     blockMap.get(blockKey);
   while (blockNode && blockNode.getParentKey()) {
     const parentKey = blockNode.getParentKey();
@@ -75,9 +75,9 @@ const getAncestorsKeys = (
  * an array of key references
  */
 const getNextDelimitersBlockKeys = (
-  block: ContentBlockNode,
-  blockMap: BlockMap,
-): Array<string> => {
+  block,
+  blockMap,
+) => {
   const nextDelimiters = [];
 
   if (!block) {
@@ -89,7 +89,7 @@ const getNextDelimitersBlockKeys = (
     const block = blockMap.get(nextDelimiter);
     nextDelimiters.push(nextDelimiter);
 
-    // we do not need to keep checking all root node siblings, just the first occurance
+    // we do not need to keep checking all root node siblings, just the first occurrence
     nextDelimiter = block.getParentKey()
       ? getNextDelimiterBlockKey(block, blockMap)
       : null;
@@ -99,10 +99,10 @@ const getNextDelimitersBlockKeys = (
 };
 
 const getNextValidSibling = (
-  block: ?ContentBlockNode,
-  blockMap: BlockMap,
-  originalBlockMap: BlockMap,
-): ?string => {
+  block,
+  blockMap,
+  originalBlockMap,
+) => {
   if (!block) {
     return null;
   }
@@ -122,10 +122,10 @@ const getNextValidSibling = (
 };
 
 const getPrevValidSibling = (
-  block: ?ContentBlockNode,
-  blockMap: BlockMap,
-  originalBlockMap: BlockMap,
-): ?string => {
+  block,
+  blockMap,
+  originalBlockMap,
+) => {
   if (!block) {
     return null;
   }
@@ -145,11 +145,11 @@ const getPrevValidSibling = (
 };
 
 const updateBlockMapLinks = (
-  blockMap: BlockMap,
-  startBlock: ContentBlockNode,
-  endBlock: ContentBlockNode,
-  originalBlockMap: BlockMap,
-): BlockMap => {
+  blockMap,
+  startBlock,
+  endBlock,
+  originalBlockMap,
+) => {
   return blockMap.withMutations(blocks => {
     // update start block if its retained
     transformBlock(startBlock.getKey(), blocks, block =>
@@ -272,7 +272,7 @@ const updateBlockMapLinks = (
       // last child of deleted parent should point to next sibling
       transformBlock(
         startBlock.getChildKeys().find(key => {
-          const block = (blockMap.get(key): ContentBlockNode);
+          const block = (blockMap.get(key));
           return block.getNextSiblingKey() === null;
         }),
         blocks,
@@ -286,9 +286,9 @@ const updateBlockMapLinks = (
 };
 
 const removeRangeFromContentState = (
-  contentState: ContentState,
-  selectionState: SelectionState,
-): ContentState => {
+  contentState,
+  selectionState,
+) => {
   if (selectionState.isCollapsed()) {
     return contentState;
   }
@@ -306,10 +306,10 @@ const removeRangeFromContentState = (
   const isExperimentalTreeBlock = startBlock instanceof ContentBlockNode;
 
   // used to retain blocks that should not be deleted to avoid orphan children
-  let parentAncestors: Array<string> = [];
+  let parentAncestors = [];
 
   if (isExperimentalTreeBlock) {
-    const endBlockchildrenKeys = endBlock.getChildKeys();
+    const endBlockChildrenKeys = endBlock.getChildKeys();
     const endBlockAncestors = getAncestorsKeys(endKey, blockMap);
 
     // endBlock has unselected siblings so we can not remove its ancestors parents
@@ -318,7 +318,7 @@ const removeRangeFromContentState = (
     }
 
     // endBlock has children so can not remove this block or any of its ancestors
-    if (!endBlockchildrenKeys.isEmpty()) {
+    if (!endBlockChildrenKeys.isEmpty()) {
       parentAncestors = parentAncestors.concat(
         endBlockAncestors.concat([endKey]),
       );
@@ -402,10 +402,10 @@ const removeRangeFromContentState = (
  * head and tail of the character list.
  */
 const removeFromList = (
-  targetList: List<CharacterMetadata>,
-  startOffset: number,
-  endOffset: number,
-): List<CharacterMetadata> => {
+  targetList,
+  startOffset,
+  endOffset,
+) => {
   if (startOffset === 0) {
     while (startOffset < endOffset) {
       targetList = targetList.shift();
