@@ -14,7 +14,7 @@
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 
-function keyCommandInsertNewline(editorState: EditorState): EditorState {
+function keyCommandInsertNewline(editorState) {
   const contentState = DraftModifier.splitBlock(
     editorState.getCurrentContent(),
     editorState.getSelection(),
