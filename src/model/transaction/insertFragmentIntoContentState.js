@@ -11,10 +11,10 @@
 
 'use strict';
 
-import type {BlockMap} from 'BlockMap';
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
+import {BlockMap} from 'BlockMap';
+import {BlockNodeRecord} from 'BlockNodeRecord';
+import ContentState from 'ContentState';
+import SelectionState from 'SelectionState';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const ContentBlockNode = require('ContentBlockNode');
@@ -26,19 +26,19 @@ const randomizeBlockMapKeys = require('randomizeBlockMapKeys');
 
 const {List} = Immutable;
 
-export type BlockDataMergeBehavior =
-  | 'REPLACE_WITH_NEW_DATA'
-  | 'MERGE_OLD_DATA_TO_NEW_DATA';
+export const BlockDataMergeBehavior =
+  'REPLACE_WITH_NEW_DATA'
+  'MERGE_OLD_DATA_TO_NEW_DATA';
 
 const updateExistingBlock = (
-  contentState: ContentState,
-  selectionState: SelectionState,
-  blockMap: BlockMap,
-  fragmentBlock: BlockNodeRecord,
-  targetKey: string,
-  targetOffset: number,
-  mergeBlockData?: BlockDataMergeBehavior = 'REPLACE_WITH_NEW_DATA',
-): ContentState => {
+  contentState,
+  selectionState,
+  blockMap,
+  fragmentBlock,
+  targetKey,
+  targetOffset,
+  mergeBlockData = 'REPLACE_WITH_NEW_DATA',
+) => {
   const targetBlock = blockMap.get(targetKey);
   const text = targetBlock.getText();
   const chars = targetBlock.getCharacterList();
@@ -93,10 +93,10 @@ const updateExistingBlock = (
  * target block.
  */
 const updateHead = (
-  block: BlockNodeRecord,
-  targetOffset: number,
-  fragment: BlockMap,
-): BlockNodeRecord => {
+  block,
+  targetOffset,
+  fragment,
+) => {
   const text = block.getText();
   const chars = block.getCharacterList();
 
@@ -118,10 +118,10 @@ const updateHead = (
  * fragment block.
  */
 const updateTail = (
-  block: BlockNodeRecord,
-  targetOffset: number,
-  fragment: BlockMap,
-): BlockNodeRecord => {
+  block,
+  targetOffset,
+  fragment,
+) => {
   // Modify tail portion of block.
   const text = block.getText();
   const chars = block.getCharacterList();
@@ -140,9 +140,9 @@ const updateTail = (
 };
 
 const getRootBlocks = (
-  block: ContentBlockNode,
-  blockMap: BlockMap,
-): Array<string> => {
+  block,
+  blockMap,
+) => {
   const headKey = block.getKey();
   let rootBlock = block;
   const rootBlocks = [];
@@ -170,11 +170,11 @@ const getRootBlocks = (
 };
 
 const updateBlockMapLinks = (
-  blockMap: BlockMap,
-  originalBlockMap: BlockMap,
-  targetBlock: ContentBlockNode,
-  fragmentHeadBlock: ContentBlockNode,
-): BlockMap => {
+  blockMap,
+  originalBlockMap,
+  targetBlock,
+  fragmentHeadBlock,
+) => {
   return blockMap.withMutations(blockMapState => {
     const targetKey = targetBlock.getKey();
     const headKey = fragmentHeadBlock.getKey();
@@ -241,13 +241,13 @@ const updateBlockMapLinks = (
 };
 
 const insertFragment = (
-  contentState: ContentState,
-  selectionState: SelectionState,
-  blockMap: BlockMap,
-  fragment: BlockMap,
-  targetKey: string,
-  targetOffset: number,
-): ContentState => {
+  contentState,
+  selectionState,
+  blockMap,
+  fragment,
+  targetKey,
+  targetOffset,
+) => {
   const isTreeBasedBlockMap = blockMap.first() instanceof ContentBlockNode;
   const newBlockArr = [];
   const fragmentSize = fragment.size;
@@ -309,11 +309,11 @@ const insertFragment = (
 };
 
 const insertFragmentIntoContentState = (
-  contentState: ContentState,
-  selectionState: SelectionState,
-  fragmentBlockMap: BlockMap,
-  mergeBlockData?: BlockDataMergeBehavior = 'REPLACE_WITH_NEW_DATA',
-): ContentState => {
+  contentState,
+  selectionState,
+  fragmentBlockMap,
+  mergeBlockData = 'REPLACE_WITH_NEW_DATA',
+) => {
   invariant(
     selectionState.isCollapsed(),
     '`insertFragment` should only be called with a collapsed selection state.',
