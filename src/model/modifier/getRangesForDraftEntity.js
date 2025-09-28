@@ -11,8 +11,8 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type {DraftRange} from 'DraftRange';
+import {BlockNodeRecord} from 'BlockNodeRecord';
+import {DraftRange} from 'DraftRange';
 
 const invariant = require('invariant');
 
@@ -25,9 +25,9 @@ const invariant = require('invariant');
  * the subsequent range.
  */
 function getRangesForDraftEntity(
-  block: BlockNodeRecord,
-  key: string,
-): Array<DraftRange> {
+  block,
+  key,
+) {
   const ranges = [];
   block.findEntityRanges(
     c => c.getEntity() === key,
