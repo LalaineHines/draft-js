@@ -11,9 +11,9 @@
 
 'use strict';
 
-import type SelectionState from 'SelectionState';
+import SelectionState from 'SelectionState';
 
-export type DOMDerivedSelection = {
+export const DOMDerivedSelection = {
   selectionState: SelectionState,
   needsRecovery: boolean,
 };
