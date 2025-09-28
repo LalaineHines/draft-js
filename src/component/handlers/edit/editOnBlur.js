@@ -11,18 +11,18 @@
 
 'use strict';
 
-import type {SelectionObject} from 'DraftDOMTypes';
-import type DraftEditor from 'DraftEditor.react';
+import DraftEditor from 'DraftEditor.react';
+import {SelectionObject} from 'DraftDOMTypes';
 
 const EditorState = require('EditorState');
 
 const containsNode = require('containsNode');
 const getActiveElement = require('getActiveElement');
 
-function editOnBlur(editor: DraftEditor, e: SyntheticEvent<HTMLElement>): void {
+function editOnBlur(editor, e) {
   // In a contentEditable element, when you select a range and then click
   // another active element, this does trigger a `blur` event but will not
-  // remove the DOM selection from the contenteditable.
+  // remove the DOM selection from the content-editable.
   // This is consistent across all browsers, but we prefer that the editor
   // behave like a textarea, where a `blur` event clears the DOM selection.
   // We therefore force the issue to be certain, checking whether the active
@@ -33,7 +33,7 @@ function editOnBlur(editor: DraftEditor, e: SyntheticEvent<HTMLElement>): void {
     !Boolean(editor.props.preserveSelectionOnBlur) &&
     getActiveElement(ownerDocument) === ownerDocument.body
   ) {
-    const selection: SelectionObject = ownerDocument.defaultView.getSelection();
+    const selection = ownerDocument.defaultView.getSelection();
     const editorNode = editor.editor;
     if (
       selection.rangeCount === 1 &&
