@@ -11,8 +11,8 @@
 
 'use strict';
 
-import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
+import ContentState from 'ContentState';
+import SelectionState from 'SelectionState';
 
 const CharacterMetadata = require('CharacterMetadata');
 
@@ -20,28 +20,28 @@ const {Map} = require('immutable');
 
 const ContentStateInlineStyle = {
   add(
-    contentState: ContentState,
-    selectionState: SelectionState,
-    inlineStyle: string,
-  ): ContentState {
+    contentState,
+    selectionState,
+    inlineStyle,
+  ) {
     return modifyInlineStyle(contentState, selectionState, inlineStyle, true);
   },
 
   remove(
-    contentState: ContentState,
-    selectionState: SelectionState,
-    inlineStyle: string,
-  ): ContentState {
+    contentState,
+    selectionState,
+    inlineStyle,
+  ) {
     return modifyInlineStyle(contentState, selectionState, inlineStyle, false);
   },
 };
 
 function modifyInlineStyle(
-  contentState: ContentState,
-  selectionState: SelectionState,
-  inlineStyle: string,
-  addOrRemove: boolean,
-): ContentState {
+  contentState,
+  selectionState,
+  inlineStyle,
+  addOrRemove,
+) {
   const blockMap = contentState.getBlockMap();
   const startKey = selectionState.getStartKey();
   const startOffset = selectionState.getStartOffset();
