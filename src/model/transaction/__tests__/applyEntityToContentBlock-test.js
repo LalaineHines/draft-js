@@ -21,10 +21,10 @@ const sampleBlock = new ContentBlock({
 });
 
 const assertApplyEntityToContentBlock = (
-  start: number,
-  end: number,
-  entityKey: $TEMPORARY$string<'x'> = 'x',
-  contentBlock: ContentBlock = sampleBlock,
+  start,
+  end,
+  entityKey = 'x',
+  contentBlock = sampleBlock,
 ) => {
   expect(
     applyEntityToContentBlock(contentBlock, start, end, entityKey).toJS(),
