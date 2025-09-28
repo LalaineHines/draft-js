@@ -10,8 +10,9 @@
  */
 
 'use strict';
-import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
+
+import ContentState from 'ContentState';
+import SelectionState from 'SelectionState';
 
 const ContentStateInlineStyle = require('ContentStateInlineStyle');
 
@@ -25,9 +26,9 @@ const initialSelection = selectionState.set(
 );
 
 const assertAddContentStateInlineStyle = (
-  inlineStyle: $TEMPORARY$string<'BOLD'> | $TEMPORARY$string<'ITALIC'>,
-  selection: $FlowFixMe | SelectionState = selectionState,
-  content: ContentState = contentState,
+  inlineStyle,
+  selection = selectionState,
+  content = contentState,
 ) => {
   const newContentState = ContentStateInlineStyle.add(
     content,
@@ -41,9 +42,9 @@ const assertAddContentStateInlineStyle = (
 };
 
 const assertRemoveContentStateInlineStyle = (
-  inlineStyle: $TEMPORARY$string<'BOLD'> | $TEMPORARY$string<'ITALIC'>,
-  selection: $FlowFixMe | SelectionState = selectionState,
-  content: ContentState = contentState,
+  inlineStyle,
+  selection = selectionState,
+  content = contentState,
 ) => {
   const newContentState = ContentStateInlineStyle.remove(
     content,
@@ -88,7 +89,7 @@ test('must remove styles', () => {
   );
 });
 
-test('must add and remove styles accross multiple blocks', () => {
+test('must add and remove styles across multiple blocks', () => {
   const nextBlock = contentState.getBlockAfter(selectionState.getStartKey());
   const selection = selectionState.merge({
     focusKey: nextBlock?.getKey(),
