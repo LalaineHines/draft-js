@@ -16,14 +16,14 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type ContentState from 'ContentState';
-import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
-import type {DraftDecoratorType} from 'DraftDecoratorType';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type EditorState from 'EditorState';
-import type SelectionState from 'SelectionState';
-import type {BidiDirection} from 'UnicodeBidiDirection';
+import {BidiDirection} from 'UnicodeBidiDirection';
+import {BlockNodeRecord} from 'BlockNodeRecord';
+import ContentState from 'ContentState';
+import {DraftBlockRenderMap} from 'DraftBlockRenderMap';
+import {DraftDecoratorType} from 'DraftDecoratorType';
+import {DraftInlineStyle} from 'DraftInlineStyle';
+import EditorState from 'EditorState';
+import SelectionState from 'SelectionState';
 
 const DraftEditorNode = require('DraftEditorNode.react');
 const DraftOffsetKey = require('DraftOffsetKey');
@@ -43,38 +43,37 @@ const SCROLL_BUFFER = 10;
 const {List} = Immutable;
 
 // we should harden up the below flow types to make them more strict
-type CustomRenderConfig = Object;
-type DraftRenderConfig = Object;
-type BlockRenderFn = (block: BlockNodeRecord) => ?Object;
-type BlockStyleFn = (block: BlockNodeRecord) => string;
+const CustomRenderConfig = Object;
+const DraftRenderConfig = Object;
+const BlockRenderFn = (block) => Object;
+const BlockStyleFn = (block) => string;
 
-type Props = {
+const Props = {
   block: BlockNodeRecord,
-  blockProps?: Object,
+  blockProps: Object,
   blockRenderMap: DraftBlockRenderMap,
   blockRendererFn: BlockRenderFn,
   blockStyleFn: BlockStyleFn,
   contentState: ContentState,
-  customStyleFn: (style: DraftInlineStyle, block: BlockNodeRecord) => ?Object,
+  customStyleFn: (style, block) => Object,
   customStyleMap: Object,
-  decorator: ?DraftDecoratorType,
+  decorator: DraftDecoratorType,
   direction: BidiDirection,
   editorKey: string,
   editorState: EditorState,
   forceSelection: boolean,
   selection: SelectionState,
-  startIndent?: boolean,
-  tree: List<any>,
-  ...
+  startIndent: boolean,
+  tree,
 };
 
 /**
  * Return whether a block overlaps with either edge of the `SelectionState`.
  */
 const isBlockOnSelectionEdge = (
-  selection: SelectionState,
-  key: string,
-): boolean => {
+  selection,
+  key,
+) => {
   return selection.getAnchorKey() === key || selection.getFocusKey() === key;
 };
 
@@ -84,9 +83,9 @@ const isBlockOnSelectionEdge = (
  * is added.
  */
 const shouldNotAddWrapperElement = (
-  block: BlockNodeRecord,
-  contentState: ContentState,
-): boolean => {
+  block,
+  contentState,
+) => {
   const nextSiblingKey = block.getNextSiblingKey();
 
   return nextSiblingKey
@@ -95,14 +94,14 @@ const shouldNotAddWrapperElement = (
 };
 
 const applyWrapperElementToSiblings = (
-  wrapperTemplate: any,
-  Element: string,
-  nodes: Array<React.Node>,
-): Array<React.Node> => {
+  wrapperTemplate,
+  Element,
+  nodes,
+) => {
   const wrappedSiblings = [];
 
   // we check back until we find a sibling that does not have same wrapper
-  for (const sibling: any of nodes.reverse()) {
+  for (const sibling of nodes.reverse()) {
     if (sibling.type !== Element) {
       break;
     }
@@ -131,9 +130,9 @@ const applyWrapperElementToSiblings = (
 };
 
 const getDraftRenderConfig = (
-  block: BlockNodeRecord,
-  blockRenderMap: DraftBlockRenderMap,
-): DraftRenderConfig => {
+  block,
+  blockRenderMap,
+) => {
   const configForType =
     blockRenderMap.get(block.getType()) || blockRenderMap.get('unstyled');
 
@@ -148,9 +147,9 @@ const getDraftRenderConfig = (
 };
 
 const getCustomRenderConfig = (
-  block: BlockNodeRecord,
-  blockRendererFn: BlockRenderFn,
-): CustomRenderConfig => {
+  block,
+  blockRendererFn,
+) => {
   const customRenderer = blockRendererFn(block);
 
   if (!customRenderer) {
@@ -171,14 +170,14 @@ const getCustomRenderConfig = (
 };
 
 const getElementPropsConfig = (
-  block: BlockNodeRecord,
-  editorKey: string,
-  offsetKey: string,
-  blockStyleFn: BlockStyleFn,
-  customConfig: CustomRenderConfig,
-  ref: null | {current: null | Element},
-): Object => {
-  let elementProps: Object = {
+  block,
+  editorKey,
+  offsetKey,
+  blockStyleFn,
+  customConfig,
+  ref,
+) => {
+  let elementProps = {
     'data-block': true,
     'data-editor': editorKey,
     'data-offset-key': offsetKey,
@@ -202,10 +201,10 @@ const getElementPropsConfig = (
   return elementProps;
 };
 
-class DraftEditorBlockNode extends React.Component<Props> {
-  wrapperRef: {current: null | Element} = React.createRef<Element>();
+class DraftEditorBlockNode extends React.Component {
+  wrapperRef = React.createRef();
 
-  shouldComponentUpdate(nextProps: Props): boolean {
+  shouldComponentUpdate(nextProps) {
     const {block, direction, tree} = this.props;
     const isContainerNode = !block.getChildKeys().isEmpty();
     const blockHasChanged =
@@ -224,7 +223,7 @@ class DraftEditorBlockNode extends React.Component<Props> {
    * When a block is mounted and overlaps the selection state, we need to make
    * sure that the cursor is visible to match native behavior. This may not
    * be the case if the user has pressed `RETURN` or pasted some content, since
-   * programatically creating these new blocks and setting the DOM selection
+   * programmatically creating these new blocks and setting the DOM selection
    * will miss out on the browser natively scrolling to that position.
    *
    * To replicate native behavior, if the block overlaps the selection state
@@ -232,7 +231,7 @@ class DraftEditorBlockNode extends React.Component<Props> {
    * parent, and adjust it to align the entire block to the bottom of the
    * scroll parent.
    */
-  componentDidMount(): void {
+  componentDidMount() {
     const selection = this.props.selection;
     const endKey = selection.getEndKey();
     if (!selection.getHasFocus() || endKey !== this.props.block.getKey()) {
@@ -261,7 +260,7 @@ class DraftEditorBlockNode extends React.Component<Props> {
       }
     } else {
       invariant(isHTMLElement(blockNode), 'blockNode is not an HTMLElement');
-      const htmlBlockNode: HTMLElement = (blockNode: any);
+      const htmlBlockNode = (blockNode);
       const blockBottom = htmlBlockNode.offsetHeight + htmlBlockNode.offsetTop;
       const scrollBottom = scrollParent.offsetHeight + scrollPosition.y;
       scrollDelta = blockBottom - scrollBottom;
@@ -274,7 +273,7 @@ class DraftEditorBlockNode extends React.Component<Props> {
     }
   }
 
-  render(): React.Node {
+  render() {
     const {
       block,
       blockRenderMap,
