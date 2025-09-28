@@ -11,10 +11,10 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type {DraftRemovalDirection} from 'DraftRemovalDirection';
-import type {EntityMap} from 'EntityMap';
-import type SelectionState from 'SelectionState';
+import {BlockNodeRecord} from 'BlockNodeRecord';
+import {DraftRemovalDirection} from 'DraftRemovalDirection';
+import {EntityMap} from 'EntityMap';
+import SelectionState from 'SelectionState';
 
 const DraftEntitySegments = require('DraftEntitySegments');
 
@@ -31,12 +31,12 @@ const invariant = require('invariant');
  * will be adjusted accordingly.
  */
 function getCharacterRemovalRange(
-  entityMap: EntityMap,
-  startBlock: BlockNodeRecord,
-  endBlock: BlockNodeRecord,
-  selectionState: SelectionState,
-  direction: DraftRemovalDirection,
-): SelectionState {
+  entityMap,
+  startBlock,
+  endBlock,
+  selectionState,
+  direction,
+) {
   const start = selectionState.getStartOffset();
   const end = selectionState.getEndOffset();
   const startEntityKey = startBlock.getEntityAt(start);
@@ -112,14 +112,14 @@ function getCharacterRemovalRange(
 }
 
 function getEntityRemovalRange(
-  entityMap: EntityMap,
-  block: BlockNodeRecord,
-  selectionState: SelectionState,
-  direction: DraftRemovalDirection,
-  entityKey: string,
-  isEntireSelectionWithinEntity: boolean,
-  isEntityAtStart: boolean,
-): SelectionState {
+  entityMap,
+  block,
+  selectionState,
+  direction,
+  entityKey,
+  isEntireSelectionWithinEntity,
+  isEntityAtStart,
+) {
   let start = selectionState.getStartOffset();
   let end = selectionState.getEndOffset();
   const entity = entityMap.get(entityKey);
