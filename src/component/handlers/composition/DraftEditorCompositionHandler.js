@@ -11,7 +11,7 @@
 
 'use strict';
 
-import type DraftEditor from 'DraftEditor.react';
+import DraftEditor from 'DraftEditor.react';
 
 const DOMObserver = require('DOMObserver');
 const DraftModifier = require('DraftModifier');
@@ -24,7 +24,7 @@ const editOnSelect = require('editOnSelect');
 const getContentEditableContainer = require('getContentEditableContainer');
 const getDraftEditorSelection = require('getDraftEditorSelection');
 const getEntityKeyForSelection = require('getEntityKeyForSelection');
-const nullthrows = require('nullthrows');
+const nullThrows = require('nullThrows');
 
 const isIE = UserAgent.isBrowser('IE');
 
@@ -50,7 +50,7 @@ let resolved = false;
 let stillComposing = false;
 let domObserver = null;
 
-function startDOMObserver(editor: DraftEditor) {
+function startDOMObserver(editor) {
   if (!domObserver) {
     domObserver = new DOMObserver(getContentEditableContainer(editor));
     domObserver.start();
@@ -62,7 +62,7 @@ const DraftEditorCompositionHandler = {
    * A `compositionstart` event has fired while we're still in composition
    * mode. Continue the current composition session to prevent a re-render.
    */
-  onCompositionStart(editor: DraftEditor): void {
+  onCompositionStart(editor) {
     stillComposing = true;
     startDOMObserver(editor);
   },
@@ -81,7 +81,7 @@ const DraftEditorCompositionHandler = {
    * twice could break the DOM, we only use the first event. Example: Arabic
    * Google Input Tools on Windows 8.1 fires `compositionend` three times.
    */
-  onCompositionEnd(editor: DraftEditor): void {
+  onCompositionEnd(editor) {
     resolved = false;
     stillComposing = false;
     setTimeout(() => {
@@ -98,7 +98,7 @@ const DraftEditorCompositionHandler = {
    * the arrow keys are used to commit, prevent default so that the cursor
    * doesn't move, otherwise it will jump back noticeably on re-render.
    */
-  onKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
+  onKeyDown(editor, e) {
     if (!stillComposing) {
       // This check was added in D23734060. Seemingly, we should be checking
       // to see if the resolved flag is false here, otherwise the below
@@ -126,7 +126,7 @@ const DraftEditorCompositionHandler = {
    * characters that we do not want. `preventDefault` allows the composition
    * to be committed while preventing the extra characters.
    */
-  onKeyPress(_editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
+  onKeyPress(_editor, e) {
     if (e.which === Keys.RETURN) {
       e.preventDefault();
     }
@@ -147,13 +147,13 @@ const DraftEditorCompositionHandler = {
    * Resetting innerHTML will move focus to the beginning of the editor,
    * so we update to force it back to the correct place.
    */
-  resolveComposition(editor: DraftEditor): void {
+  resolveComposition(editor) {
     if (stillComposing) {
       return;
     }
 
     const lastEditorState = editor._latestEditorState;
-    const mutations = nullthrows(domObserver).stopAndFlushMutations();
+    const mutations = nullThrows(domObserver).stopAndFlushMutations();
     domObserver = null;
     resolved = true;
 
@@ -172,7 +172,7 @@ const DraftEditorCompositionHandler = {
     // Since there can be multiple mutations providing a `composedChars` doesn't
     // apply well on this new model.
     // if (
-    //   gkx('draft_handlebeforeinput_composed_text') &&
+    //   gkx('draft_handle_before_input_composed_text') &&
     //   editor.props.handleBeforeInput &&
     //   isEventHandled(
     //     editor.props.handleBeforeInput(
