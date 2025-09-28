@@ -13,8 +13,8 @@
 
 import * as React from 'react';
 
-export type DraftBlockRenderConfig = {
+export const DraftBlockRenderConfig = {
   element: string,
-  wrapper?: React.Node,
-  aliasedElements?: Array<string>,
+  wrapper: React.Node,
+  aliasedElements: Array,
 };
