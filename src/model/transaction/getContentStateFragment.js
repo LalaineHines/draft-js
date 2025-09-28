@@ -11,17 +11,17 @@
 
 'use strict';
 
-import type {BlockMap} from 'BlockMap';
-import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
+import {BlockMap} from 'BlockMap';
+import ContentState from 'ContentState';
+import SelectionState from 'SelectionState';
 
 const randomizeBlockMapKeys = require('randomizeBlockMapKeys');
 const removeEntitiesAtEdges = require('removeEntitiesAtEdges');
 
 const getContentStateFragment = (
-  contentState: ContentState,
-  selectionState: SelectionState,
-): BlockMap => {
+  contentState,
+  selectionState,
+) => {
   const startKey = selectionState.getStartKey();
   const startOffset = selectionState.getStartOffset();
   const endKey = selectionState.getEndKey();
