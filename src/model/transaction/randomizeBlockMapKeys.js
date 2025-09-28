@@ -10,8 +10,9 @@
  */
 
 'use strict';
-import type {BlockMap} from 'BlockMap';
-import type {BlockNodeKey} from 'BlockNode';
+
+import {BlockMap} from 'BlockMap';
+import {BlockNodeKey} from 'BlockNode';
 
 const ContentBlockNode = require('ContentBlockNode');
 
@@ -20,11 +21,11 @@ const Immutable = require('immutable');
 
 const {OrderedMap} = Immutable;
 
-const randomizeContentBlockNodeKeys = (blockMap: BlockMap): BlockMap => {
-  const newKeysRef: {[BlockNodeKey]: string} = {};
+const randomizeContentBlockNodeKeys = (blockMap) => {
+  const newKeysRef = {};
 
   // we keep track of root blocks in order to update subsequent sibling links
-  let lastRootBlock: ContentBlockNode;
+  let lastRootBlock;
 
   return OrderedMap(
     blockMap
@@ -108,7 +109,7 @@ const randomizeContentBlockNodeKeys = (blockMap: BlockMap): BlockMap => {
   );
 };
 
-const randomizeContentBlockKeys = (blockMap: BlockMap): BlockMap => {
+const randomizeContentBlockKeys = (blockMap) => {
   return OrderedMap(
     blockMap.toArray().map(block => {
       const key = generateRandomKey();
@@ -117,7 +118,7 @@ const randomizeContentBlockKeys = (blockMap: BlockMap): BlockMap => {
   );
 };
 
-const randomizeBlockMapKeys = (blockMap: BlockMap): BlockMap => {
+const randomizeBlockMapKeys = (blockMap) => {
   const isTreeBasedBlockMap = blockMap.first() instanceof ContentBlockNode;
 
   if (!isTreeBasedBlockMap) {
