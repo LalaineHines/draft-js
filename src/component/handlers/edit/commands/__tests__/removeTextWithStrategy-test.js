@@ -10,7 +10,7 @@
  */
 
 'use strict';
-import type ContentState from 'ContentState';
+import ContentState from 'ContentState';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const ContentBlockNode = require('ContentBlockNode');
@@ -24,7 +24,7 @@ const moveSelectionForward = require('moveSelectionForward');
 const removeTextWithStrategy = require('removeTextWithStrategy');
 
 jest.mock('generateRandomKey');
-const toggleExperimentalTreeDataSupport = (enabled: boolean) => {
+const toggleExperimentalTreeDataSupport = (enabled) => {
   jest.doMock('gkx', () => name => {
     return name === 'draft_tree_data_support' ? enabled : false;
   });
@@ -101,30 +101,30 @@ const contentBlockNodes = [
 ];
 
 const assertRemoveTextOperation = (
-  operation: (editorState: EditorState) => ContentState,
-  selection:
-    | $TEMPORARY$object<{...}>
-    | $TEMPORARY$object<{
-        anchorKey: $TEMPORARY$string<'D'>,
-        anchorOffset: number,
-        focusKey: $TEMPORARY$string<'D'>,
-        focusOffset: number,
+  operation,
+  selection,
+  $TEMPORARY$object,
+  $TEMPORARY$object<{
+        anchorKey,
+        anchorOffset,
+        focusKey,
+        focusOffset,
       }>
-    | $TEMPORARY$object<{
-        anchorKey: $TEMPORARY$string<'D'>,
-        anchorOffset: number,
-        focusKey: $TEMPORARY$string<'E'>,
-        focusOffset: number,
+    $TEMPORARY$object<{
+        anchorKey,
+        anchorOffset,
+        focusKey,
+        focusOffset,
       }>
-    | $TEMPORARY$object<{
-        anchorKey: $TEMPORARY$string<'E'>,
-        anchorOffset: number,
-        focusKey: $TEMPORARY$string<'E'>,
-        focusOffset: number,
-      }> = {},
-  content: $TEMPORARY$array<ContentBlockNode> = contentBlockNodes,
-) => {
-  const result = operation(
+    $TEMPORARY$object<{
+        anchorKey,
+        anchorOffset,
+        focusKey,
+        focusOffset,
+      }> {},
+  content = contentBlockNodes,
+) = {
+  const result: operation(
     EditorState.forceSelection(
       EditorState.createWithContent(
         contentState.setBlockMap(BlockMapBuilder.createFromArray(content)),
