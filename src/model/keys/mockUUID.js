@@ -13,7 +13,7 @@
 
 let counter = 0;
 
-function mockUUID(): string {
+function mockUUID() {
   return '' + ++counter;
 }
 
