@@ -11,63 +11,61 @@
 
 'use strict';
 
-import type CharacterMetadata, {
+import CharacterMetadata, {
   CharacterMetadataRawConfig,
 } from 'CharacterMetadata';
-import type {DraftBlockType} from 'DraftBlockType';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type {List, Map} from 'immutable';
+import {DraftBlockType} from 'DraftBlockType';
+import {DraftInlineStyle} from 'DraftInlineStyle';
+import {List, Map} from 'immutable';
 
-export type BlockNodeKey = string;
+export const BlockNodeKey = string;
 
-export type BlockNodeRawConfig = {
-  characterList?: Array<CharacterMetadataRawConfig>,
-  data?: Map<any, any>,
-  depth?: number,
-  key?: BlockNodeKey,
-  text?: string,
-  type?: DraftBlockType,
-  ...
+export const BlockNodeRawConfig = {
+  characterList,
+  data,
+  depth,
+  key,
+  text,
+  type,
 };
 
-export type BlockNodeConfig = {
-  characterList?: List<CharacterMetadata>,
-  data?: Map<any, any>,
-  depth?: number,
-  key?: BlockNodeKey,
-  text?: string,
-  type?: DraftBlockType,
-  ...
+export const BlockNodeConfig = {
+  characterList,
+  data,
+  depth,
+  key,
+  text,
+  type,
 };
 
 // https://github.com/facebook/draft-js/issues/1492
 // prettier-ignore
-export interface BlockNode {
-  +findEntityRanges: (
-    filterFn: (value: CharacterMetadata) => boolean,
-    callback: (start: number, end: number) => void,
-  ) => void,
+export const BlockNode {
+  findEntityRanges(
+    filterFn,
+    callback,
+  ),
 
-  +findStyleRanges: (
-    filterFn: (value: CharacterMetadata) => boolean,
-    callback: (start: number, end: number) => void,
-  ) => void,
+  +findStyleRanges (
+    filterFn,
+    callback,
+  ),
 
-  +getCharacterList: () => List<CharacterMetadata>,
+  +getCharacterList,
 
-  +getData: () => Map<any, any>,
+  +getData,
 
-  +getDepth: () => number,
+  +getDepth,
 
-  +getEntityAt: (offset: number) => ?string,
+  +getEntityAt,
 
-  +getInlineStyleAt: (offset: number) => DraftInlineStyle,
+  +getInlineStyleAt,
 
-  +getKey: () => BlockNodeKey,
+  +getKey,
 
-  +getLength: () => number,
+  +getLength,
 
-  +getText: () => string,
+  +getText,
 
-  +getType: () => DraftBlockType,
+  +getType,
 }
