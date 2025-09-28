@@ -22,7 +22,7 @@ const removeTextWithStrategy = require('removeTextWithStrategy');
  * character. This operation is Unicode-aware, so removing a single character
  * will remove a surrogate pair properly as well.
  */
-function keyCommandPlainBackspace(editorState: EditorState): EditorState {
+function keyCommandPlainBackspace(editorState) {
   const afterRemoval = removeTextWithStrategy(
     editorState,
     strategyState => {
