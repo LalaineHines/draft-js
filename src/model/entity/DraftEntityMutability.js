@@ -40,4 +40,4 @@ const ComposedEntityMutability = require('ComposedEntityMutability');
  *   Facebook User mentions.
  */
 
-export type DraftEntityMutability = $Keys<typeof ComposedEntityMutability>;
+export const DraftEntityMutability = $Keys;
