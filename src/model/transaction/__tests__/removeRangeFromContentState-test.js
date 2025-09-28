@@ -10,7 +10,8 @@
  */
 
 'use strict';
-import type ContentState from 'ContentState';
+
+import ContentState from 'ContentState';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const ContentBlockNode = require('ContentBlockNode');
@@ -63,7 +64,7 @@ const contentBlockNodes = [
   new ContentBlockNode({
     key: 'G',
     prevSibling: 'B',
-    text: 'Gorila',
+    text: 'Gorilla',
   }),
 ];
 const treeSelectionState = SelectionState.createEmpty('A');
@@ -72,8 +73,8 @@ const treeContentState = contentState.setBlockMap(
 );
 
 const assertRemoveRangeFromContentState = (
-  selection: $FlowFixMe | SelectionState,
-  content: ContentState = contentState,
+  selection,
+  content = contentState,
 ) => {
   expect(
     removeRangeFromContentState(content, selection).getBlockMap().toJS(),
