@@ -11,17 +11,17 @@
 
 'use strict';
 
-import type {DOMDerivedSelection} from 'DOMDerivedSelection';
-import type EditorState from 'EditorState';
+import {DOMDerivedSelection} from 'DOMDerivedSelection';
+import EditorState from 'EditorState';
 
 const findAncestorOffsetKey = require('findAncestorOffsetKey');
 const getSelectionOffsetKeyForNode = require('getSelectionOffsetKeyForNode');
 const getUpdatedSelectionState = require('getUpdatedSelectionState');
 const invariant = require('invariant');
 const isElement = require('isElement');
-const nullthrows = require('nullthrows');
+const nullThrows = require('nullThrows');
 
-type SelectionPoint = {
+const SelectionPoint = {
   key: string,
   offset: number,
 };
@@ -31,13 +31,13 @@ type SelectionPoint = {
  * and values that can be interpreted by components.
  */
 function getDraftEditorSelectionWithNodes(
-  editorState: EditorState,
-  root: ?HTMLElement,
-  anchorNode: Node,
-  anchorOffset: number,
-  focusNode: Node,
-  focusOffset: number,
-): DOMDerivedSelection {
+  editorState,
+  root,
+  anchorNode,
+  anchorOffset,
+  focusNode,
+  focusOffset,
+) {
   const anchorIsTextNode = anchorNode.nodeType === Node.TEXT_NODE;
   const focusIsTextNode = focusNode.nodeType === Node.TEXT_NODE;
 
@@ -48,9 +48,9 @@ function getDraftEditorSelectionWithNodes(
     return {
       selectionState: getUpdatedSelectionState(
         editorState,
-        nullthrows(findAncestorOffsetKey(anchorNode)),
+        nullThrows(findAncestorOffsetKey(anchorNode)),
         anchorOffset,
-        nullthrows(findAncestorOffsetKey(focusNode)),
+        nullThrows(findAncestorOffsetKey(focusNode)),
         focusOffset,
       ),
       needsRecovery: false,
@@ -71,7 +71,7 @@ function getDraftEditorSelectionWithNodes(
   // cursor movement (e.g. via arrow keys) is uncertain and may not match
   // expectations at the component level. For example, if an entire <div> is
   // selected and the user presses the right arrow, Firefox keeps the selection
-  // on the <div>. If we allow subsequent keypresses to insert characters
+  // on the <div>. If we allow subsequent key presses to insert characters
   // natively, they will be inserted into a browser-created text node to the
   // right of that <div>. This is obviously undesirable.
   //
@@ -81,13 +81,13 @@ function getDraftEditorSelectionWithNodes(
 
   if (anchorIsTextNode) {
     anchorPoint = {
-      key: nullthrows(findAncestorOffsetKey(anchorNode)),
+      key: nullThrows(findAncestorOffsetKey(anchorNode)),
       offset: anchorOffset,
     };
     focusPoint = getPointForNonTextNode(root, focusNode, focusOffset);
   } else if (focusIsTextNode) {
     focusPoint = {
-      key: nullthrows(findAncestorOffsetKey(focusNode)),
+      key: nullThrows(findAncestorOffsetKey(focusNode)),
       offset: focusOffset,
     };
     anchorPoint = getPointForNonTextNode(root, anchorNode, anchorOffset);
@@ -120,12 +120,12 @@ function getDraftEditorSelectionWithNodes(
 /**
  * Identify the first leaf descendant for the given node.
  */
-function getFirstLeaf(node: any): Node {
+function getFirstLeaf(node) {
   while (
     node.firstChild &&
     // data-blocks has no offset
     ((isElement(node.firstChild) &&
-      (node.firstChild: Element).getAttribute('data-blocks') === 'true') ||
+      (node.firstChild).getAttribute('data-blocks') === 'true') ||
       getSelectionOffsetKeyForNode(node.firstChild))
   ) {
     node = node.firstChild;
@@ -136,7 +136,7 @@ function getFirstLeaf(node: any): Node {
 /**
  * Identify the last leaf descendant for the given node.
  */
-function getLastLeaf(node: any): Node {
+function getLastLeaf(node) {
   while (
     node.lastChild &&
     // data-blocks has no offset
@@ -150,13 +150,13 @@ function getLastLeaf(node: any): Node {
 }
 
 function getPointForNonTextNode(
-  editorRoot: ?HTMLElement,
-  startNode: Node,
-  childOffset: number,
-): SelectionPoint {
-  let node: ?(Node | Element) = startNode;
+  editorRoot,
+  startNode,
+  childOffset,
+) {
+  let node = startNode;
   // $FlowFixMe[incompatible-call]
-  const offsetKey: ?string = findAncestorOffsetKey(node);
+  const offsetKey = findAncestorOffsetKey(node);
 
   invariant(
     offsetKey != null ||
@@ -174,7 +174,7 @@ function getPointForNonTextNode(
       'Invalid DraftEditorContents node. Expected element but instead got a node with type of %s.',
       [node?.nodeType],
     );
-    const castedNode: Element = (node: any);
+    const castedNode = (node);
 
     // assignment only added for flow :/
     // otherwise it throws in line 200 saying that node can be null or undefined
@@ -193,32 +193,32 @@ function getPointForNonTextNode(
   // find the leftmost ("first") leaf in the tree and use that as the offset
   // key.
   if (childOffset === 0) {
-    let key: ?string = null;
+    let key = null;
     if (offsetKey != null) {
       key = offsetKey;
     } else {
       const firstLeaf = getFirstLeaf(node);
-      key = nullthrows(getSelectionOffsetKeyForNode(firstLeaf));
+      key = nullThrows(getSelectionOffsetKeyForNode(firstLeaf));
     }
     return {key, offset: 0};
   }
 
   // $FlowFixMe[incompatible-use]
   const nodeBeforeCursor = node.childNodes[childOffset - 1];
-  let leafKey: ?string = null;
-  let textLength: ?number = null;
+  let leafKey = null;
+  let textLength = null;
 
   if (!getSelectionOffsetKeyForNode(nodeBeforeCursor)) {
     // Our target node may be a leaf or a text node, in which case we're
     // already where we want to be and can just use the child's length as
     // our offset.
-    leafKey = nullthrows(offsetKey);
+    leafKey = nullThrows(offsetKey);
     textLength = getTextContentLength(nodeBeforeCursor);
   } else {
     // Otherwise, we'll look at the child to the left of the cursor and find
     // the last leaf node in its subtree.
     const lastLeaf = getLastLeaf(nodeBeforeCursor);
-    leafKey = nullthrows(getSelectionOffsetKeyForNode(lastLeaf));
+    leafKey = nullThrows(getSelectionOffsetKeyForNode(lastLeaf));
     textLength = getTextContentLength(lastLeaf);
   }
 
@@ -234,7 +234,7 @@ function getPointForNonTextNode(
  * the correct selection offset for empty blocks in IE, in which we
  * render newlines instead of break tags.
  */
-function getTextContentLength(node: Node): number {
+function getTextContentLength(node) {
   const textContent = node.textContent;
   return textContent === '\n' ? 0 : textContent.length;
 }
