@@ -11,9 +11,9 @@
 
 'use strict';
 
-import type CharacterMetadata from 'CharacterMetadata';
-import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
+import CharacterMetadata from 'CharacterMetadata';
+import ContentState from 'ContentState';
+import SelectionState from 'SelectionState';
 
 const Immutable = require('immutable');
 const insertIntoList = require('insertIntoList');
@@ -22,17 +22,17 @@ const invariant = require('invariant');
 const {Repeat} = Immutable;
 
 function insertTextIntoContentState(
-  contentState: ContentState,
-  selectionState: SelectionState,
-  text: string,
-  characterMetadata: CharacterMetadata,
-): ContentState {
+  contentState,
+  selectionState,
+  text,
+  characterMetadata,
+) {
   invariant(
     selectionState.isCollapsed(),
     '`insertText` should only be called with a collapsed range.',
   );
 
-  let len: ?number = null;
+  let len = null;
   if (text != null) {
     len = text.length;
   }
