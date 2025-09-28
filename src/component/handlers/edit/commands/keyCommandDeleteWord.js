@@ -21,7 +21,7 @@ const removeTextWithStrategy = require('removeTextWithStrategy');
  * Delete the word that is right of the cursor, as well as any spaces or
  * punctuation before the word.
  */
-function keyCommandDeleteWord(editorState: EditorState): EditorState {
+function keyCommandDeleteWord(editorState) {
   const afterRemoval = removeTextWithStrategy(
     editorState,
     strategyState => {
