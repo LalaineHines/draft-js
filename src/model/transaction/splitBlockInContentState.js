@@ -11,9 +11,9 @@
 
 'use strict';
 
-import type {BlockMap} from 'BlockMap';
-import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
+import {BlockMap} from 'BlockMap';
+import ContentState from 'ContentState';
+import SelectionState from 'SelectionState';
 
 const ContentBlockNode = require('ContentBlockNode');
 
@@ -25,10 +25,10 @@ const modifyBlockForContentState = require('modifyBlockForContentState');
 const {List, Map} = Immutable;
 
 const transformBlock = (
-  key: ?string,
-  blockMap: BlockMap,
-  func: (block: ContentBlockNode) => ContentBlockNode,
-): void => {
+  key,
+  blockMap,
+  func,
+) => {
   if (!key) {
     return;
   }
@@ -43,10 +43,10 @@ const transformBlock = (
 };
 
 const updateBlockMapLinks = (
-  blockMap: BlockMap,
-  originalBlock: ContentBlockNode,
-  belowBlock: ContentBlockNode,
-): BlockMap => {
+  blockMap,
+  originalBlock,
+  belowBlock,
+) => {
   return blockMap.withMutations(blocks => {
     const originalBlockKey = originalBlock.getKey();
     const belowBlockKey = belowBlock.getKey();
@@ -88,9 +88,9 @@ const updateBlockMapLinks = (
 };
 
 const splitBlockInContentState = (
-  contentState: ContentState,
-  selectionState: SelectionState,
-): ContentState => {
+  contentState,
+  selectionState,
+) => {
   invariant(selectionState.isCollapsed(), 'Selection range must be collapsed.');
 
   const key = selectionState.getAnchorKey();
