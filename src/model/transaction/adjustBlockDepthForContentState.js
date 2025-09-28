@@ -11,15 +11,15 @@
 
 'use strict';
 
-import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
+import ContentState from 'ContentState';
+import SelectionState from 'SelectionState';
 
 function adjustBlockDepthForContentState(
-  contentState: ContentState,
-  selectionState: SelectionState,
-  adjustment: number,
-  maxDepth?: number,
-): ContentState {
+  contentState,
+  selectionState,
+  adjustment,
+  maxDepth,
+ ) {
   const startKey = selectionState.getStartKey();
   const endKey = selectionState.getEndKey();
   let blockMap = contentState.getBlockMap();
