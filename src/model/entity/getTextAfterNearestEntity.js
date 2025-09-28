@@ -11,16 +11,16 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
+import {BlockNodeRecord} from 'BlockNodeRecord';
 
 /**
  * Find the string of text between the previous entity and the specified
  * offset. This allows us to narrow down search areas for regex matching.
  */
 function getTextAfterNearestEntity(
-  block: BlockNodeRecord,
-  offset: number,
-): string {
+  block,
+  offset,
+) {
   let start = offset;
 
   // Get start based on where the last entity ended.
