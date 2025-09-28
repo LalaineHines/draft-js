@@ -11,15 +11,14 @@
 
 'use strict';
 
-import type {DraftEntityMutability} from 'DraftEntityMutability';
-import type {DraftEntityType} from 'DraftEntityType';
+import {DraftEntityMutability} from 'DraftEntityMutability';
+import {DraftEntityType} from 'DraftEntityType';
 
 /**
  * A plain object representation of an EntityInstance.
  */
-export type RawDraftEntity = {
+export const RawDraftEntity = {
   type: DraftEntityType,
   mutability: DraftEntityMutability,
-  data: ?{[key: string]: any, ...},
-  ...
+  data: {[key = string]: any},
 };
