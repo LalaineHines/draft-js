@@ -13,7 +13,7 @@
 
 jest.mock('generateRandomKey');
 
-const toggleExperimentalTreeDataSupport = (enabled: boolean) => {
+const toggleExperimentalTreeDataSupport = (enabled) => {
   jest.doMock('gkx', () => name => {
     return name === 'draft_tree_data_support' ? enabled : false;
   });
@@ -82,7 +82,7 @@ const contentBlockNodes = [
     prevSibling: 'B',
     nextSibling: 'H',
     type: 'ordered-list-item',
-    text: 'Gorila',
+    text: 'Gorilla',
   }),
   new ContentBlockNode({
     key: 'H',
@@ -100,28 +100,28 @@ const contentBlockNodes = [
 ];
 
 const assertCutOperation = (
-  operation: (editorState: EditorState) => EditorState,
-  selection:
-    | $TEMPORARY$object<{...}>
-    | $TEMPORARY$object<{
-        anchorKey: $TEMPORARY$string<'E'>,
-        anchorOffset: number,
-        focusKey: $TEMPORARY$string<'E'>,
-        focusOffset: number,
+  operation,
+  selection =
+    $TEMPORARY$object,
+    $TEMPORARY$object<{
+        anchorKey,
+        anchorOffset,
+        focusKey,
+        focusOffset,
       }>
-    | $TEMPORARY$object<{
-        anchorKey: $TEMPORARY$string<'H'>,
-        anchorOffset: number,
-        focusKey: $TEMPORARY$string<'H'>,
-        focusOffset: number,
+    $TEMPORARY$object<{
+        anchorKey,
+        anchorOffset,
+        focusKey,
+        focusOffset,
       }>
-    | $TEMPORARY$object<{
-        anchorKey: $TEMPORARY$string<'I'>,
-        anchorOffset: number,
-        focusKey: $TEMPORARY$string<'I'>,
-        focusOffset: number,
+    $TEMPORARY$object<{
+        anchorKey,
+        anchorOffset,
+        focusKey,
+        focusOffset,
       }> = {},
-  content: $TEMPORARY$array<ContentBlockNode> = contentBlockNodes,
+  content = contentBlockNodes,
 ) => {
   const result = operation(
     EditorState.forceSelection(
