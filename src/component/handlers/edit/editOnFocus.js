@@ -11,12 +11,12 @@
 
 'use strict';
 
-import type DraftEditor from 'DraftEditor.react';
+import DraftEditor from 'DraftEditor.react';
 
 const EditorState = require('EditorState');
 const UserAgent = require('UserAgent');
 
-function editOnFocus(editor: DraftEditor, e: SyntheticFocusEvent<>): void {
+function editOnFocus(editor, e) {
   const editorState = editor._latestEditorState;
   const currentSelection = editorState.getSelection();
   if (currentSelection.getHasFocus()) {
@@ -34,8 +34,8 @@ function editOnFocus(editor: DraftEditor, e: SyntheticFocusEvent<>): void {
   // old cursor position. See https://crbug.com/540004.
   // But it looks like this is fixed in Chrome 60.0.3081.0.
   // Other browsers also don't have this bug, so we prefer to acceptSelection
-  // when possible, to ensure that unfocusing and refocusing a Draft editor
-  // doesn't preserve the selection, matching how textareas work.
+  // when possible, to ensure that unfocused and refocusing a Draft editor
+  // doesn't preserve the selection, matching how text areas work.
   if (UserAgent.isBrowser('Chrome < 60.0.3081.0')) {
     editor.update(EditorState.forceSelection(editorState, selection));
   } else {
