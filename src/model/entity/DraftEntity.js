@@ -9,8 +9,8 @@
  * @oncall draft_js
  */
 
-import type {DraftEntityMutability} from 'DraftEntityMutability';
-import type {DraftEntityType} from 'DraftEntityType';
+import {DraftEntityMutability} from 'DraftEntityMutability';
+import {DraftEntityType} from 'DraftEntityType';
 
 const DraftEntityInstance = require('DraftEntityInstance');
 
@@ -20,34 +20,34 @@ const uuid = require('uuid');
 
 const {OrderedMap} = Immutable;
 
-let instances: OrderedMap<string, DraftEntityInstance> = OrderedMap();
-let instanceKey: string = uuid();
+let instances = OrderedMap();
+let instanceKey = uuid();
 
-export type DraftEntityMapObject = {
+export const DraftEntityMapObject = {
   __loadWithEntities: (
-    entities: OrderedMap<string, DraftEntityInstance>,
-  ) => void,
-  __getAll: () => OrderedMap<string, DraftEntityInstance>,
+    entities,
+  ),
+  __getAll: () => OrderedMap,
   __getLastCreatedEntityKey: () => string,
   __create: (
-    type: DraftEntityType,
-    mutability: DraftEntityMutability,
-    data?: Object,
+    type,
+    mutability,
+    data,
   ) => string,
-  __add: (instance: DraftEntityInstance) => string,
-  __get: (key: string) => DraftEntityInstance,
+  __add: (instance) => string,
+  __get: (key) => DraftEntityInstance,
   __mergeData: (
-    key: string,
-    toMerge: {[key: string]: any, ...},
+    key,
+    toMerge,
   ) => DraftEntityInstance,
   __replaceData: (
-    key: string,
-    newData: {[key: string]: any, ...},
+    key,
+    newData,
   ) => DraftEntityInstance,
 
   // Temporary public API for gk'd deprecation
-  get: (key: string) => DraftEntityInstance,
-  set: (key: string, value: DraftEntityInstance) => DraftEntityMapObject,
+  get: (key) => DraftEntityInstance,
+  set: (key, value) => DraftEntityMapObject,
   last: () => DraftEntityInstance,
 };
 
@@ -64,18 +64,18 @@ export type DraftEntityMapObject = {
  * generated via DraftEntity.create() and used to obtain entity metadata
  * via DraftEntity.get().
  */
-const DraftEntity: DraftEntityMapObject = {
+const DraftEntity = {
   /**
    * Get all the entities in the content state.
    */
-  __getAll(): OrderedMap<string, DraftEntityInstance> {
+  __getAll() {
     return instances;
   },
 
   /**
    * Load the entity map with the given set of entities.
    */
-  __loadWithEntities(entities: OrderedMap<string, DraftEntityInstance>): void {
+  __loadWithEntities(entities) {
     instances = entities;
     instanceKey = uuid();
   },
@@ -89,7 +89,7 @@ const DraftEntity: DraftEntityMapObject = {
    * We need this to support the new API, as part of transitioning to put Entity
    * storage in contentState.
    */
-  __getLastCreatedEntityKey(): string {
+  __getLastCreatedEntityKey() {
     return instanceKey;
   },
 
@@ -101,10 +101,10 @@ const DraftEntity: DraftEntityMapObject = {
    * retrieving data about the entity at render time.
    */
   __create(
-    type: DraftEntityType,
-    mutability: DraftEntityMutability,
-    data?: Object,
-  ): string {
+    type,
+    mutability,
+    data,
+  ) {
     return DraftEntity.__add(
       new DraftEntityInstance({type, mutability, data: data || {}}),
     );
@@ -114,7 +114,7 @@ const DraftEntity: DraftEntityMapObject = {
    * Add an existing DraftEntityInstance to the DraftEntity map. This is
    * useful when restoring instances from the server.
    */
-  __add(instance: DraftEntityInstance): string {
+  __add(instance) {
     instanceKey = uuid();
     instances = instances.set(instanceKey, instance);
     return instanceKey;
@@ -123,22 +123,22 @@ const DraftEntity: DraftEntityMapObject = {
   /**
    * Retrieve the entity corresponding to the supplied key string.
    */
-  __get(key: string): DraftEntityInstance {
+  __get(key) {
     const instance = instances.get(key);
     invariant(!!instance, 'Unknown DraftEntity key: %s.', key);
     return instance;
   },
 
-  get(key: string): DraftEntityInstance {
+  get(key) {
     return DraftEntity.__get(key);
   },
 
-  set(key: string, newInstance: DraftEntityInstance): DraftEntityMapObject {
+  set(key, newInstance) {
     instances = instances.set(key, newInstance);
     return DraftEntity;
   },
 
-  last(): DraftEntityInstance {
+  last() {
     return instances.last();
   },
 
@@ -148,12 +148,12 @@ const DraftEntity: DraftEntityMapObject = {
    * instance.
    */
   __mergeData(
-    key: string,
-    toMerge: {[key: string]: any, ...},
-  ): DraftEntityInstance {
+    key,
+    toMerge,
+  ) {
     const instance = DraftEntity.__get(key);
-    const newData: Object = {...instance.getData(), ...toMerge};
-    const newInstance: DraftEntityInstance = instance.set('data', newData);
+    const newData = {...instance.getData(), ...toMerge};
+    const newInstance = instance.set('data', newData);
     instances = instances.set(key, newInstance);
     return newInstance;
   },
@@ -162,11 +162,11 @@ const DraftEntity: DraftEntityMapObject = {
    * Completely replace the data for a given instance.
    */
   __replaceData(
-    key: string,
-    newData: {[key: string]: any, ...},
-  ): DraftEntityInstance {
+    key,
+    newData,
+  ) {
     const instance = DraftEntity.__get(key);
-    const newInstance: DraftEntityInstance = instance.set('data', newData);
+    const newInstance = instance.set('data', newData);
     instances = instances.set(key, newInstance);
     return newInstance;
   },
