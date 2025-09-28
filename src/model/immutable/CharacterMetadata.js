@@ -11,68 +11,67 @@
 
 'use strict';
 
-import type {DraftInlineStyle} from 'DraftInlineStyle';
+import {DraftInlineStyle} from 'DraftInlineStyle';
 
 const {Map, OrderedSet, Record} = require('immutable');
 
 // Immutable.map is typed such that the value for every key in the map
 // must be the same type
-type CharacterMetadataConfigValueType = DraftInlineStyle | ?string;
-type CharacterMetadataConfigRawValueType = Array<string> | ?string;
+const CharacterMetadataConfigValueType = DraftInlineStyle;
+const CharacterMetadataConfigRawValueType = Array;
 
-export type CharacterMetadataRawConfig = {
+export const CharacterMetadataRawConfig = {
   style?: CharacterMetadataConfigRawValueType,
   entity?: CharacterMetadataConfigRawValueType,
-  ...
 };
 
-type CharacterMetadataConfig = interface {
-  style?: CharacterMetadataConfigValueType,
-  entity?: CharacterMetadataConfigValueType,
+ CharacterMetadataConfig = interface {
+  style = CharacterMetadataConfigValueType,
+  entity = CharacterMetadataConfigValueType,
 };
 
 const EMPTY_SET = OrderedSet<string>();
 
-const defaultRecord: CharacterMetadataConfig = {
+const defaultRecord = {
   style: EMPTY_SET,
   entity: null,
 };
 
-const CharacterMetadataRecord = (Record(defaultRecord): any);
+const CharacterMetadataRecord = (Record(defaultRecord));
 
 class CharacterMetadata extends CharacterMetadataRecord {
-  getStyle(): DraftInlineStyle {
+  getStyle() {
     return this.get('style');
   }
 
-  getEntity(): ?string {
+  getEntity() {
     return this.get('entity');
   }
 
-  hasStyle(style: string): boolean {
+  hasStyle(style) {
     return this.getStyle().includes(style);
   }
 
   static applyStyle(
-    record: CharacterMetadata,
-    style: string,
-  ): CharacterMetadata {
+    record,
+    style,
+  ) {
     const withStyle = record.set('style', record.getStyle().add(style));
     return CharacterMetadata.create(withStyle);
   }
 
   static removeStyle(
-    record: CharacterMetadata,
-    style: string,
-  ): CharacterMetadata {
+    record,
+    style,
+  ) {
     const withoutStyle = record.set('style', record.getStyle().remove(style));
     return CharacterMetadata.create(withoutStyle);
   }
 
   static applyEntity(
-    record: CharacterMetadata,
-    entityKey: ?string,
-  ): CharacterMetadata {
+    record,
+    entityKey,
+  ) {
     const withEntity =
       record.getEntity() === entityKey
         ? record
@@ -86,21 +85,21 @@ class CharacterMetadata extends CharacterMetadataRecord {
    * style/entity permutations, we can reuse these objects as often as
    * possible.
    */
-  static create(config?: CharacterMetadataConfig): CharacterMetadata {
+  static create(config) {
     if (!config) {
       return EMPTY;
     }
 
-    const defaultConfig: CharacterMetadataConfig = {
+    const defaultConfig = {
       style: EMPTY_SET,
-      entity: (null: ?string),
+      entity: (null, string),
     };
 
     // Fill in unspecified properties, if necessary.
     // $FlowFixMe[incompatible-call] added when improving typing for this parameters
     const configMap = Map(defaultConfig).merge(config);
 
-    const existing: ?CharacterMetadata = pool.get(configMap);
+    const existing = pool.get(configMap);
     if (existing) {
       return existing;
     }
@@ -113,7 +112,7 @@ class CharacterMetadata extends CharacterMetadataRecord {
   static fromJS({
     style,
     entity,
-  }: CharacterMetadataRawConfig): CharacterMetadata {
+  }) {
     return new CharacterMetadata({
       style: Array.isArray(style) ? OrderedSet(style) : style,
       entity: Array.isArray(entity) ? OrderedSet(entity) : entity,
@@ -122,7 +121,7 @@ class CharacterMetadata extends CharacterMetadataRecord {
 }
 
 const EMPTY = new CharacterMetadata();
-let pool: Map<Map<any, any>, CharacterMetadata> = Map([
+let pool = Map([
   // $FlowFixMe[incompatible-call] added when improving typing for this parameters
   [Map(defaultRecord), EMPTY],
 ]);
