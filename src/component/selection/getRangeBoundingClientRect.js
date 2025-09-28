@@ -13,7 +13,7 @@
 
 const getRangeClientRects = require('getRangeClientRects');
 
-export type FakeClientRect = {
+export const FakeClientRect = {
   left: number,
   width: number,
   right: number,
@@ -25,7 +25,7 @@ export type FakeClientRect = {
 /**
  * Like range.getBoundingClientRect() but normalizes for browser bugs.
  */
-function getRangeBoundingClientRect(range: Range): FakeClientRect {
+function getRangeBoundingClientRect(range) {
   // "Return a DOMRect object describing the smallest rectangle that includes
   // the first rectangle in list and all of the remaining rectangles of which
   // the height or width is not zero."
