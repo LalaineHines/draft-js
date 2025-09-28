@@ -11,15 +11,15 @@
 
 'use strict';
 
-import type {BlockMap} from 'BlockMap';
-import type {BlockNodeRecord} from 'BlockNodeRecord';
+import {BlockMap} from 'BlockMap';
+import {BlockNodeRecord} from 'BlockNodeRecord';
 
 const Immutable = require('immutable');
 
 const {OrderedMap} = Immutable;
 
 const BlockMapBuilder = {
-  createFromArray(blocks: Array<BlockNodeRecord>): BlockMap {
+  createFromArray(blocks) {
     return OrderedMap(blocks.map(block => [block.getKey(), block]));
   },
 };
