@@ -55,7 +55,7 @@ const BACKSPACE_STRING =
   '$';
 const BACKSPACE_REGEX = new RegExp(BACKSPACE_STRING);
 
-function getRemovableWord(text: string, isBackward: boolean): string {
+function getRemovableWord(text, isBackward) {
   const matches = isBackward
     ? BACKSPACE_REGEX.exec(text)
     : DELETE_REGEX.exec(text);
@@ -63,11 +63,11 @@ function getRemovableWord(text: string, isBackward: boolean): string {
 }
 
 const DraftRemovableWord = {
-  getBackward(text: string): string {
+  getBackward(text) {
     return getRemovableWord(text, true);
   },
 
-  getForward(text: string): string {
+  getForward(text) {
     return getRemovableWord(text, false);
   },
 };
