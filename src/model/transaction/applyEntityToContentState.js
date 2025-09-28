@@ -11,17 +11,17 @@
 
 'use strict';
 
-import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
+import ContentState from 'ContentState';
+import SelectionState from 'SelectionState';
 
 const applyEntityToContentBlock = require('applyEntityToContentBlock');
 const Immutable = require('immutable');
 
 function applyEntityToContentState(
-  contentState: ContentState,
-  selectionState: SelectionState,
-  entityKey: ?string,
-): ContentState {
+  contentState,
+  selectionState,
+  entityKey,
+) {
   const blockMap = contentState.getBlockMap();
   const startKey = selectionState.getStartKey();
   const startOffset = selectionState.getStartOffset();
