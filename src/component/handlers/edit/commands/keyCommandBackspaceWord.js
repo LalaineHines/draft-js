@@ -21,7 +21,7 @@ const removeTextWithStrategy = require('removeTextWithStrategy');
  * Delete the word that is left of the cursor, as well as any spaces or
  * punctuation after the word.
  */
-function keyCommandBackspaceWord(editorState: EditorState): EditorState {
+function keyCommandBackspaceWord(editorState) {
   const afterRemoval = removeTextWithStrategy(
     editorState,
     strategyState => {
