@@ -10,7 +10,8 @@
  */
 
 'use strict';
-import type {BlockNodeRecord} from 'BlockNodeRecord';
+
+import {BlockNodeRecord} from 'BlockNodeRecord';
 
 const AtomicBlockUtils = require('AtomicBlockUtils');
 const BlockMapBuilder = require('BlockMapBuilder');
@@ -35,7 +36,7 @@ const initialBlock = contentState.getBlockMap().first();
 const ENTITY_KEY = contentState.getLastCreatedEntityKey();
 const CHARACTER = ' ';
 
-const getInvariantViolation = (msg: string) => {
+const getInvariantViolation = (msg) => {
   try {
     /* eslint-disable-next-line */
     invariant(false, msg);
@@ -44,23 +45,23 @@ const getInvariantViolation = (msg: string) => {
   }
 };
 
-const toggleExperimentalTreeDataSupport = (enabled: boolean) => {
+const toggleExperimentalTreeDataSupport = (enabled) => {
   jest.doMock('gkx', () => name => {
     return name === 'draft_tree_data_support' ? enabled : false;
   });
 };
 
-const assertAtomic = (state: EditorState) => {
+const assertAtomic = (state) => {
   expect(
     state.getCurrentContent().getBlockMap().toIndexedSeq().toJS(),
   ).toMatchSnapshot();
 };
 
 const assertInsertAtomicBlock = (
-  state: EditorState = editorState,
-  entity: string = ENTITY_KEY,
-  character: string = CHARACTER,
-  experimentalTreeDataSupport: boolean = false,
+  state = editorState,
+  entity = ENTITY_KEY,
+  character = CHARACTER,
+  experimentalTreeDataSupport = false,
 ) => {
   toggleExperimentalTreeDataSupport(experimentalTreeDataSupport);
   const newState = AtomicBlockUtils.insertAtomicBlock(state, entity, character);
@@ -69,18 +70,15 @@ const assertInsertAtomicBlock = (
 };
 
 const assertMoveAtomicBlock = (
-  atomicBlock: BlockNodeRecord,
-  seletion: $FlowFixMe,
-  state: EditorState = editorState,
-  insertionType:
-    | void
-    | $TEMPORARY$string<'after'>
-    | $TEMPORARY$string<'before'>,
+  atomicBlock,
+  selection,
+  state = editorState,
+  insertionType,
 ) => {
   const newState = AtomicBlockUtils.moveAtomicBlock(
     state,
     atomicBlock,
-    seletion,
+    selection,
     insertionType,
   );
   assertAtomic(newState);
@@ -92,7 +90,7 @@ beforeEach(() => {
   jest.mock('uuid', () => mockUUID);
 });
 
-test('must insert atomic at start of block with collapsed seletion', () => {
+test('must insert atomic at start of block with collapsed selection', () => {
   assertInsertAtomicBlock();
 });
 
@@ -157,14 +155,14 @@ test('must move atomic at end of block with collapsed selection', () => {
   );
 });
 
-test('must move atomic inbetween block with collapsed selection', () => {
+test('must move atomic in between block with collapsed selection', () => {
   // Insert atomic block at the first position
   const resultEditor = assertInsertAtomicBlock();
   const resultContent = resultEditor.getCurrentContent();
   const atomicBlock = resultContent.getBlockMap().skip(1).first();
   const thirdBlock = resultContent.getBlockMap().skip(2).first();
 
-  // Move atomic block inbetween the split parts of the third block
+  // Move atomic block in between the split parts of the third block
   assertMoveAtomicBlock(
     atomicBlock,
     new SelectionState({
@@ -429,14 +427,14 @@ test('must move atomic at end of block', () => {
   );
 });
 
-test('must move atomic inbetween block', () => {
+test('must move atomic in between block', () => {
   // Insert atomic block at the first position
   const resultEditor = assertInsertAtomicBlock();
   const resultContent = resultEditor.getCurrentContent();
   const atomicBlock = resultContent.getBlockMap().skip(1).first();
   const thirdBlock = resultContent.getBlockMap().skip(2).first();
 
-  // Move atomic block inbetween the split parts of the third block
+  // Move atomic block in between the split parts of the third block
   assertMoveAtomicBlock(
     atomicBlock,
     new SelectionState({
