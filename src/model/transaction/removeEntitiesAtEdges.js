@@ -11,10 +11,10 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
-import type {List} from 'immutable';
+import {BlockNodeRecord} from 'BlockNodeRecord';
+import ContentState from 'ContentState';
+import SelectionState from 'SelectionState';
+import {List} from 'immutable';
 
 const CharacterMetadata = require('CharacterMetadata');
 
@@ -22,12 +22,12 @@ const findRangesImmutable = require('findRangesImmutable');
 const invariant = require('invariant');
 
 function removeEntitiesAtEdges(
-  contentState: ContentState,
-  selectionState: SelectionState,
-): ContentState {
+  contentState,
+  selectionState,
+) {
   const blockMap = contentState.getBlockMap();
 
-  const updatedBlocks: {[string]: BlockNodeRecord} = {};
+  const updatedBlocks = {};
 
   const startKey = selectionState.getStartKey();
   const startOffset = selectionState.getStartOffset();
@@ -67,13 +67,12 @@ function removeEntitiesAtEdges(
  * Note: This method requires that the offset be in an entity range.
  */
 function getRemovalRange(
-  characters: List<CharacterMetadata>,
-  entityKey: ?string,
-  offset: number,
-): {
-  start: number,
-  end: number,
-  ...
+  characters,
+  entityKey,
+  offset,
+) {
+  start,
+  end,
 } {
   let removalRange;
 
@@ -88,7 +87,7 @@ function getRemovalRange(
     characters, // the list to iterate through
     (a, b) => a.getEntity() === b.getEntity(), // 'isEqual' callback
     element => element.getEntity() === entityKey, // 'filter' callback
-    (start: number, end: number) => {
+    (start, end) => {
       // 'found' callback
       if (start <= offset && end >= offset) {
         // this entity overlaps the offset index
@@ -104,10 +103,10 @@ function getRemovalRange(
 }
 
 function removeForBlock(
-  contentState: ContentState,
-  block: BlockNodeRecord,
-  offset: number,
-): BlockNodeRecord {
+  contentState,
+  block,
+  offset,
+) {
   let chars = block.getCharacterList();
   const charBefore = offset > 0 ? chars.get(offset - 1) : undefined;
   const charAfter = offset < chars.count() ? chars.get(offset) : undefined;
