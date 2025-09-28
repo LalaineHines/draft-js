@@ -11,9 +11,9 @@
 
 'use strict';
 
-import type {DOMDerivedSelection} from 'DOMDerivedSelection';
-import type {SelectionObject} from 'DraftDOMTypes';
-import type EditorState from 'EditorState';
+import {DOMDerivedSelection} from 'DOMDerivedSelection';
+import EditorState from 'EditorState';
+import {SelectionObject} from 'DraftDOMTypes';
 
 const getDraftEditorSelectionWithNodes = require('getDraftEditorSelectionWithNodes');
 
@@ -22,10 +22,10 @@ const getDraftEditorSelectionWithNodes = require('getDraftEditorSelectionWithNod
  * and values that can be interpreted by components.
  */
 function getDraftEditorSelection(
-  editorState: EditorState,
-  root: HTMLElement,
-): DOMDerivedSelection {
-  const selection: SelectionObject =
+  editorState,
+  root,
+) {
+  const selection =
     root.ownerDocument.defaultView.getSelection();
   const {anchorNode, anchorOffset, focusNode, focusOffset, rangeCount} =
     selection;
