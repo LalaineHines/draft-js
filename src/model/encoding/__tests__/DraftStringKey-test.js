@@ -11,7 +11,7 @@
 
 'use strict';
 
-const {stringify, unstringify} = require('DraftStringKey');
+const {stringify, unStringify} = require('DraftStringKey');
 
 test('must convert maybe strings to a string key', () => {
   expect(stringify('anything')).toEqual('_anything');
@@ -19,7 +19,7 @@ test('must convert maybe strings to a string key', () => {
 });
 
 test('must convert string keys back to a string', () => {
-  expect(unstringify('_anything')).toEqual('anything');
+  expect(unStringify('_anything')).toEqual('anything');
   // This is a lossy conversion
-  expect(unstringify('_null')).toEqual('null');
+  expect(unStringify('_null')).toEqual('null');
 });
