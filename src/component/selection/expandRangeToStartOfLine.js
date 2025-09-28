@@ -17,7 +17,7 @@ const invariant = require('invariant');
 /**
  * Return the computed line height, in pixels, for the provided element.
  */
-function getLineHeightPx(element: Element): number {
+function getLineHeightPx(element) {
   const computed = getComputedStyle(element);
   const correctDocument = getCorrectDocumentFromNode(element);
   const div = correctDocument.createElement('div');
@@ -53,9 +53,9 @@ function getLineHeightPx(element: Element): number {
  * produces rects of height 58px!).
  */
 function areRectsOnOneLine(
-  rects: Array<ClientRect>,
-  lineHeight: number,
-): boolean {
+  rects,
+  lineHeight,
+) {
   let minTop = Infinity;
   let minBottom = Infinity;
   let maxTop = -Infinity;
@@ -89,7 +89,7 @@ function areRectsOnOneLine(
 /**
  * Return the length of a node, as used by Range offsets.
  */
-function getNodeLength(node: Node): number {
+function getNodeLength(node) {
   // http://www.w3.org/TR/dom/#concept-node-length
   switch (node.nodeType) {
     case Node.DOCUMENT_TYPE_NODE:
@@ -97,7 +97,7 @@ function getNodeLength(node: Node): number {
     case Node.TEXT_NODE:
     case Node.PROCESSING_INSTRUCTION_NODE:
     case Node.COMMENT_NODE:
-      return (node: any).length;
+      return (node).length;
     default:
       return node.childNodes.length;
   }
@@ -107,21 +107,21 @@ function getNodeLength(node: Node): number {
  * Given a collapsed range, move the start position backwards as far as
  * possible while the range still spans only a single line.
  */
-function expandRangeToStartOfLine(range: Range): Range {
+function expandRangeToStartOfLine(range) {
   invariant(
     range.collapsed,
     'expandRangeToStartOfLine: Provided range is not collapsed.',
   );
   range = range.cloneRange();
 
-  let containingElement: ?Node = range.startContainer;
+  let containingElement = range.startContainer;
   // $FlowFixMe[incompatible-type]
   // $FlowFixMe[incompatible-use]
   if (containingElement.nodeType !== 1) {
     // $FlowFixMe[incompatible-use]
     containingElement = containingElement.parentNode;
   }
-  const lineHeight = getLineHeightPx((containingElement: any));
+  const lineHeight = getLineHeightPx((containingElement));
 
   // Imagine our text looks like:
   //   <div><span>once upon a time, there was a <em>boy
@@ -148,7 +148,7 @@ function expandRangeToStartOfLine(range: Range): Range {
     range.setStartBefore(bestContainer);
     if (
       bestContainer.nodeType === 1 &&
-      getComputedStyle((bestContainer: any)).display !== 'inline'
+      getComputedStyle((bestContainer)).display !== 'inline'
     ) {
       // The start of the line is never in a different block-level container.
       break;
