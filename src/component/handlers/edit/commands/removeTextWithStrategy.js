@@ -11,10 +11,10 @@
 
 'use strict';
 
-import type ContentState from 'ContentState';
-import type {DraftRemovalDirection} from 'DraftRemovalDirection';
-import type EditorState from 'EditorState';
-import type SelectionState from 'SelectionState';
+import ContentState from 'ContentState';
+import {DraftRemovalDirection} from 'DraftRemovalDirection';
+import EditorState from 'EditorState';
+import SelectionState from 'SelectionState';
 
 const DraftModifier = require('DraftModifier');
 
@@ -27,10 +27,10 @@ const experimentalTreeDataSupport = gkx('draft_tree_data_support');
  * If the selection state is not collapsed, remove the entire selected range.
  */
 function removeTextWithStrategy(
-  editorState: EditorState,
-  strategy: (editorState: EditorState) => SelectionState,
-  direction: DraftRemovalDirection,
-): ContentState {
+  editorState,
+  strategy,
+  direction,
+) {
   const selection = editorState.getSelection();
   const content = editorState.getCurrentContent();
   let target = selection;
