@@ -10,7 +10,8 @@
  */
 
 'use strict';
-import type {List} from 'immutable';
+
+import {List} from 'immutable';
 
 const Immutable = require('immutable');
 const insertIntoList = require('insertIntoList');
@@ -18,9 +19,9 @@ const insertIntoList = require('insertIntoList');
 const SAMPLE_LIST = Immutable.List.of(0, 1, 2, 3, 4);
 
 const assertAssertInsertIntoList = (
-  toInsert: List<number>,
-  offset: number = SAMPLE_LIST.size,
-  targetList: List<number> = SAMPLE_LIST,
+  toInsert,
+  offset = SAMPLE_LIST.size,
+  targetList = SAMPLE_LIST,
 ) => {
   expect(insertIntoList(targetList, toInsert, offset)).toMatchSnapshot();
 };
