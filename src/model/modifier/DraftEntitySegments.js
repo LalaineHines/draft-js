@@ -11,8 +11,8 @@
 
 'use strict';
 
-import type {DraftRange} from 'DraftRange';
-import type {DraftRemovalDirection} from 'DraftRemovalDirection';
+import {DraftRange} from 'DraftRange';
+import {DraftRemovalDirection} from 'DraftRemovalDirection';
 
 /**
  * Identify the range to delete from a segmented entity.
@@ -39,12 +39,12 @@ import type {DraftRemovalDirection} from 'DraftRemovalDirection';
  */
 const DraftEntitySegments = {
   getRemovalRange(
-    selectionStart: number,
-    selectionEnd: number,
-    text: string,
-    entityStart: number,
-    direction: DraftRemovalDirection,
-  ): DraftRange {
+    selectionStart,
+    selectionEnd,
+    text,
+    entityStart,
+    direction,
+  ) {
     let segments = text.split(' ');
     segments = segments.map((/*string*/ segment, /*number*/ ii) => {
       if (direction === 'forward') {
@@ -60,8 +60,8 @@ const DraftEntitySegments = {
     let segmentStart = entityStart;
     let segmentEnd;
     let segment;
-    let removalStart: any = null;
-    let removalEnd: any = null;
+    let removalStart = null;
+    let removalEnd = null;
 
     for (let jj = 0; jj < segments.length; jj++) {
       segment = segments[jj];
