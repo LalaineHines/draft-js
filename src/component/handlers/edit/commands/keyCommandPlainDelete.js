@@ -22,7 +22,7 @@ const removeTextWithStrategy = require('removeTextWithStrategy');
  * character. This operation is Unicode-aware, so removing a single character
  * will remove a surrogate pair properly as well.
  */
-function keyCommandPlainDelete(editorState: EditorState): EditorState {
+function keyCommandPlainDelete(editorState) {
   const afterRemoval = removeTextWithStrategy(
     editorState,
     strategyState => {
