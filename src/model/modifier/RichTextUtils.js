@@ -9,44 +9,43 @@
  * @oncall draft_js
  */
 
-import type ContentState from 'ContentState';
-import type {DraftBlockType} from 'DraftBlockType';
-import type {DraftEditorCommand} from 'DraftEditorCommand';
-import type EditorState from 'EditorState';
-import type SelectionState from 'SelectionState';
-import type URI from 'URI';
+import ContentState from 'ContentState';
+import {DraftBlockType} from 'DraftBlockType';
+import {DraftEditorCommand} from 'DraftEditorCommand';
+import EditorState from 'EditorState';
+import SelectionState from 'SelectionState';
+import URI from 'URI';
 
-export type DataObjectForLink = {url: string, ...};
+export const DataObjectForLink = {url: string, ...};
 
-export type RichTextUtils = {
-  currentBlockContainsLink: (editorState: EditorState) => boolean,
-  getCurrentBlockType: (editorState: EditorState) => DraftBlockType,
-  getDataObjectForLinkURL: (uri: URI) => DataObjectForLink,
+export const RichTextUtils = {
+  currentBlockContainsLink: (editorState) => boolean,
+  getCurrentBlockType: (editorState) => DraftBlockType,
+  getDataObjectForLinkURL: (uri) => DataObjectForLink,
   handleKeyCommand: (
-    editorState: EditorState,
-    command: DraftEditorCommand | string,
-  ) => ?EditorState,
-  insertSoftNewline: (editorState: EditorState) => EditorState,
-  onBackspace: (editorState: EditorState) => ?EditorState,
-  onDelete: (editorState: EditorState) => ?EditorState,
+    editorState,
+    command,
+  ) => EditorState,
+  insertSoftNewline: (editorState) => EditorState,
+  onBackspace: (editorState) => EditorState,
+  onDelete: (editorState) => EditorState,
   onTab: (
-    event: SyntheticKeyboardEvent<>,
-    editorState: EditorState,
+    event,
+    editorState,
   ) => EditorState,
   toggleBlockType: (
-    editorState: EditorState,
-    blockType: DraftBlockType,
+    editorState,
+    blockType,
   ) => EditorState,
-  toggleCode: (editorState: EditorState) => EditorState,
+  toggleCode: (editorState) => EditorState,
   toggleInlineStyle: (
-    editorState: EditorState,
-    inlineStyle: string,
+    editorState,
+    inlineStyle,
   ) => EditorState,
   toggleLink: (
-    editorState: EditorState,
-    targetSelection: SelectionState,
-    entityKey: ?string,
+    editorState,
+    targetSelection,
+    entityKey,
   ) => EditorState,
-  tryToRemoveBlockStyle: (editorState: EditorState) => ?ContentState,
-  ...
+  tryToRemoveBlockStyle: (editorState) => ContentState,
 };
