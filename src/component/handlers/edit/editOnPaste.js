@@ -11,9 +11,9 @@
 
 'use strict';
 
-import type {BlockMap} from 'BlockMap';
-import type DraftEditor from 'DraftEditor.react';
-import type {EntityMap} from 'EntityMap';
+import {BlockMap} from 'BlockMap';
+import DraftEditor from 'DraftEditor.react';
+import {EntityMap} from 'EntityMap';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
@@ -32,13 +32,13 @@ const splitTextIntoTextBlocks = require('splitTextIntoTextBlocks');
 /**
  * Paste content.
  */
-function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
+function editOnPaste(editor, e) {
   e.preventDefault();
   const data = new DataTransfer(e.clipboardData);
 
   // Get files, unless this is likely to be a string the user wants inline.
   if (!data.isRichText()) {
-    const files: Array<Blob> = (data.getFiles(): any);
+    const files = (data.getFiles());
     const defaultFileText = data.getText();
     if (files.length > 0) {
       // Allow customized paste handling for images, etc. Otherwise, fall
@@ -93,23 +93,23 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
     }
   }
 
-  let textBlocks: Array<string> = [];
-  let text: string = (data.getText(): any);
-  let html: string = (data.getHTML(): any);
+  let textBlocks = [];
+  let text = (data.getText());
+  let html = (data.getHTML());
   const editorState = editor._latestEditorState;
 
   if (editor.props.formatPastedText) {
     const {text: formattedText, html: formattedHtml} =
       editor.props.formatPastedText(text, html);
     text = formattedText;
-    html = ((formattedHtml: any): string);
+    html = ((formattedHtml));
   }
 
   if (text) {
     textBlocks = splitTextIntoTextBlocks(text);
   }
 
-  let handleInternalPaste: ?() => void = null;
+  let handleInternalPaste = null;
 
   if (!editor.props.stripPastedStyles) {
     // If the text from the paste event is rich content that matches what we
@@ -222,10 +222,10 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
 }
 
 function insertFragment(
-  editorState: EditorState,
-  fragment: BlockMap,
-  entityMap: ?EntityMap,
-): EditorState {
+  editorState,
+  fragment,
+  entityMap,
+) {
   const newContent = DraftModifier.replaceWithFragment(
     editorState.getCurrentContent(),
     editorState.getSelection(),
@@ -244,9 +244,9 @@ function insertFragment(
 }
 
 function areTextBlocksAndClipboardEqual(
-  textBlocks: Array<string>,
-  blockMap: BlockMap,
-): boolean {
+  textBlocks,
+  blockMap,
+) {
   return (
     textBlocks.length === blockMap.size &&
     blockMap.valueSeq().every((block, ii) => block.getText() === textBlocks[ii])
