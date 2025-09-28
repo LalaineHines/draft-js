@@ -30,7 +30,7 @@ beforeEach(() => {
   container = document.createElement('div');
 });
 
-const renderIntoContainer = (element: React.Node) => {
+const renderIntoContainer = (element) => {
   // $FlowFixMe[incompatible-call]
   // $FlowFixMe[incompatible-exact]
   return ReactDOM.render(element, container);
@@ -51,11 +51,11 @@ const initializeAsNonIE = () => {
 };
 
 const expectPopulatedSpan = (
-  stub: DraftEditorTextNode | HTMLDivElement,
-  testString: string | $TEMPORARY$string<'Hello'>,
+  stub,
+  testString,
 ) => {
   // $FlowExpectedError[incompatible-type] node could be null
-  const node: Element = ReactDOM.findDOMNode(stub);
+  const node = ReactDOM.findDOMNode(stub);
   expect(node.tagName).toBe('SPAN');
   expect(node.childNodes.length).toBe(1);
   expect(node.firstChild && node.firstChild.textContent).toBe(testString);
