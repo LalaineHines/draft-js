@@ -11,8 +11,8 @@
 
 'use strict';
 
-import type EditorState from 'EditorState';
-import type SelectionState from 'SelectionState';
+import EditorState from 'EditorState';
+import SelectionState from 'SelectionState';
 
 const warning = require('warning');
 
@@ -25,9 +25,9 @@ const warning = require('warning');
  * as having length 2.
  */
 function moveSelectionBackward(
-  editorState: EditorState,
-  maxDistance: number,
-): SelectionState {
+  editorState,
+  maxDistance,
+) {
   const selection = editorState.getSelection();
   // Should eventually make this an invariant
   warning(
