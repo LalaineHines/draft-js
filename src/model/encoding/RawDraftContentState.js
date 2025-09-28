@@ -11,8 +11,8 @@
 
 'use strict';
 
-import type {RawDraftContentBlock} from 'RawDraftContentBlock';
-import type {RawDraftEntity} from 'RawDraftEntity';
+import {RawDraftContentBlock} from 'RawDraftContentBlock';
+import {RawDraftEntity} from 'RawDraftEntity';
 
 /**
  * A type that represents a composed document as vanilla JavaScript objects,
@@ -23,7 +23,7 @@ import type {RawDraftEntity} from 'RawDraftEntity';
  * server for storage, as its representation is more concise than our
  * immutable objects.
  */
-export type RawDraftContentState = {
-  blocks: Array<RawDraftContentBlock>,
-  entityMap: {[key: string]: RawDraftEntity},
+export const RawDraftContentState = {
+  blocks: Array,
+  entityMap: {[key = string]: RawDraftEntity},
 };
