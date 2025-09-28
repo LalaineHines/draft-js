@@ -11,7 +11,7 @@
 
 'use strict';
 
-import type {SelectionObject} from 'DraftDOMTypes';
+import {SelectionObject} from 'DraftDOMTypes';
 
 const EditorState = require('EditorState');
 
@@ -21,9 +21,9 @@ const moveSelectionBackward = require('moveSelectionBackward');
 const removeTextWithStrategy = require('removeTextWithStrategy');
 
 function keyCommandBackspaceToStartOfLine(
-  editorState: EditorState,
-  e: SyntheticKeyboardEvent<HTMLElement>,
-): EditorState {
+  editorState,
+  e,
+) {
   const afterRemoval = removeTextWithStrategy(
     editorState,
     strategyState => {
@@ -32,7 +32,7 @@ function keyCommandBackspaceToStartOfLine(
         return moveSelectionBackward(strategyState, 1);
       }
       const {ownerDocument} = e.currentTarget;
-      const domSelection: SelectionObject =
+      const domSelection =
         ownerDocument.defaultView.getSelection();
       // getRangeAt can technically throw if there's no selection, but we know
       // there is one here because text editor has focus (the cursor is a
