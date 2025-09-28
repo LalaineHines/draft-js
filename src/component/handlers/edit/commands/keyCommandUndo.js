@@ -14,10 +14,10 @@
 const EditorState = require('EditorState');
 
 function keyCommandUndo(
-  e: SyntheticKeyboardEvent<>,
-  editorState: EditorState,
-  updateFn: (editorState: EditorState) => void,
-): void {
+  e,
+  editorState,
+  updateFn,
+) {
   const undoneState = EditorState.undo(editorState);
 
   // If the last change to occur was a spellcheck change, allow the undo
@@ -30,7 +30,7 @@ function keyCommandUndo(
     return;
   }
 
-  // Otheriwse, manage the undo behavior manually.
+  // Otherwise, manage the undo behavior manually.
   e.preventDefault();
   if (!editorState.getNativelyRenderedContent()) {
     updateFn(undoneState);
