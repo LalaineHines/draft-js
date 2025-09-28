@@ -10,7 +10,8 @@
  */
 
 'use strict';
-import type SelectionState from 'SelectionState';
+
+import SelectionState from 'SelectionState';
 
 const CharacterMetadata = require('CharacterMetadata');
 const {BOLD} = require('SampleDraftInlineStyle');
@@ -24,9 +25,9 @@ const EMPTY = CharacterMetadata.EMPTY;
 const initialBlock = contentState.getBlockMap().first();
 
 const assertInsertTextIntoContentState = (
-  text: string | $TEMPORARY$string<'xx'>,
-  characterMetadata: $FlowFixMe | CharacterMetadata,
-  selection: $FlowFixMe | SelectionState = selectionState,
+  text,
+  characterMetadata,
+  selection = selectionState,
 ) => {
   expect(
     insertTextIntoContentState(contentState, selection, text, characterMetadata)
