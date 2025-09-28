@@ -21,7 +21,7 @@ const getContentStateFragment = require('getContentStateFragment');
  * if the cursor is at the end of the block, transpose the last two
  * characters.
  */
-function keyCommandTransposeCharacters(editorState: EditorState): EditorState {
+function keyCommandTransposeCharacters(editorState) {
   const selection = editorState.getSelection();
   if (!selection.isCollapsed()) {
     return editorState;
