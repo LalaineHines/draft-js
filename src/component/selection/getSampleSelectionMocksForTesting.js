@@ -20,7 +20,7 @@ const {BOLD} = require('SampleDraftInlineStyle');
 const Immutable = require('immutable');
 const {EMPTY} = CharacterMetadata;
 
-const getSampleSelectionMocksForTesting = (): Object => {
+const getSampleSelectionMocksForTesting = () => {
   const root = document.createElement('div');
   const contents = document.createElement('div');
 
