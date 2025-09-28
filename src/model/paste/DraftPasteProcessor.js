@@ -11,11 +11,11 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type CharacterMetadata from 'CharacterMetadata';
-import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
-import type {DraftBlockType} from 'DraftBlockType';
-import type {EntityMap} from 'EntityMap';
+import {BlockNodeRecord} from 'BlockNodeRecord';
+import CharacterMetadata from 'CharacterMetadata';
+import {DraftBlockRenderMap} from 'DraftBlockRenderMap';
+import {DraftBlockType} from 'DraftBlockType';
+import {EntityMap} from 'EntityMap';
 
 const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
@@ -34,16 +34,14 @@ const ContentBlockRecord = experimentalTreeDataSupport
   ? ContentBlockNode
   : ContentBlock;
 
-const DraftPasteProcessor = {
-  processHTML(
-    html: string,
-    blockRenderMap?: DraftBlockRenderMap,
-  ): ?{
-    contentBlocks: ?Array<BlockNodeRecord>,
-    entityMap: EntityMap,
-    ...
+const DraftPasteProcessor = {(
+    html,
+    blockRenderMap,
+  ) {
+    contentBlocks,
+    entityMap,
   } {
-    return convertFromHTMLToContentBlocks(
+    return (
       html,
       getSafeBodyFromHTML,
       blockRenderMap,
@@ -51,10 +49,10 @@ const DraftPasteProcessor = {
   },
 
   processText(
-    textBlocks: Array<string>,
-    character: CharacterMetadata,
-    type: DraftBlockType,
-  ): Array<BlockNodeRecord> {
+    textBlocks,
+    character,
+    type,
+  ) {
     return textBlocks.reduce((acc, textLine, index) => {
       textLine = sanitizeDraftText(textLine);
       const key = generateRandomKey();
@@ -85,7 +83,7 @@ const DraftPasteProcessor = {
 
       return acc;
     }, []);
-  },
-};
+  }
+}
 
 module.exports = DraftPasteProcessor;
