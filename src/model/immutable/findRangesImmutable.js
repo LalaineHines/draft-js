@@ -11,7 +11,7 @@
 
 'use strict';
 
-import type {List} from 'immutable';
+import {List} from 'immutable';
 
 /**
  * Search through an array to find contiguous stretches of elements that
@@ -20,19 +20,19 @@ import type {List} from 'immutable';
  * When ranges are found, execute a specified `found` function to supply
  * the values to the caller.
  */
-function findRangesImmutable<T>(
-  haystack: List<T>,
-  areEqualFn: (a: T, b: T) => boolean,
-  filterFn: (value: T) => boolean,
-  foundFn: (start: number, end: number) => void,
-): void {
+function findRangesImmutable(
+  haystack,
+  areEqualFn,
+  filterFn,
+  foundFn,
+) {
   if (!haystack.size) {
     return;
   }
 
-  let cursor: number = 0;
+  let cursor = 0;
 
-  haystack.reduce((value: T, nextValue, nextIndex) => {
+  haystack.reduce((value, nextValue, nextIndex) => {
     if (!areEqualFn(value, nextValue)) {
       if (filterFn(value)) {
         foundFn(cursor, nextIndex);
