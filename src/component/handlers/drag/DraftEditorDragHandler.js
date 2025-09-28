@@ -11,8 +11,8 @@
 
 'use strict';
 
-import type DraftEditor from 'DraftEditor.react';
-import type SelectionState from 'SelectionState';
+import DraftEditor from 'DraftEditor.react';
+import SelectionState from 'SelectionState';
 
 const DataTransfer = require('DataTransfer');
 const DraftModifier = require('DraftModifier');
@@ -24,17 +24,17 @@ const getTextContentFromFiles = require('getTextContentFromFiles');
 const getUpdatedSelectionState = require('getUpdatedSelectionState');
 const getWindowForNode = require('getWindowForNode');
 const isEventHandled = require('isEventHandled');
-const nullthrows = require('nullthrows');
+const nullThrows = require('nullThrows');
 
 /**
  * Get a SelectionState for the supplied mouse event.
  */
 function getSelectionForEvent(
-  event: Object,
-  editorState: EditorState,
-): ?SelectionState {
-  let node: ?Node = null;
-  let offset: ?number = null;
+  event,
+  editorState,
+) {
+  let node = null;
+  let offset = null;
 
   const eventTargetDocument = getCorrectDocumentFromNode(event.currentTarget);
   /* $FlowFixMe[prop-missing] (>=0.68.0 site=www,mobile) This comment
@@ -54,9 +54,9 @@ function getSelectionForEvent(
     return null;
   }
 
-  node = nullthrows(node);
-  offset = nullthrows(offset);
-  const offsetKey = nullthrows(findAncestorOffsetKey(node));
+  node = nullThrows(node);
+  offset = nullThrows(offset);
+  const offsetKey = nullThrows(findAncestorOffsetKey(node));
 
   return getUpdatedSelectionState(
     editorState,
@@ -71,7 +71,7 @@ const DraftEditorDragHandler = {
   /**
    * Drag originating from input terminated.
    */
-  onDragEnd(editor: DraftEditor): void {
+  onDragEnd(editor) {
     editor.exitCurrentMode();
     endDrag(editor);
   },
@@ -79,11 +79,11 @@ const DraftEditorDragHandler = {
   /**
    * Handle data being dropped.
    */
-  onDrop(editor: DraftEditor, e: Object): void {
+  onDrop(editor, e) {
     const data = new DataTransfer(e.nativeEvent.dataTransfer);
 
-    const editorState: EditorState = editor._latestEditorState;
-    const dropSelection: ?SelectionState = getSelectionForEvent(
+    const editorState = editor._latestEditorState;
+    const dropSelection = getSelectionForEvent(
       e.nativeEvent,
       editorState,
     );
@@ -96,7 +96,7 @@ const DraftEditorDragHandler = {
       return;
     }
 
-    const files: Array<Blob> = (data.getFiles(): any);
+    const files = (data.getFiles());
     if (files.length > 0) {
       if (
         editor.props.handleDroppedFiles &&
@@ -130,7 +130,7 @@ const DraftEditorDragHandler = {
         insertTextAtSelection(
           editorState,
           dropSelection,
-          (data.getText(): any),
+          (data.getText()),
         ),
       );
     }
@@ -138,7 +138,7 @@ const DraftEditorDragHandler = {
   },
 };
 
-function endDrag(editor: DraftEditor) {
+function endDrag(editor) {
   editor._internalDrag = false;
 
   // Fix issue #1383
@@ -157,9 +157,9 @@ function endDrag(editor: DraftEditor) {
 }
 
 function moveText(
-  editorState: EditorState,
-  targetSelection: SelectionState,
-): EditorState {
+  editorState,
+  targetSelection,
+) {
   const newContentState = DraftModifier.moveText(
     editorState.getCurrentContent(),
     editorState.getSelection(),
@@ -172,10 +172,10 @@ function moveText(
  * Insert text at a specified selection.
  */
 function insertTextAtSelection(
-  editorState: EditorState,
-  selection: SelectionState,
-  text: string,
-): EditorState {
+  editorState,
+  selection,
+  text,
+) {
   const newContentState = DraftModifier.insertText(
     editorState.getCurrentContent(),
     selection,
