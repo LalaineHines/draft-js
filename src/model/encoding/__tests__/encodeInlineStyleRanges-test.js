@@ -35,7 +35,7 @@ const FOO_BAR = OrderedSet.of('foo', 'bar');
 
 /* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
  * LTI update could not be added via codemod */
-const createBlock = (text: string, inlineStyles) => {
+const createBlock = (text, inlineStyles) => {
   return new ContentBlock({
     key: 'a',
     text,
