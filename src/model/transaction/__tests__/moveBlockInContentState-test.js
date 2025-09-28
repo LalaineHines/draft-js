@@ -79,10 +79,10 @@ const BLOCK_PROPS_BLACKLIST = [
 ];
 
 const assertMoveBlockInContentState = (
-  blockToBeMovedKey: string,
-  targetBlockKey: string,
-  insertionMode: 'after' | 'before',
-  blocksArray: Array<ContentBlock | ContentBlockNode> = contentBlocks,
+  blockToBeMovedKey,
+  targetBlockKey,
+  insertionMode,
+  blocksArray = contentBlocks,
 ) => {
   const editor = EditorState.createWithContent(
     ContentState.createFromBlockArray(blocksArray),
