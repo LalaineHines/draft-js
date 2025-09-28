@@ -19,8 +19,8 @@ const Immutable = require('immutable');
 
 const {OrderedSet, Repeat} = Immutable;
 
-const createBlock = (text: string, entities: Array<?string>) => {
-  const style = OrderedSet<string>();
+const createBlock = (text, entities) => {
+  const style = OrderedSet();
   return new ContentBlock({
     key: 'a',
     text,
@@ -68,7 +68,7 @@ test('must handle ranges that include surrogate pairs', () => {
   const entities = [
       null, null, null, null, null, null, // `Take a`
       '6', '6', '6', '6', '6', '6',       // ` [camera] #s`
-      null, null, '8', '8', null,         // `elfie`
+      null, null, '8', '8', null,         // `elf`
     ];
 
   const block = createBlock(str, entities);
