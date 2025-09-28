@@ -11,19 +11,19 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
-import type {DraftDragType} from 'DraftDragType';
-import type DraftEditor from 'DraftEditor.react';
-import type {DraftEditorCommand} from 'DraftEditorCommand';
-import type {DraftHandleValue} from 'DraftHandleValue';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type {DraftTextAlignment} from 'DraftTextAlignment';
-import type EditorState from 'EditorState';
-import type SelectionState from 'SelectionState';
-import type {BidiDirection} from 'UnicodeBidiDirection';
+import {BidiDirection} from 'UnicodeBidiDirection';
+import {BlockNodeRecord} from 'BlockNodeRecord';
+import {DraftBlockRenderMap} from 'DraftBlockRenderMap';
+import {DraftDragType} from 'DraftDragType';
+import DraftEditor from 'DraftEditor.react';
+import {DraftEditorCommand} from 'DraftEditorCommand';
+import {DraftHandleValue} from 'DraftHandleValue';
+import {DraftInlineStyle} from 'DraftInlineStyle';
+import {DraftTextAlignment} from 'DraftTextAlignment';
+import EditorState from 'EditorState';
+import SelectionState from 'SelectionState';
 
-export type DraftEditorProps = {
+export const DraftEditorProps = {
   /**
    * The two most critical props are `editorState` and `onChange`.
    *
@@ -35,83 +35,83 @@ export type DraftEditorProps = {
    * text inputs.
    */
   editorState: EditorState,
-  onChange: (editorState: EditorState) => void,
-  // specify editorKey when rendering serverside. If you do not set this prop
+  onChange: (editorState) => void {},
+  // specify editorKey when rendering server-side. If you do not set this prop
   // react will complain that there is a server/client mismatch because Draft
   // will generate a random editorKey when rendering in each context. The key
   // is used to figure out if content is being pasted within a draft block to
   // better apply formatting and styles.  If two editors share the same key &
   // `stripPastedStyles` is false, draft will assume both editors share their
   // styling and formatting when re-applying styles.
-  editorKey?: string,
-  placeholder?: string,
-  placeholderAriaHidden?: boolean,
-  placeholderClassName?: string,
+  editorKey: string,
+  placeholder: string,
+  placeholderAriaHidden: boolean,
+  placeholderClassName: string,
   // Specify whether text alignment should be forced in a direction
   // regardless of input characters.
-  textAlignment?: DraftTextAlignment,
+  textAlignment: DraftTextAlignment,
   // Specify whether text directionality should be forced in a direction
   // regardless of input characters.
-  textDirectionality?: BidiDirection,
+  textDirectionality: BidiDirection,
   // For a given `ContentBlock` object, return an object that specifies
   // a custom block component and/or props. If no object is returned,
   // the default `DraftEditorBlock` is used.
-  blockRendererFn: (block: BlockNodeRecord) => ?Object,
+  blockRendererFn: (block) => {},
   // Function that returns a cx map corresponding to block-level styles.
-  blockStyleFn: (block: BlockNodeRecord) => string,
-  // If supplied, a ref which will be passed to the contenteditable.
+  blockStyleFn: (block) => string,
+  // If supplied, a ref which will be passed to the content-editable.
   // Currently, only object refs are supported.
-  editorRef?: ?({current: null | HTMLElement} | ((HTMLElement | null) => void)),
+  editorRef: ({current} | ((HTMLElement | null))),
   // A function that accepts a synthetic key event and returns
   // the matching DraftEditorCommand constant, or a custom string,
   // or null if no command should be invoked.
-  keyBindingFn: (e: SyntheticKeyboardEvent<>) => ?string,
+  keyBindingFn: (e) => string,
   // Set whether the editor should prevent scrolling into view on mount
   // if it happens offscreen. By default, `false` to match the native behavior.
-  preventScroll?: boolean,
+  preventScroll: boolean,
   // Set whether the `DraftEditor` component should be editable. Useful for
   // temporarily disabling edit behavior or allowing `DraftEditor` rendering
   // to be used for consumption purposes.
   readOnly: boolean,
   // Note: spellcheck is always disabled for IE. If enabled in Safari, OSX
-  // autocorrect is enabled as well.
+  // auto correct is enabled as well.
   spellCheck: boolean,
   // Set whether to remove all style information from pasted content. If your
   // use case should not have any block or inline styles, it is recommended
   // that you set this to `true`.
   stripPastedStyles: boolean,
-  formatPastedText?: (
-    text: string,
-    html: ?string,
-  ) => {text: string, html: ?string},
-  tabIndex?: number,
+  formatPastedText: (
+    text,
+    html,
+  ) => {text: string, html},
+  tabIndex: number,
   // exposed especially to help improve mobile web behaviors
-  autoCapitalize?: string,
-  autoComplete?: string,
-  autoCorrect?: string,
-  ariaActiveDescendantID?: string,
-  ariaAutoComplete?: string,
-  ariaControls?: string,
+  autoCapitalize: string,
+  autoComplete: string,
+  autoCorrect: string,
+  ariaActiveDescendantID: string,
+  ariaAutoComplete: string,
+  ariaControls: string,
   /**
-   * aria-describedby attribute. should point to the id of a descriptive
+   * aria-described-by attribute. should point to the id of a descriptive
    * element. The substring, "{{editor_id_placeholder}}" will be replaced with
    * the DOM id of the placeholder element if it exists.
    * @default "{{editor_id_placeholder}}"
    */
-  ariaDescribedBy?: string,
-  ariaExpanded?: boolean,
-  ariaLabel?: string,
-  ariaLabelledBy?: string,
-  ariaMultiline?: boolean,
-  ariaOwneeID?: string,
+  ariaDescribedBy: string,
+  ariaExpanded: boolean,
+  ariaLabel: string,
+  ariaLabelledBy: string,
+  ariaMultiline: boolean,
+  ariaOwnID: string,
   /**
    * aria-required attribute. Boolean value that indicates that whether an
    * element is required to submit (true) or not. While HTML5 does have a
    * `required` attribute now, some browsers don't support it yet and it only
    * applies to input elements in either case.
    */
-  ariaRequired?: string,
-  webDriverTestID?: string,
+  ariaRequired: string,
+  webDriverTestID: string,
   /**
    * Cancelable event handlers, handled from the top level down. A handler
    * that returns `handled` will be the last handler to execute for that event.
@@ -119,87 +119,85 @@ export type DraftEditorProps = {
 
   // Useful for managing special behavior for pressing the `Return` key. E.g.
   // removing the style from an empty list item.
-  handleReturn?: (
-    e: SyntheticKeyboardEvent<>,
-    editorState: EditorState,
+  handleReturn: (
+    e,
+    editorState,
   ) => DraftHandleValue,
   // Map a key command string provided by your key binding function to a
   // specified behavior.
-  handleKeyCommand?: (
-    command: DraftEditorCommand | string,
-    editorState: EditorState,
-    eventTimeStamp: number,
+  handleKeyCommand: (
+    command,
+    editorState,
+    eventTimeStamp,
   ) => DraftHandleValue,
   // Handle intended text insertion before the insertion occurs. This may be
   // useful in cases where the user has entered characters that you would like
   // to trigger some special behavior. E.g. immediately converting `:)` to an
   // emoji Unicode character, or replacing ASCII quote characters with smart
   // quotes.
-  handleBeforeInput?: (
-    chars: string,
-    editorState: EditorState,
-    eventTimeStamp: number,
+  handleBeforeInput: (
+    chars,
+    editorState,
+    eventTimeStamp,
   ) => DraftHandleValue,
-  handlePastedText?: (
-    text: string,
-    html?: string,
-    editorState: EditorState,
-    isInternalPaste: boolean,
+  handlePastedText: (
+    text,
+    html,
+    editorState,
+    isInternalPaste,
   ) => DraftHandleValue,
-  handlePastedFiles?: (files: Array<Blob>) => DraftHandleValue,
+  handlePastedFiles: (files) => DraftHandleValue,
   // Handle dropped files
-  handleDroppedFiles?: (
-    selection: SelectionState,
-    files: Array<Blob>,
+  handleDroppedFiles: (
+    selection,
+    files,
   ) => DraftHandleValue,
-  // Handle other drops to prevent default text movement/insertion behaviour
-  handleDrop?: (
-    selection: SelectionState,
-    dataTransfer: Object,
-    isInternal: DraftDragType,
+  // Handle other drops to prevent default text movement/insertion behavior
+  handleDrop: (
+    selection,
+    dataTransfer,
+    isInternal,
   ) => DraftHandleValue,
   /**
    * Deprecated event triggers.
    */
-  onEscape?: (e: SyntheticKeyboardEvent<>) => void,
-  onTab?: (e: SyntheticKeyboardEvent<>) => void,
-  onUpArrow?: (e: SyntheticKeyboardEvent<>) => void,
-  onRightArrow?: (e: SyntheticKeyboardEvent<>) => void,
-  onDownArrow?: (e: SyntheticKeyboardEvent<>) => void,
-  onLeftArrow?: (e: SyntheticKeyboardEvent<>) => void,
-  onBlur?: (e: SyntheticEvent<>) => void,
-  onFocus?: (e: SyntheticEvent<>) => void,
+  onEscape: (e) => void {},
+  onTab: (e) => void {},
+  onUpArrow: (e) => void {},
+  onRightArrow: (e) => void {},
+  onDownArrow: (e) => void {},
+  onLeftArrow: (e) => void {},
+  onBlur: (e) => void {},
+  onFocus: (e) => void {},
   // Provide a map of inline style names corresponding to CSS style objects
   // that will be rendered for matching ranges.
-  customStyleMap?: Object,
+  customStyleMap: Object,
   // Provide a function that will construct CSS style objects given inline
   // style names.
-  customStyleFn?: (style: DraftInlineStyle, block: BlockNodeRecord) => ?Object,
+  customStyleFn: (style, block) => Object,
   // Provide a map of block rendering configurations. Each block type maps to
   // an element tag and an optional react element wrapper. This configuration
   // is used for both rendering and paste processing.
   blockRenderMap: DraftBlockRenderMap,
   // When the Editor loses focus (blurs) text selections are cleared
-  // by default to mimic <textarea> behaviour, however in some situations
-  // users may wish to preserve native behaviour.
-  preserveSelectionOnBlur?: boolean,
+  // by default to mimic <textarea> behavior, however in some situations
+  // users may wish to preserve native behavior.
+  preserveSelectionOnBlur: boolean,
   // Overrides for cut, copy & paste, which can be used to implement custom
   // behavior like entity cut/copy/paste (see PR #1784)."
-  onPaste?: (DraftEditor, SyntheticClipboardEvent<>) => void | Promise<void>,
-  onCut?: (DraftEditor, SyntheticClipboardEvent<>) => void,
-  onCopy?: (DraftEditor, SyntheticClipboardEvent<>) => void,
-  contentClassName?: string,
-  ...
+  onPaste: (DraftEditor, SyntheticClipboardEvent) => void {},
+  onCut: (DraftEditor, SyntheticClipboardEvent) => void {},
+  onCopy: (DraftEditor, SyntheticClipboardEvent) => void {},
+  contentClassName: string,
 };
 
-export type DraftEditorDefaultProps = {
+export const DraftEditorDefaultProps = {
   ariaDescribedBy: string,
   blockRenderMap: DraftBlockRenderMap,
-  blockRendererFn: (block: BlockNodeRecord) => ?Object,
-  blockStyleFn: (block: BlockNodeRecord) => string,
-  keyBindingFn: (e: SyntheticKeyboardEvent<>) => ?string,
+  blockRendererFn: (block) => Object,
+  blockStyleFn: (block) => string,
+  keyBindingFn: (e) => string,
   readOnly: boolean,
   spellCheck: boolean,
   stripPastedStyles: boolean,
-  ...
 };
