@@ -22,12 +22,12 @@ const isChrome = UserAgent.isBrowser('Chrome');
 // not overlap the entire node. To resolve this, we split the range at each
 // start tag and join the client rects together.
 // https://code.google.com/p/chromium/issues/detail?id=324437
-function getRangeClientRectsChrome(range: Range): Array<ClientRect> {
+function getRangeClientRectsChrome(range) {
   const tempRange = range.cloneRange();
   const clientRects = [];
 
   for (
-    let ancestor: ?Node = range.endContainer;
+    let ancestor = range.endContainer;
     ancestor != null;
     ancestor = ancestor.parentNode
   ) {
@@ -43,7 +43,7 @@ function getRangeClientRectsChrome(range: Range): Array<ClientRect> {
     clientRects.push(rects);
     if (atCommonAncestor) {
       clientRects.reverse();
-      return ([]: Array<ClientRect>).concat(...clientRects);
+      return ([]).concat(...clientRects);
     }
     tempRange.setEndBefore(ancestor);
   }
@@ -60,8 +60,8 @@ function getRangeClientRectsChrome(range: Range): Array<ClientRect> {
  */
 const getRangeClientRects = ((isChrome
   ? getRangeClientRectsChrome
-  : function (range: Range): Array<ClientRect> {
+  : function (range) {
       return Array.from(range.getClientRects());
-    }): (range: Range) => Array<ClientRect>);
+    }) (range));
 
 module.exports = getRangeClientRects;
