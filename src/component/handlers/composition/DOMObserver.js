@@ -17,15 +17,16 @@ const findAncestorOffsetKey = require('findAncestorOffsetKey');
 const getWindowForNode = require('getWindowForNode');
 const Immutable = require('immutable');
 const invariant = require('invariant');
-const nullthrows = require('nullthrows');
+const nullThrows = require('nullThrows');
 
 const {Map} = Immutable;
 
-type MutationRecordT =
-  | MutationRecord
-  | {type: 'characterData', target: Node, removedNodes?: void};
+const MutationRecordT = (
+  MutationRecord,
+  {type, target, removedNodes}
+);
 
-// Heavily based on Prosemirror's DOMObserver https://github.com/ProseMirror/prosemirror-view/blob/master/src/domobserver.js
+// Heavily based on Prose mirror's DOMObserver https://github.com/ProseMirror/prosemirror-view/blob/master/src/domobserver.js
 
 const DOM_OBSERVER_OPTIONS = {
   subtree: true,
@@ -38,16 +39,15 @@ const DOM_OBSERVER_OPTIONS = {
 const USE_CHAR_DATA = UserAgent.isBrowser('IE <= 11');
 
 class DOMObserver {
-  observer: ?MutationObserver;
-  container: HTMLElement;
-  mutations: Map<string, string>;
-  onCharData: ?({
-    target: EventTarget,
-    type: string,
-    ...
-  }) => void;
+  observer;
+  container;
+  mutations;
+  onCharData = ({
+    target,
+    type,
+  });
 
-  constructor(container: HTMLElement) {
+  constructor(container) {
     this.container = container;
     this.mutations = Map();
     const containerWindow = getWindowForNode(container);
@@ -70,7 +70,7 @@ class DOMObserver {
     }
   }
 
-  start(): void {
+  start() {
     if (this.observer) {
       this.observer.observe(this.container, DOM_OBSERVER_OPTIONS);
     } else {
@@ -83,7 +83,7 @@ class DOMObserver {
     }
   }
 
-  stopAndFlushMutations(): Map<string, string> {
+  stopAndFlushMutations() {
     const {observer} = this;
     if (observer) {
       this.registerMutations(observer.takeRecords());
@@ -101,13 +101,13 @@ class DOMObserver {
     return mutations;
   }
 
-  registerMutations(mutations: Array<MutationRecord>): void {
+  registerMutations(mutations) {
     for (let i = 0; i < mutations.length; i++) {
       this.registerMutation(mutations[i]);
     }
   }
 
-  getMutationTextContent(mutation: MutationRecordT): ?string {
+  getMutationTextContent(mutation) {
     const {type, target, removedNodes} = mutation;
     if (type === 'characterData') {
       // When `textContent` is '', there is a race condition that makes
@@ -142,10 +142,10 @@ class DOMObserver {
     return null;
   }
 
-  registerMutation(mutation: MutationRecordT): void {
+  registerMutation(mutation) {
     const textContent = this.getMutationTextContent(mutation);
     if (textContent != null) {
-      const offsetKey = nullthrows(findAncestorOffsetKey(mutation.target));
+      const offsetKey = nullThrows(findAncestorOffsetKey(mutation.target));
       this.mutations = this.mutations.set(offsetKey, textContent);
     }
   }
