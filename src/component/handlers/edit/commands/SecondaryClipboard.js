@@ -11,26 +11,26 @@
 
 'use strict';
 
-import type {BlockMap} from 'BlockMap';
-import type SelectionState from 'SelectionState';
+import {BlockMap} from 'BlockMap';
+import SelectionState from 'SelectionState';
 
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 
 const getContentStateFragment = require('getContentStateFragment');
-const nullthrows = require('nullthrows');
+const nullThrows = require('nullThrows');
 
-let clipboard: ?BlockMap = null;
+let clipboard = null;
 
 /**
  * Some systems offer a "secondary" clipboard to allow quick internal cut
  * and paste behavior. For instance, Ctrl+K (cut) and Ctrl+Y (paste).
  */
 const SecondaryClipboard = {
-  cut(editorState: EditorState): EditorState {
+  cut(editorState) {
     const content = editorState.getCurrentContent();
     const selection = editorState.getSelection();
-    let targetRange: ?SelectionState = null;
+    let targetRange = null;
 
     if (selection.isCollapsed()) {
       const anchorKey = selection.getAnchorKey();
@@ -49,7 +49,7 @@ const SecondaryClipboard = {
       targetRange = selection;
     }
 
-    targetRange = nullthrows(targetRange);
+    targetRange = nullThrows(targetRange);
     // TODO: This should actually append to the current state when doing
     // successive ^K commands without any other cursor movement
     clipboard = getContentStateFragment(content, targetRange);
@@ -67,7 +67,7 @@ const SecondaryClipboard = {
     return EditorState.push(editorState, afterRemoval, 'remove-range');
   },
 
-  paste(editorState: EditorState): EditorState {
+  paste(editorState) {
     if (!clipboard) {
       return editorState;
     }
