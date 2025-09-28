@@ -11,19 +11,19 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
+import {BlockNodeRecord} from 'BlockNodeRecord';
+import ContentState from 'ContentState';
+import SelectionState from 'SelectionState';
 
 const Immutable = require('immutable');
 
 const {Map} = Immutable;
 
 function modifyBlockForContentState(
-  contentState: ContentState,
-  selectionState: SelectionState,
-  operation: (block: BlockNodeRecord) => BlockNodeRecord,
-): ContentState {
+  contentState,
+  selectionState,
+  operation,
+) {
   const startKey = selectionState.getStartKey();
   const endKey = selectionState.getEndKey();
   const blockMap = contentState.getBlockMap();
