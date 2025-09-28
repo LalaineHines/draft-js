@@ -15,13 +15,13 @@ const Immutable = require('immutable');
 
 const {Record} = Immutable;
 
-const defaultRecord: {
-  anchorKey: string,
-  anchorOffset: number,
-  focusKey: string,
-  focusOffset: number,
-  isBackward: boolean,
-  hasFocus: boolean,
+const defaultRecord = {
+  anchorKey,
+  anchorOffset,
+  focusKey,
+  focusOffset,
+  isBackward,
+  hasFocus,
   ...
 } = {
   anchorKey: '',
@@ -35,10 +35,10 @@ const defaultRecord: {
 /* $FlowFixMe[unclear-type] This comment suppresses an error found when
  * automatically adding a type annotation with the codemod Komodo/Annotate_
  * exports. To see the error delete this comment and run Flow. */
-const SelectionStateRecord = (Record(defaultRecord): any);
+const SelectionStateRecord = (Record(defaultRecord), any);
 
 class SelectionState extends SelectionStateRecord {
-  serialize(): string {
+  serialize() {
     return (
       'Anchor: ' +
       this.getAnchorKey() +
@@ -58,27 +58,27 @@ class SelectionState extends SelectionStateRecord {
     );
   }
 
-  getAnchorKey(): string {
+  getAnchorKey() {
     return this.get('anchorKey');
   }
 
-  getAnchorOffset(): number {
+  getAnchorOffset() {
     return this.get('anchorOffset');
   }
 
-  getFocusKey(): string {
+  getFocusKey() {
     return this.get('focusKey');
   }
 
-  getFocusOffset(): number {
+  getFocusOffset() {
     return this.get('focusOffset');
   }
 
-  getIsBackward(): boolean {
+  getIsBackward() {
     return this.get('isBackward');
   }
 
-  getHasFocus(): boolean {
+  getHasFocus() {
     return this.get('hasFocus');
   }
 
@@ -86,7 +86,7 @@ class SelectionState extends SelectionStateRecord {
    * Return whether the specified range overlaps with an edge of the
    * SelectionState.
    */
-  hasEdgeWithin(blockKey: string, start: number, end: number): boolean {
+  hasEdgeWithin(blockKey, start, end) {
     const anchorKey = this.getAnchorKey();
     const focusKey = this.getFocusKey();
 
@@ -109,34 +109,34 @@ class SelectionState extends SelectionStateRecord {
     return start <= offsetToCheck && end >= offsetToCheck;
   }
 
-  isCollapsed(): boolean {
+  isCollapsed() {
     return (
       this.getAnchorKey() === this.getFocusKey() &&
       this.getAnchorOffset() === this.getFocusOffset()
     );
   }
 
-  getStartKey(): string {
+  getStartKey() {
     return this.getIsBackward() ? this.getFocusKey() : this.getAnchorKey();
   }
 
-  getStartOffset(): number {
+  getStartOffset() {
     return this.getIsBackward()
       ? this.getFocusOffset()
       : this.getAnchorOffset();
   }
 
-  getEndKey(): string {
+  getEndKey() {
     return this.getIsBackward() ? this.getAnchorKey() : this.getFocusKey();
   }
 
-  getEndOffset(): number {
+  getEndOffset() {
     return this.getIsBackward()
       ? this.getAnchorOffset()
       : this.getFocusOffset();
   }
 
-  static createEmpty(key: string): SelectionState {
+  static createEmpty(key) {
     return new SelectionState({
       anchorKey: key,
       anchorOffset: 0,
