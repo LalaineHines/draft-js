@@ -11,10 +11,10 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type CharacterMetadata from 'CharacterMetadata';
-import type ContentState from 'ContentState';
-import type {DraftDecoratorType} from 'DraftDecoratorType';
+import {BlockNodeRecord} from 'BlockNodeRecord';
+import CharacterMetadata from 'CharacterMetadata';
+import ContentState from 'ContentState';
+import {DraftDecoratorType} from 'DraftDecoratorType';
 
 const findRangesImmutable = require('findRangesImmutable');
 const getOwnObjectValues = require('getOwnObjectValues');
@@ -26,54 +26,51 @@ const returnTrue = function () {
   return true;
 };
 
-const defaultLeafRange: {
-  start: ?number,
-  end: ?number,
-  ...
+const defaultLeafRange {
+  start,
+  end,
 } = {
   start: null,
   end: null,
 };
 
-const LeafRange = (Record(defaultLeafRange): any);
+const LeafRange = (Record(defaultLeafRange), any);
 
-export type DecoratorRangeRawType = {
-  start: ?number,
-  end: ?number,
-  decoratorKey: ?string,
+export const DecoratorRangeRawType = {
+  start,
+  end,
+  decoratorKey,
   // $FlowFixMe[value-as-type]
-  leaves: ?Array<LeafRange>,
-  ...
+  leaves,
 };
 
-type DecoratorRangeType = {
-  start: ?number,
-  end: ?number,
-  decoratorKey: ?string,
+const DecoratorRangeType = {
+  start,
+  end,
+  decoratorKey,
   // $FlowFixMe[value-as-type]
-  leaves: ?List<LeafRange>,
-  ...
+  leaves,
 };
 
-const defaultDecoratorRange: DecoratorRangeType = {
+const defaultDecoratorRange = {
   start: null,
   end: null,
   decoratorKey: null,
   leaves: null,
 };
 
-const DecoratorRange = (Record(defaultDecoratorRange): any);
+const DecoratorRange = (Record(defaultDecoratorRange), any);
 
 const BlockTree = {
   /**
    * Generate a block tree for a given ContentBlock/decorator pair.
    */
   generate(
-    contentState: ContentState,
-    block: BlockNodeRecord,
-    decorator: ?DraftDecoratorType,
+    contentState,
+    block,
+    decorator,
     // $FlowFixMe[value-as-type]
-  ): List<DecoratorRange> {
+  ) {
     const textLength = block.getLength();
     if (!textLength) {
       return List.of(
@@ -108,7 +105,7 @@ const BlockTree = {
   },
 
   // $FlowFixMe[value-as-type]
-  fromJS({leaves, ...other}: DecoratorRangeRawType): DecoratorRange {
+  fromJS({leaves, ...other}) {
     return new DecoratorRange({
       ...other,
       leaves:
@@ -125,10 +122,10 @@ const BlockTree = {
  * Generate LeafRange records for a given character list.
  */
 function generateLeaves(
-  characters: List<CharacterMetadata>,
-  offset: number,
+  characters,
+  offset,
   // $FlowFixMe[value-as-type]
-): List<LeafRange> {
+) {
   const leaves = [];
   const inlineStyles = characters.map(c => c.getStyle()).toList();
   findRangesImmutable(inlineStyles, areEqual, returnTrue, (start, end) => {
@@ -142,7 +139,7 @@ function generateLeaves(
   return List(leaves);
 }
 
-function areEqual(a: any, b: any): boolean {
+function areEqual(a, b) {
   return a === b;
 }
 
