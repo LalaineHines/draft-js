@@ -77,11 +77,11 @@ const DEFAULT_SELECTION = {
 };
 
 const assertGetContentStateFragment = (
-  blocksArray: Array<ContentBlock | ContentBlockNode>,
-  selection: {
-    anchorKey?: string,
-    focusKey?: string,
-    focusOffset?: number,
+  blocksArray,
+  selection {
+    anchorKey,
+    focusKey,
+    focusOffset,
   } = {},
 ) => {
   const editor = EditorState.acceptSelection(
