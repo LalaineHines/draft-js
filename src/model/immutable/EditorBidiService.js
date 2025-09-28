@@ -11,12 +11,12 @@
 
 'use strict';
 
-import type ContentState from 'ContentState';
+import ContentState from 'ContentState';
 
 const UnicodeBidiService = require('UnicodeBidiService');
 
 const Immutable = require('immutable');
-const nullthrows = require('nullthrows');
+const nullThrows = require('nullThrows');
 
 const {OrderedMap} = Immutable;
 
@@ -24,9 +24,9 @@ let bidiService;
 
 const EditorBidiService = {
   getDirectionMap(
-    content: ContentState,
-    prevBidiMap: ?OrderedMap<any, any>,
-  ): OrderedMap<any, any> {
+    content,
+    prevBidiMap,
+  ) {
     if (!bidiService) {
       bidiService = new UnicodeBidiService();
     } else {
@@ -36,7 +36,7 @@ const EditorBidiService = {
     const blockMap = content.getBlockMap();
     const nextBidi = blockMap
       .valueSeq()
-      .map(block => nullthrows(bidiService).getDirection(block.getText()));
+      .map(block => nullThrows(bidiService).getDirection(block.getText()));
     const bidiMap = OrderedMap(blockMap.keySeq().zip(nextBidi));
 
     if (prevBidiMap != null && Immutable.is(prevBidiMap, bidiMap)) {
