@@ -17,7 +17,7 @@ beforeEach(() => {
   jest.resetModules();
 });
 
-const createLink = (contentState: ContentState) => {
+const createLink = (contentState) => {
   const newContentState = contentState.createEntity('LINK', 'MUTABLE', {
     uri: 'zombo.com',
   });
