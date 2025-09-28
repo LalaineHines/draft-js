@@ -40,13 +40,13 @@ function isNewline(Element) {
  * http://jsfiddle.net/7pg143f7/ for the fixed case.
  */
 const NEWLINE_A = (
-  ref: (
-    ref:
-      | null
-      | React$ElementRef<$TEMPORARY$string<'br'>>
-      | React$ElementRef<$TEMPORARY$string<'span'>>,
-  ) => null | HTMLSpanElement | HTMLBRElement,
-) =>
+  ref (
+    ref,
+    null,
+    React$ElementRef,
+    React$ElementRef,
+  )
+)
   useNewlineChar ? (
     <span key="A" data-text="true" ref={ref}>
       {'\n'}
@@ -56,13 +56,13 @@ const NEWLINE_A = (
   );
 
 const NEWLINE_B = (
-  ref: (
-    ref:
-      | null
-      | React$ElementRef<$TEMPORARY$string<'br'>>
-      | React$ElementRef<$TEMPORARY$string<'span'>>,
-  ) => null | HTMLSpanElement | HTMLBRElement,
-) =>
+  ref (
+    ref,
+    null,
+    React$ElementRef,
+    React$ElementRef,
+  )
+)
   useNewlineChar ? (
     <span key="B" data-text="true" ref={ref}>
       {'\n'}
@@ -71,7 +71,7 @@ const NEWLINE_B = (
     <br key="B" data-text="true" ref={ref} />
   );
 
-type Props = {children: string, ...};
+const Props = {children: string};
 
 /**
  * The lowest-level component in a `DraftEditor`, the text node component
@@ -80,38 +80,38 @@ type Props = {children: string, ...};
  * nodes with DOM state that already matches the expectations of our immutable
  * editor state.
  */
-class DraftEditorTextNode extends React.Component<Props> {
-  _forceFlag: boolean;
-  _node: ?(HTMLSpanElement | HTMLBRElement);
+class DraftEditorTextNode extends React.Component {
+  _forceFlag;
+  _node;
 
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
     // By flipping this flag, we also keep flipping keys which forces
     // React to remount this node every time it rerenders.
     this._forceFlag = false;
   }
 
-  shouldComponentUpdate(nextProps: Props): boolean {
+  shouldComponentUpdate(nextProps) {
     const node = this._node;
     const shouldBeNewline = nextProps.children === '';
 
     invariant(isElement(node), 'node is not an Element');
-    const elementNode: Element = (node: any);
+    const elementNode = (node);
     if (shouldBeNewline) {
       return !isNewline(elementNode);
     }
     return elementNode.textContent !== nextProps.children;
   }
 
-  componentDidMount(): void {
+  componentDidMount() {
     this._forceFlag = !this._forceFlag;
   }
 
-  componentDidUpdate(): void {
+  componentDidUpdate() {
     this._forceFlag = !this._forceFlag;
   }
 
-  render(): React.Node {
+  render() {
     if (this.props.children === '') {
       return this._forceFlag
         ? NEWLINE_A(ref => (this._node = ref))
