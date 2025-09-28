@@ -11,8 +11,8 @@
 
 'use strict';
 
-import type DraftEditor from 'DraftEditor.react';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
+import DraftEditor from 'DraftEditor.react';
+import {DraftInlineStyle} from 'DraftInlineStyle';
 
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
@@ -22,25 +22,25 @@ const editOnInput = require('editOnInput');
 const getEntityKeyForSelection = require('getEntityKeyForSelection');
 const isEventHandled = require('isEventHandled');
 const isSelectionAtLeafStart = require('isSelectionAtLeafStart');
-const nullthrows = require('nullthrows');
+const nullThrows = require('nullThrows');
 const setImmediate = require('setImmediate');
 
 // When nothing is focused, Firefox regards two characters, `'` and `/`, as
-// commands that should open and focus the "quickfind" search bar. This should
-// *never* happen while a contenteditable is focused, but as of v28, it
-// sometimes does, even when the keypress event target is the contenteditable.
+// commands that should open and focus the "quick find" search bar. This should
+// *never* happen while a content-editable is focused, but as of v28, it
+// sometimes does, even when the keypress event target is the content-editable.
 // This breaks the input. Special case these characters to ensure that when
 // they are typed, we prevent default on the event to make sure not to
-// trigger quickfind.
-const FF_QUICKFIND_CHAR = "'";
-const FF_QUICKFIND_LINK_CHAR = '/';
+// trigger quick find.
+const FF_QUICK_FIND_CHAR = "'";
+const FF_QUICK_FIND_LINK_CHAR = '/';
 const isFirefox = UserAgent.isBrowser('Firefox');
 const isIE = UserAgent.isBrowser('IE');
 
-function mustPreventDefaultForCharacter(character: string): boolean {
+function mustPreventDefaultForCharacter(character) {
   return (
     isFirefox &&
-    (character == FF_QUICKFIND_CHAR || character == FF_QUICKFIND_LINK_CHAR)
+    (character == FF_QUICK-FIND_CHAR || character == FF_QUICK_FIND_LINK_CHAR)
   );
 }
 
@@ -49,12 +49,12 @@ function mustPreventDefaultForCharacter(character: string): boolean {
  * inline style and entity key applied to the newly inserted text.
  */
 function replaceText(
-  editorState: EditorState,
-  text: string,
-  inlineStyle: DraftInlineStyle,
-  entityKey: ?string,
-  forceSelection: boolean,
-): EditorState {
+  editorState,
+  text,
+  inlineStyle,
+  entityKey,
+  forceSelection,
+) {
   const contentState = DraftModifier.replaceText(
     editorState.getCurrentContent(),
     editorState.getSelection(),
@@ -80,9 +80,9 @@ function replaceText(
  * occurs on the relevant text nodes.
  */
 function editOnBeforeInput(
-  editor: DraftEditor,
-  e: SyntheticInputEvent<HTMLElement>,
-): void {
+  editor,
+  e,
+) {
   // We need this here in case this beforeInput fires before our
   // immediate below had a chance to fire in IE (say, the user is
   // typing fast).
@@ -230,8 +230,8 @@ function editOnBeforeInput(
   }
   if (!mustPreventNative) {
     mustPreventNative =
-      nullthrows(newEditorState.getDirectionMap()).get(anchorKey) !==
-      nullthrows(editorState.getDirectionMap()).get(anchorKey);
+      nullThrows(newEditorState.getDirectionMap()).get(anchorKey) !==
+      nullThrows(editorState.getDirectionMap()).get(anchorKey);
   }
 
   if (mustPreventNative) {
@@ -256,8 +256,8 @@ function editOnBeforeInput(
   editor._pendingStateFromBeforeInput = newEditorState;
   //
   // Part of the reason to do this is because browsers seem to change their
-  // behaviour if you preventDefault(). For example, on macOS the browser seems
-  // to believe it's no longer in a contenteditable and will change the
+  // behavior if you preventDefault(). For example, on macOS the browser seems
+  // to believe it's no longer in a content-editable and will change the
   // Touch Bar on a MacBook to stop showing text suggestions.
   //
   // Later (presumably after we render), it realizes "hold up, I am in a content
