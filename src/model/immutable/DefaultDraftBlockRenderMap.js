@@ -11,14 +11,14 @@
 
 'use strict';
 
-import type {DraftBlockRenderConfig} from 'DraftBlockRenderConfig';
-import type {CoreDraftBlockType} from 'DraftBlockType';
+import {DraftBlockRenderConfig} from 'DraftBlockRenderConfig';
+import {CoreDraftBlockType} from 'DraftBlockType';
 
 const cx = require('cx');
 const {Map} = require('immutable');
 const React = require('react');
 
-type DefaultCoreDraftBlockRenderMap = Map<
+const DefaultCoreDraftBlockRenderMap = Map<
   CoreDraftBlockType,
   DraftBlockRenderConfig,
 >;
@@ -27,7 +27,7 @@ const UL_WRAP = <ul className={cx('public/DraftStyleDefault/ul')} />;
 const OL_WRAP = <ol className={cx('public/DraftStyleDefault/ol')} />;
 const PRE_WRAP = <pre className={cx('public/DraftStyleDefault/pre')} />;
 
-const DefaultDraftBlockRenderMap: DefaultCoreDraftBlockRenderMap = Map({
+const DefaultDraftBlockRenderMap = Map({
   'header-one': {
     element: 'h1',
   },
