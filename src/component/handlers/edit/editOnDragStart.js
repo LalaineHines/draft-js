@@ -11,12 +11,12 @@
 
 'use strict';
 
-import type DraftEditor from 'DraftEditor.react';
+import DraftEditor from 'DraftEditor.react';
 
 /**
  * A `dragstart` event has begun within the text editor component.
  */
-function editOnDragStart(editor: DraftEditor): void {
+function editOnDragStart(editor) {
   editor._internalDrag = true;
   editor.setMode('drag');
 }
