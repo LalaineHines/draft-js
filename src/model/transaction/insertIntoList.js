@@ -11,16 +11,16 @@
 
 'use strict';
 
-import type {List} from 'immutable';
+import {List} from 'immutable';
 
 /**
  * Maintain persistence for target list when appending and prepending.
  */
-function insertIntoList<T>(
-  targetListArg: List<T>,
-  toInsert: List<T>,
-  offset: number,
-): List<T> {
+function insertIntoList(
+  targetListArg,
+  toInsert,
+  offset,
+) {
   let targetList = targetListArg;
   if (offset === targetList.count()) {
     toInsert.forEach(c => {
