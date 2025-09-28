@@ -11,9 +11,9 @@
 
 'use strict';
 
-import type {DraftEntityMapObject} from 'DraftEntity';
+import {DraftEntityMapObject} from 'DraftEntity';
 
 // TODO: when removing the deprecated Entity api
 // change this to be
 // OrderedMap<string, DraftEntityInstance>;
-export type EntityMap = DraftEntityMapObject;
+export const EntityMap = DraftEntityMapObject;
