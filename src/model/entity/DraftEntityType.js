@@ -11,4 +11,4 @@
 
 'use strict';
 
-export type DraftEntityType = string;
+export const DraftEntityType = string;
