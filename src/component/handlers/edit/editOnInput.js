@@ -11,8 +11,8 @@
 
 'use strict';
 
-import type {SelectionObject} from 'DraftDOMTypes';
-import type DraftEditor from 'DraftEditor.react';
+import DraftEditor from 'DraftEditor.react';
+import {SelectionObject} from 'DraftDOMTypes';
 
 const DraftModifier = require('DraftModifier');
 const DraftOffsetKey = require('DraftOffsetKey');
@@ -22,13 +22,13 @@ const UserAgent = require('UserAgent');
 const {notEmptyKey} = require('draftKeyUtils');
 const findAncestorOffsetKey = require('findAncestorOffsetKey');
 const keyCommandPlainBackspace = require('keyCommandPlainBackspace');
-const nullthrows = require('nullthrows');
+const nullThrows = require('nullThrows');
 
 const isGecko = UserAgent.isEngine('Gecko');
 
 const DOUBLE_NEWLINE = '\n\n';
 
-function onInputType(inputType: string, editorState: EditorState): EditorState {
+function onInputType(inputType, editorState) {
   switch (inputType) {
     case 'deleteContentBackward':
       return keyCommandPlainBackspace(editorState);
@@ -48,7 +48,7 @@ function onInputType(inputType: string, editorState: EditorState): EditorState {
  * exact problem can be found here -
  * https://github.com/facebook/draft-js/commit/07892ba479bd4dfc6afd1e0ed179aaf51cd138b1
  *
- * 2. intended to handle spellcheck and autocorrect changes,
+ * 2. intended to handle spellcheck and auto correct changes,
  * which occur in the DOM natively without any opportunity to observe or
  * interpret the changes before they occur.
  *
@@ -59,7 +59,7 @@ function onInputType(inputType: string, editorState: EditorState): EditorState {
  * when an `input` change leads to a DOM/model mismatch, the change should be
  * due to a spellcheck change, and we can incorporate it into our model.
  */
-function editOnInput(editor: DraftEditor, event: ?SyntheticInputEvent<>): void {
+function editOnInput(editor, event) {
   // This will happen for most simple insertions. The new state is already
   // computed. Let's just call "editor.update". Things should match nicely so
   // this function will exit below where we check "domText === modelText".
@@ -69,8 +69,8 @@ function editOnInput(editor: DraftEditor, event: ?SyntheticInputEvent<>): void {
   }
 
   // at this point editor is not null for sure (after input)
-  const castedEditorElement: HTMLElement = (editor.editor: any);
-  const domSelection: SelectionObject =
+  const castedEditorElement = (editor.editor);
+  const domSelection =
     castedEditorElement.ownerDocument.defaultView.getSelection();
 
   const {anchorNode, isCollapsed} = domSelection;
@@ -110,7 +110,7 @@ function editOnInput(editor: DraftEditor, event: ?SyntheticInputEvent<>): void {
 
   let domText = anchorNode.textContent;
   const editorState = editor._latestEditorState;
-  const offsetKey = nullthrows(findAncestorOffsetKey(anchorNode));
+  const offsetKey = nullThrows(findAncestorOffsetKey(anchorNode));
   const {blockKey, decoratorKey, leafKey} = DraftOffsetKey.decode(offsetKey);
 
   const {start, end} = editorState
@@ -135,7 +135,7 @@ function editOnInput(editor: DraftEditor, event: ?SyntheticInputEvent<>): void {
     // standard onkeydown/pressed events and only fired editOnInput
     // so domText is already changed by the browser and ends up being equal
     // to modelText unexpectedly.
-    // Newest versions of Android support the dom-inputevent-inputtype
+    // Newest versions of Android support the dom-inputevent-input-type
     // and we can use the `inputType` to properly apply the state changes.
 
     /* $FlowFixMe[prop-missing] inputType is only defined on a draft of a
@@ -200,7 +200,7 @@ function editOnInput(editor: DraftEditor, event: ?SyntheticInputEvent<>): void {
     focusOffset = endOffset;
   } else if (!isDeleteWordForward) {
     // Browsers other than Firefox may adjust DOM selection while the context
-    // menu is open, and Safari autocorrect is prone to providing an inaccurate
+    // menu is open, and Safari auto correct is prone to providing an inaccurate
     // DOM selection. Don't trust it. Instead, use our existing SelectionState
     // and adjust it based on the number of characters changed during the
     // mutation.
