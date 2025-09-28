@@ -11,14 +11,14 @@
 
 'use strict';
 
-import type {InlineStyleRange} from 'InlineStyleRange';
+import {InlineStyleRange} from 'InlineStyleRange';
 
 const decodeInlineStyleRanges = require('decodeInlineStyleRanges');
 
 test('must decode for an unstyled block', () => {
   const block = {
     text: 'Hello',
-    inlineStyleRanges: ([]: Array<InlineStyleRange>),
+    inlineStyleRanges: (Array),
   };
   expect(
     decodeInlineStyleRanges(block.text, block.inlineStyleRanges).map(r =>
