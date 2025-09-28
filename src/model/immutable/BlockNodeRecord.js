@@ -11,7 +11,7 @@
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
-import type ContentBlockNode from 'ContentBlockNode';
+import ContentBlock from 'ContentBlock';
+import ContentBlockNode from 'ContentBlockNode';
 
-export type BlockNodeRecord = ContentBlock | ContentBlockNode;
+export const BlockNodeRecord = ContentBlock | ContentBlockNode;
