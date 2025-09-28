@@ -11,9 +11,10 @@
 
 'use strict';
 
-import type {BlockNode, BlockNodeConfig, BlockNodeKey} from 'BlockNode';
-import type {DraftBlockType} from 'DraftBlockType';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
+import {BlockNode, BlockNodeConfig, BlockNodeKey} from 'BlockNode';
+
+import {DraftBlockType} from 'DraftBlockType';
+import {DraftInlineStyle} from 'DraftInlineStyle';
 
 const CharacterMetadata = require('CharacterMetadata');
 
@@ -22,9 +23,9 @@ const Immutable = require('immutable');
 
 const {List, Map, OrderedSet, Record, Repeat} = Immutable;
 
-const EMPTY_SET = OrderedSet<string>();
+const EMPTY_SET = OrderedSet();
 
-const defaultRecord: BlockNodeConfig = {
+const defaultRecord = {
   key: '',
   type: 'unstyled',
   text: '',
@@ -33,9 +34,9 @@ const defaultRecord: BlockNodeConfig = {
   data: Map(),
 };
 
-const ContentBlockRecord = (Record(defaultRecord): any);
+const ContentBlockRecord = (Record(defaultRecord), any);
 
-const decorateCharacterList = (config: BlockNodeConfig): BlockNodeConfig => {
+const decorateCharacterList = (config) => {
   if (!config) {
     return config;
   }
@@ -49,54 +50,54 @@ const decorateCharacterList = (config: BlockNodeConfig): BlockNodeConfig => {
   return config;
 };
 
-class ContentBlock extends ContentBlockRecord implements BlockNode {
-  constructor(config: BlockNodeConfig) {
+class ContentBlock extends ContentBlockRecord {
+  constructor(config) {
     super(decorateCharacterList(config));
   }
 
   // $FlowFixMe[method-unbinding]
-  getKey(): BlockNodeKey {
+  getKey() {
     return this.get('key');
   }
 
   // $FlowFixMe[method-unbinding]
-  getType(): DraftBlockType {
+  getType() {
     return this.get('type');
   }
 
   // $FlowFixMe[method-unbinding]
-  getText(): string {
+  getText() {
     return this.get('text');
   }
 
   // $FlowFixMe[method-unbinding]
-  getCharacterList(): List<CharacterMetadata> {
+  getCharacterList() {
     return this.get('characterList');
   }
 
   // $FlowFixMe[method-unbinding]
-  getLength(): number {
+  getLength() {
     return this.getText().length;
   }
 
   // $FlowFixMe[method-unbinding]
-  getDepth(): number {
+  getDepth() {
     return this.get('depth');
   }
 
   // $FlowFixMe[method-unbinding]
-  getData(): Map<any, any> {
+  getData() {
     return this.get('data');
   }
 
   // $FlowFixMe[method-unbinding]
-  getInlineStyleAt(offset: number): DraftInlineStyle {
+  getInlineStyleAt(offset) {
     const character = this.getCharacterList().get(offset);
     return character ? character.getStyle() : EMPTY_SET;
   }
 
   // $FlowFixMe[method-unbinding]
-  getEntityAt(offset: number): ?string {
+  getEntityAt(offset) {
     const character = this.getCharacterList().get(offset);
     return character ? character.getEntity() : null;
   }
@@ -106,9 +107,9 @@ class ContentBlock extends ContentBlockRecord implements BlockNode {
    */
   // $FlowFixMe[method-unbinding]
   findStyleRanges(
-    filterFn: (value: CharacterMetadata) => boolean,
-    callback: (start: number, end: number) => void,
-  ): void {
+    filterFn,
+    callback,
+  ) {
     findRangesImmutable(
       this.getCharacterList(),
       haveEqualStyle,
@@ -122,9 +123,9 @@ class ContentBlock extends ContentBlockRecord implements BlockNode {
    */
   // $FlowFixMe[method-unbinding]
   findEntityRanges(
-    filterFn: (value: CharacterMetadata) => boolean,
-    callback: (start: number, end: number) => void,
-  ): void {
+    filterFn,
+    callback,
+  ) {
     findRangesImmutable(
       this.getCharacterList(),
       haveEqualEntity,
@@ -135,16 +136,16 @@ class ContentBlock extends ContentBlockRecord implements BlockNode {
 }
 
 function haveEqualStyle(
-  charA: CharacterMetadata,
-  charB: CharacterMetadata,
-): boolean {
+  charA,
+  charB,
+) {
   return charA.getStyle() === charB.getStyle();
 }
 
 function haveEqualEntity(
-  charA: CharacterMetadata,
-  charB: CharacterMetadata,
-): boolean {
+  charA,
+  charB,
+) {
   return charA.getEntity() === charB.getEntity();
 }
 
