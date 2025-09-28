@@ -11,7 +11,7 @@
 
 'use strict';
 
-import type DraftEditor from 'DraftEditor.react';
+import DraftEditor from 'DraftEditor.react';
 
 const ContentBlock = require('ContentBlock');
 const ContentState = require('ContentState');
@@ -50,23 +50,21 @@ jest.mock('getDraftEditorSelection', () => {
 // the module in a bad state we forcibly reload it each test.
 let compositionHandler = null;
 // Initialization of mock editor component that will be used for all tests
-let editor: {
+let editor = {
   _latestEditorState: EditorState,
-  _onCompositionStart: (editor: DraftEditor) => void,
-  _onKeyDown: JestMockFn<$FlowFixMe, $FlowFixMe>,
-  exitCurrentMode: JestMockFn<$FlowFixMe, $FlowFixMe>,
-  restoreEditorDOM: JestMockFn<$FlowFixMe, $FlowFixMe>,
-  setMode: JestMockFn<$FlowFixMe, $FlowFixMe>,
-  update: JestMockFn<$FlowFixMe, $FlowFixMe>,
+  _onCompositionStart: (editor),
+  _onKeyDown: JestMockFn,
+  exitCurrentMode: JestMockFn,
+  restoreEditorDOM: JestMockFn,
+  setMode: JestMockFn,
+  update: JestMockFn,
 };
 
 function getEditorState(
-  blocks:
-    | $TEMPORARY$object<{blockkey0: string}>
-    | $TEMPORARY$object<{
-        blockkey0: $TEMPORARY$string<'react'>,
-        blockkey1: $TEMPORARY$string<'draft'>,
-      }>,
+  blocks = (
+    $TEMPORARY$object,
+    $TEMPORARY$object,
+    )
 ) {
   const contentBlocks = Object.keys(blocks).map(blockKey => {
     return new ContentBlock({
@@ -79,7 +77,7 @@ function getEditorState(
   );
 }
 
-function getEditorStateFromHTML(html: string) {
+function getEditorStateFromHTML(html) {
   const blocksFromHTML = convertFromHTMLToContentBlocks(html);
   const state =
     blocksFromHTML != null
@@ -96,8 +94,8 @@ function editorTextContent() {
 }
 
 function withGlobalGetSelectionAs(
-  getSelectionValue: $TEMPORARY$object<{...}>,
-  callback: () => void,
+  getSelectionValue,
+  callback,
 ) {
   const oldGetSelection = global.getSelection;
   try {
@@ -139,8 +137,8 @@ test('isInCompositionMode is properly updated on composition events', () => {
 
 test('Can handle a single mutation', () => {
   withGlobalGetSelectionAs({}, () => {
-    editor._latestEditorState = getEditorState({blockkey0: ''});
-    const mutations = Map({'blockkey0-0-0': '\u79c1'});
+    editor._latestEditorState = getEditorState({blockKey0: ''});
+    const mutations = Map({'blockKey0-0-0': '\u79c1'});
     // $FlowFixMe[method-unbinding] added when improving typing for this parameters
     require('DOMObserver').prototype.stopAndFlushMutations.mockReturnValue(
       mutations,
@@ -160,12 +158,12 @@ test('Can handle a single mutation', () => {
 test('Can handle mutations in multiple blocks', () => {
   withGlobalGetSelectionAs({}, () => {
     editor._latestEditorState = getEditorState({
-      blockkey0: 'react',
-      blockkey1: 'draft',
+      blockKey0: 'react',
+      blockKey1: 'draft',
     });
     const mutations = Map({
-      'blockkey0-0-0': 'reactjs',
-      'blockkey1-0-0': 'draftjs',
+      'blockKey0-0-0': 'react.js',
+      'blockKey1-0-0': 'draft.js',
     });
     // $FlowFixMe[method-unbinding] added when improving typing for this parameters
     require('DOMObserver').prototype.stopAndFlushMutations.mockReturnValue(
@@ -179,7 +177,7 @@ test('Can handle mutations in multiple blocks', () => {
     compositionHandler.onCompositionEnd(editor);
     jest.runAllTimers();
 
-    expect(editorTextContent()).toBe('reactjs\ndraftjs');
+    expect(editorTextContent()).toBe('react.js\ndraft.js');
   });
 });
 
@@ -193,10 +191,10 @@ test('Can handle mutations in the same block in multiple leaf nodes', () => {
       .getBlockMap()
       .first()
       .getKey();
-    const mutations = Map<_, mixed>({
-      [`${blockKey}-0-0`]: 'reacta ',
-      [`${blockKey}-0-1`]: 'draftbb',
-      [`${blockKey}-0-2`]: ' graphqlccc',
+    const mutations = Map({
+      [`${blockKey}-0-0`]: 'react-a ',
+      [`${blockKey}-0-1`]: 'draft-bb',
+      [`${blockKey}-0-2`]: ' graph-ql-ccc',
     });
     // $FlowFixMe[method-unbinding] added when improving typing for this parameters
     require('DOMObserver').prototype.stopAndFlushMutations.mockReturnValue(
@@ -210,6 +208,6 @@ test('Can handle mutations in the same block in multiple leaf nodes', () => {
     compositionHandler.onCompositionEnd(editor);
     jest.runAllTimers();
 
-    expect(editorTextContent()).toBe('reacta draftbb graphqlccc');
+    expect(editorTextContent()).toBe('react-a draft-bb graph-ql-ccc');
   });
 });
