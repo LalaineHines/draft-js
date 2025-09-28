@@ -11,7 +11,7 @@
 
 'use strict';
 
-export type DraftOffsetKeyPath = {
+export const DraftOffsetKeyPath = {
   blockKey: string,
   decoratorKey: number,
   leafKey: number,
