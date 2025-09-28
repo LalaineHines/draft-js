@@ -14,9 +14,8 @@
 /**
  * A plain object representation of an inline style range.
  */
-export type InlineStyleRange = {
+export const InlineStyleRange = {
   style: string,
   offset: number,
   length: number,
-  ...
 };
