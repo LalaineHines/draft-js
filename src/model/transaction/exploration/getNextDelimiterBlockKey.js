@@ -12,16 +12,16 @@
  * @oncall draft_js
  */
 
-import type {BlockMap} from 'BlockMap';
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type ContentBlock from 'ContentBlock';
+import {BlockMap} from 'BlockMap';
+import {BlockNodeRecord} from 'BlockNodeRecord';
+import ContentBlock from 'ContentBlock';
 
 const ContentBlockNode = require('ContentBlockNode');
 
 const getNextDelimiterBlockKey = (
-  block: BlockNodeRecord,
-  blockMap: BlockMap,
-): ?string => {
+  block,
+  blockMap,
+) => {
   const isExperimentalTreeBlock = block instanceof ContentBlockNode;
 
   if (!isExperimentalTreeBlock) {
@@ -40,11 +40,7 @@ const getNextDelimiterBlockKey = (
     return null;
   }
 
-  let nextNonDescendantBlock: ?(
-    | ContentBlock
-    | BlockNodeRecord
-    | ContentBlockNode
-  ) = blockMap.get(parent);
+  let nextNonDescendantBlock = blockMap.get(parent);
   while (
     nextNonDescendantBlock &&
     !nextNonDescendantBlock.getNextSiblingKey()
