@@ -11,12 +11,11 @@
 
 'use strict';
 
-import type {BlockNodeRawConfig} from 'BlockNode';
+import {BlockNodeRawConfig} from 'BlockNode';
 
-export type ContentStateRawType = {
-  entityMap: ?{...},
-  blockMap: ?Map<string, BlockNodeRawConfig>,
-  selectionBefore: ?{...},
-  selectionAfter: ?{...},
-  ...
+export const ContentStateRawType = {
+  entityMap,
+  blockMap,
+  selectionBefore,
+  selectionAfter,
 };
