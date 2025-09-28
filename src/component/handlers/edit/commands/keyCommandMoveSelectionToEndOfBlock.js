@@ -17,8 +17,8 @@ const EditorState = require('EditorState');
  * See comment for `moveSelectionToStartOfBlock`.
  */
 function keyCommandMoveSelectionToEndOfBlock(
-  editorState: EditorState,
-): EditorState {
+  editorState,
+) {
   const selection = editorState.getSelection();
   const endKey = selection.getEndKey();
   const content = editorState.getCurrentContent();
