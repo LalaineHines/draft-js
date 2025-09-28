@@ -10,8 +10,9 @@
  */
 
 'use strict';
-import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
+
+import ContentState from 'ContentState';
+import SelectionState from 'SelectionState';
 
 const DraftEntityInstance = require('DraftEntityInstance');
 
@@ -31,13 +32,10 @@ const selectionOnEntity = selectionState.merge({
 
 // Creates an entity with the given key and mutability
 function ensureEntityWithMutability(
-  contentState: ContentState,
-  key: $TEMPORARY$string<'2'> | $TEMPORARY$string<'456'>,
-  mutability:
-    | $TEMPORARY$string<'IMMUTABLE'>
-    | $TEMPORARY$string<'MUTABLE'>
-    | $TEMPORARY$string<'SEGMENTED'>,
-) {
+  contentState,
+  key,
+  mutability,
+  ) {
   return contentState.setEntityMap(
     contentState.getAllEntities().set(
       key,
@@ -49,12 +47,9 @@ function ensureEntityWithMutability(
 }
 
 const assertRemoveEntitiesAtEdges = (
-  selection: $FlowFixMe | SelectionState,
-  mutability:
-    | $TEMPORARY$string<'IMMUTABLE'>
-    | $TEMPORARY$string<'MUTABLE'>
-    | $TEMPORARY$string<'SEGMENTED'> = 'IMMUTABLE',
-  content: ContentState = sampleContentState,
+  selection,
+  mutability,
+  content = sampleContentState,
 ) => {
   const contentState = ensureEntityWithMutability(content, '2', mutability);
   expect(
