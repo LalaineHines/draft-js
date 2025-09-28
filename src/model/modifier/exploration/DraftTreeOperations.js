@@ -11,8 +11,9 @@
  * @format
  * @oncall draft_js
  */
-import type {BlockMap} from 'BlockMap';
-import type {BlockNodeKey} from 'BlockNode';
+
+import {BlockMap} from 'BlockMap';
+import {BlockNodeKey} from 'BlockNode';
 
 const ContentBlockNode = require('ContentBlockNode');
 const DraftTreeInvariants = require('DraftTreeInvariants');
@@ -21,9 +22,9 @@ const generateRandomKey = require('generateRandomKey');
 const Immutable = require('immutable');
 const invariant = require('invariant');
 
-type SiblingInsertPosition = 'previous' | 'next';
+const SiblingInsertPosition = 'previous' | 'next';
 
-const verifyTree = (tree: BlockMap): void => {
+const verifyTree = (tree) => {
   if (__DEV__) {
     invariant(DraftTreeInvariants.isValidTree(tree), 'The tree is not valid');
   }
@@ -39,18 +40,18 @@ const verifyTree = (tree: BlockMap): void => {
  * unaffected)
  */
 const updateParentChild = (
-  blockMap: BlockMap,
-  parentKey: string,
-  childKey: string,
-  position: number,
-): BlockMap => {
+  blockMap,
+  parentKey,
+  childKey,
+  position,
+) => {
   const parent = blockMap.get(parentKey);
   const child = blockMap.get(childKey);
   invariant(
     parent != null && child != null,
     'parent & child should exist in the block map',
   );
-  const newBlocks: {[string | BlockNodeKey]: $FlowFixMe} = {};
+  const newBlocks = {};
   const existingChildren = parent.getChildKeys();
   invariant(
     existingChildren != null &&
@@ -97,17 +98,17 @@ const updateParentChild = (
  * other siblings are unaffected)
  */
 const updateSibling = (
-  blockMap: BlockMap,
-  prevKey: string,
-  nextKey: string,
-): BlockMap => {
+  blockMap,
+  prevKey,
+  nextKey,
+) => {
   const prevSibling = blockMap.get(prevKey);
   const nextSibling = blockMap.get(nextKey);
   invariant(
     prevSibling != null && nextSibling != null,
     'siblings should exist in the block map',
   );
-  const newBlocks: {[string]: $FlowFixMe} = {};
+  const newBlocks = {};
   newBlocks[prevKey] = prevSibling.merge({
     nextSibling: nextKey,
   });
@@ -125,11 +126,11 @@ const updateSibling = (
  * unaffected)
  */
 const replaceParentChild = (
-  blockMap: BlockMap,
-  parentKey: string,
-  existingChildKey: string,
-  newChildKey: string,
-): BlockMap => {
+  blockMap,
+  parentKey,
+  existingChildKey,
+  newChildKey,
+) => {
   const parent = blockMap.get(parentKey);
   const newChild = blockMap.get(newChildKey);
   invariant(
@@ -137,7 +138,7 @@ const replaceParentChild = (
     'parent & child should exist in the block map',
   );
   const existingChildren = parent.getChildKeys();
-  const newBlocks: {[string]: $FlowFixMe} = {};
+  const newBlocks = {};
   newBlocks[parentKey] = parent.merge({
     children: existingChildren.set(
       existingChildren.indexOf(existingChildKey),
@@ -157,7 +158,7 @@ const replaceParentChild = (
  * This operation respects the tree data invariants - it expects and returns a
  * valid tree.
  */
-const createNewParent = (blockMap: BlockMap, key: string): BlockMap => {
+const createNewParent = (blockMap, key) => {
   verifyTree(blockMap);
   const block = blockMap.get(key);
   invariant(block != null, 'block must exist in block map');
@@ -207,10 +208,10 @@ const createNewParent = (blockMap: BlockMap, key: string): BlockMap => {
  * valid tree.
  */
 const updateAsSiblingsChild = (
-  blockMap: BlockMap,
-  key: string,
-  position: SiblingInsertPosition,
-): BlockMap => {
+  blockMap,
+  key,
+  position,
+) => {
   verifyTree(blockMap);
   const block = blockMap.get(key);
   invariant(block != null, 'block must exist in block map');
@@ -298,7 +299,7 @@ const updateAsSiblingsChild = (
  * This operation respects the tree data invariants - it expects and returns a
  * valid tree.
  */
-const moveChildUp = (blockMap: BlockMap, key: string): BlockMap => {
+const moveChildUp = (blockMap, key) => {
   verifyTree(blockMap);
   const block = blockMap.get(key);
   invariant(block != null, 'block must exist in block map');
@@ -450,7 +451,7 @@ const moveChildUp = (blockMap: BlockMap, key: string): BlockMap => {
  * This operation respects the tree data invariants - it expects and returns a
  * valid tree.
  */
-const mergeBlocks = (blockMap: BlockMap, key: string): BlockMap => {
+const mergeBlocks = (blockMap, key) => {
   verifyTree(blockMap);
   // current block must be a non-leaf
   const block = blockMap.get(key);
