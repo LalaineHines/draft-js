@@ -11,9 +11,9 @@
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type {DraftInsertionType} from 'DraftInsertionType';
-import type SelectionState from 'SelectionState';
+import {BlockNodeRecord} from 'BlockNodeRecord';
+import {DraftInsertionType} from 'DraftInsertionType';
+import SelectionState from 'SelectionState';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
@@ -36,10 +36,10 @@ const {List, Repeat} = Immutable;
 
 const AtomicBlockUtils = {
   insertAtomicBlock(
-    editorState: EditorState,
-    entityKey: string,
-    character: string,
-  ): EditorState {
+    editorState,
+    entityKey,
+    character,
+  ) {
     const contentState = editorState.getCurrentContent();
     const selectionState = editorState.getSelection();
 
@@ -106,11 +106,11 @@ const AtomicBlockUtils = {
   },
 
   moveAtomicBlock(
-    editorState: EditorState,
-    atomicBlock: BlockNodeRecord,
-    targetRange: SelectionState,
-    insertionMode?: DraftInsertionType,
-  ): EditorState {
+    editorState,
+    atomicBlock,
+    targetRange,
+    insertionMode,
+  ) {
     const contentState = editorState.getCurrentContent();
     const selectionState = editorState.getSelection();
 
