@@ -11,7 +11,7 @@
 
 'use strict';
 
-import type DraftEditor from 'DraftEditor.react';
+import DraftEditor from 'DraftEditor.react';
 
 const EditorState = require('EditorState');
 
@@ -20,9 +20,9 @@ const EditorState = require('EditorState');
  * allows handling composition input and disables other edit behavior.
  */
 function editOnCompositionStart(
-  editor: DraftEditor,
-  e: SyntheticEvent<>,
-): void {
+  editor,
+  e,
+) {
   editor.setMode('composite');
   editor.update(
     EditorState.set(editor._latestEditorState, {inCompositionMode: true}),
