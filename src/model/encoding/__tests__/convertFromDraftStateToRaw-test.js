@@ -62,22 +62,14 @@ const treeContentState = contentState.setBlockMap(
 );
 
 const getMetadata = (
-  entityKey:
-    | $TEMPORARY$string<'3'>
-    | $TEMPORARY$string<'4'>
-    | $TEMPORARY$string<'5'>
-    | $TEMPORARY$string<'6'>,
+  entityKey
 ) => Immutable.Repeat(CharacterMetadata.create({entity: entityKey}), 5);
 const getLink = (
-  entityKey:
-    | $TEMPORARY$string<'3'>
-    | $TEMPORARY$string<'4'>
-    | $TEMPORARY$string<'5'>
-    | $TEMPORARY$string<'6'>,
+  entityKey
 ) =>
   new DraftEntityInstance({
     type: 'LINK',
-    mutabiltity: 'MUTABLE',
+    mutability: 'MUTABLE',
     data: {
       url: `www.${entityKey}.com`,
     },
@@ -115,7 +107,7 @@ const contentStateWithNonContiguousEntities = ContentState.createFromBlockArray(
   .addEntity(getLink('5'))
   .addEntity(getLink('6'));
 
-const assertConvertFromDraftStateToRaw = (content: ContentState) => {
+const assertConvertFromDraftStateToRaw = (content) => {
   expect(convertFromDraftStateToRaw(content)).toMatchSnapshot();
 };
 
