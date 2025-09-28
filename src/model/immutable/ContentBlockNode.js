@@ -17,9 +17,10 @@
 
 'use strict';
 
-import type {BlockNode, BlockNodeConfig, BlockNodeKey} from 'BlockNode';
-import type {DraftBlockType} from 'DraftBlockType';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
+import {BlockNode, BlockNodeConfig, BlockNodeKey} from 'BlockNode';
+
+import {DraftBlockType} from 'DraftBlockType';
+import {DraftInlineStyle} from 'DraftInlineStyle';
 
 const CharacterMetadata = require('CharacterMetadata');
 
@@ -28,17 +29,16 @@ const Immutable = require('immutable');
 
 const {List, Map, OrderedSet, Record, Repeat} = Immutable;
 
-type ContentBlockNodeConfig = BlockNodeConfig & {
-  children?: List<BlockNodeKey>,
-  parent?: ?BlockNodeKey,
-  prevSibling?: ?BlockNodeKey,
-  nextSibling?: ?BlockNodeKey,
-  ...
+const ContentBlockNodeConfig = BlockNodeConfig & {
+  children: List,
+  parent: BlockNodeKey,
+  prevSibling: BlockNodeKey,
+  nextSibling: BlockNodeKey,
 };
 
-const EMPTY_SET = OrderedSet<string>();
+const EMPTY_SET = OrderedSet();
 
-const defaultRecord: ContentBlockNodeConfig = {
+const defaultRecord = {
   parent: null,
   characterList: List(),
   data: Map(),
@@ -52,18 +52,18 @@ const defaultRecord: ContentBlockNodeConfig = {
 };
 
 const haveEqualStyle = (
-  charA: CharacterMetadata,
-  charB: CharacterMetadata,
-): boolean => charA.getStyle() === charB.getStyle();
+  charA,
+  charB,
+) => charA.getStyle() === charB.getStyle();
 
 const haveEqualEntity = (
-  charA: CharacterMetadata,
-  charB: CharacterMetadata,
-): boolean => charA.getEntity() === charB.getEntity();
+  charA,
+  charB,
+) => charA.getEntity() === charB.getEntity();
 
 const decorateCharacterList = (
-  config: ContentBlockNodeConfig,
-): ContentBlockNodeConfig => {
+  config,
+) => {
   if (!config) {
     return config;
   }
@@ -78,82 +78,81 @@ const decorateCharacterList = (
 };
 
 class ContentBlockNode
-  extends (Record(defaultRecord): any)
-  implements BlockNode
+  extends (Record(defaultRecord), any)
 {
-  constructor(props: ContentBlockNodeConfig = defaultRecord) {
+  constructor(props = defaultRecord) {
     /* eslint-disable-next-line constructor-super */
     super(decorateCharacterList(props));
   }
 
   // $FlowFixMe[method-unbinding]
-  getKey(): BlockNodeKey {
+  getKey() {
     return this.get('key');
   }
 
   // $FlowFixMe[method-unbinding]
-  getType(): DraftBlockType {
+  getType() {
     return this.get('type');
   }
 
   // $FlowFixMe[method-unbinding]
-  getText(): string {
+  getText() {
     return this.get('text');
   }
 
   // $FlowFixMe[method-unbinding]
-  getCharacterList(): List<CharacterMetadata> {
+  getCharacterList() {
     return this.get('characterList');
   }
 
   // $FlowFixMe[method-unbinding]
-  getLength(): number {
+  getLength() {
     return this.getText().length;
   }
 
   // $FlowFixMe[method-unbinding]
-  getDepth(): number {
+  getDepth() {
     return this.get('depth');
   }
 
   // $FlowFixMe[method-unbinding]
-  getData(): Map<any, any> {
+  getData() {
     return this.get('data');
   }
 
   // $FlowFixMe[method-unbinding]
-  getInlineStyleAt(offset: number): DraftInlineStyle {
+  getInlineStyleAt(offset) {
     const character = this.getCharacterList().get(offset);
     return character ? character.getStyle() : EMPTY_SET;
   }
 
   // $FlowFixMe[method-unbinding]
-  getEntityAt(offset: number): ?string {
+  getEntityAt(offset) {
     const character = this.getCharacterList().get(offset);
     return character ? character.getEntity() : null;
   }
 
-  getChildKeys(): List<BlockNodeKey> {
+  getChildKeys() {
     return this.get('children');
   }
 
-  getParentKey(): ?BlockNodeKey {
+  getParentKey() {
     return this.get('parent');
   }
 
-  getPrevSiblingKey(): ?BlockNodeKey {
+  getPrevSiblingKey() {
     return this.get('prevSibling');
   }
 
-  getNextSiblingKey(): ?BlockNodeKey {
+  getNextSiblingKey() {
     return this.get('nextSibling');
   }
 
   // $FlowFixMe[method-unbinding]
   findStyleRanges(
-    filterFn: (value: CharacterMetadata) => boolean,
-    callback: (start: number, end: number) => void,
-  ): void {
+    filterFn,
+    callback,
+  ) {
     findRangesImmutable(
       this.getCharacterList(),
       haveEqualStyle,
@@ -164,9 +163,9 @@ class ContentBlockNode
 
   // $FlowFixMe[method-unbinding]
   findEntityRanges(
-    filterFn: (value: CharacterMetadata) => boolean,
-    callback: (start: number, end: number) => void,
-  ): void {
+    filterFn,
+    callback,
+  ) {
     findRangesImmutable(
       this.getCharacterList(),
       haveEqualEntity,
