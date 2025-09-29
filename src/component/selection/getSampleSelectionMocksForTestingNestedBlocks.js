@@ -10,7 +10,8 @@
  */
 
 'use strict';
-import type {BlockNodeKey} from 'BlockNode';
+
+import {BlockNodeKey} from 'BlockNode';
 
 const ContentBlockNode = require('ContentBlockNode');
 const ContentState = require('ContentState');
@@ -18,7 +19,7 @@ const EditorState = require('EditorState');
 
 const Immutable = require('immutable');
 
-const getSampleSelectionMocksForTestingNestedBlocks = (): Object => {
+const getSampleSelectionMocksForTestingNestedBlocks = () => {
   const root = document.createElement('div');
   const contents = document.createElement('div');
 
@@ -112,7 +113,7 @@ const getSampleSelectionMocksForTestingNestedBlocks = (): Object => {
     return outerBlockElement;
   });
 
-  const blockCacheRef: {[BlockNodeKey]: HTMLDivElement} = {};
+  const blockCacheRef = {};
   blocks.forEach((blockElem, index) => {
     const currentBlock = contentBlocks[index];
     const parentKey = currentBlock.getParentKey();
