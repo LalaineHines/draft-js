@@ -11,9 +11,10 @@
  * @format
  * @oncall draft_js
  */
-import type {BlockMap} from 'BlockMap';
-import type {BlockNodeKey} from 'BlockNode';
-import type ContentBlockNode from 'ContentBlockNode';
+
+import {BlockMap} from 'BlockMap';
+import {BlockNodeKey} from 'BlockNode';
+import ContentBlockNode from 'ContentBlockNode';
 
 const warning = require('warning');
 
@@ -21,7 +22,7 @@ const DraftTreeInvariants = {
   /**
    * Check if the block is valid
    */
-  isValidBlock(block: ContentBlockNode, blockMap: BlockMap): boolean {
+  isValidBlock(block, blockMap) {
     const key = block.getKey();
     // is its parent's child
     const parentKey = block.getParentKey();
@@ -89,10 +90,10 @@ const DraftTreeInvariants = {
   /**
    * Checks that this is a connected tree on all the blocks
    * starting from the first block, traversing nextSibling and child pointers
-   * should be a tree (preorder traversal - parent, then children)
+   * should be a tree (pre-order traversal - parent, then children)
    * num of connected node === number of blocks
    */
-  isConnectedTree(blockMap: BlockMap): boolean {
+  isConnectedTree(blockMap) {
     // exactly one node has no previous sibling + no parent
     const eligibleFirstNodes = blockMap
       .toArray()
@@ -106,8 +107,8 @@ const DraftTreeInvariants = {
     }
     const firstNode = eligibleFirstNodes.shift();
     let nodesSeen = 0;
-    let currentKey: ?($FlowFixMe | BlockNodeKey) = firstNode.getKey();
-    const visitedStack: Array<$FlowFixMe | BlockNodeKey> = [];
+    let currentKey = firstNode.getKey();
+    const visitedStack = [];
     while (currentKey != null) {
       const currentNode = blockMap.get(currentKey);
       const childKeys = currentNode.getChildKeys();
@@ -153,7 +154,7 @@ const DraftTreeInvariants = {
   /**
    * Checks that the block map is a connected tree with valid blocks
    */
-  isValidTree(blockMap: BlockMap): boolean {
+  isValidTree(blockMap) {
     const blocks = blockMap.toArray();
     if (
       !blocks.every(block => DraftTreeInvariants.isValidBlock(block, blockMap))
