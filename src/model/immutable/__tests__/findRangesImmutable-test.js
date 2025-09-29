@@ -11,7 +11,7 @@
 
 'use strict';
 
-import type {List as $IMPORTED_TYPE$_List} from 'immutable';
+import {List as $IMPORTED_TYPE$_List} from 'immutable';
 
 const findRangesImmutable = require('findRangesImmutable');
 const Immutable = require('immutable');
@@ -23,10 +23,10 @@ const returnTrue = () => true;
 const SAMPLE_LIST = List.of(1, 1, 1, 1, 1);
 
 const assertFindRangesImmutable = (
-  list: $IMPORTED_TYPE$_List<number>,
-  areEqualFn: (a: number, b: number) => boolean = returnTrue,
-  filterFn: () => boolean = returnTrue,
-  foundFn: JestMockFn<Array<number>, void> = jest.fn(),
+  list,
+  areEqualFn = returnTrue,
+  filterFn = returnTrue,
+  foundFn = jest.fn(),
 ) => {
   findRangesImmutable(list, areEqualFn, filterFn, foundFn);
   expect(foundFn.mock.calls).toMatchSnapshot();
