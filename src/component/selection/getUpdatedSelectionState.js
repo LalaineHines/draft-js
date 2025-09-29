@@ -11,21 +11,21 @@
 
 'use strict';
 
-import type EditorState from 'EditorState';
-import type SelectionState from 'SelectionState';
+import EditorState from 'EditorState';
+import SelectionState from 'SelectionState';
 
 const DraftOffsetKey = require('DraftOffsetKey');
 
-const nullthrows = require('nullthrows');
+const nullThrows = require('nullThrows');
 
 function getUpdatedSelectionState(
-  editorState: EditorState,
-  anchorKey: string,
-  anchorOffset: number,
-  focusKey: string,
-  focusOffset: number,
-): SelectionState {
-  const selection: SelectionState = nullthrows(editorState.getSelection());
+  editorState,
+  anchorKey,
+  anchorOffset,
+  focusKey,
+  focusOffset,
+) {
+  const selection = nullThrows(editorState.getSelection());
   if (!anchorKey || !focusKey) {
     // If we cannot make sense of the updated selection state, stick to the current one.
     if (__DEV__) {
@@ -66,8 +66,8 @@ function getUpdatedSelectionState(
     return selection;
   }
 
-  const anchorLeafStart: number = anchorLeaf.get('start');
-  const focusLeafStart: number = focusLeaf.get('start');
+  const anchorLeafStart = anchorLeaf.get('start');
+  const focusLeafStart = focusLeaf.get('start');
 
   const anchorBlockOffset = anchorLeaf ? anchorLeafStart + anchorOffset : null;
   const focusBlockOffset = focusLeaf ? focusLeafStart + focusOffset : null;
@@ -84,8 +84,8 @@ function getUpdatedSelectionState(
 
   let isBackward = false;
   if (anchorBlockKey === focusBlockKey) {
-    const anchorLeafEnd: number = anchorLeaf.get('end');
-    const focusLeafEnd: number = focusLeaf.get('end');
+    const anchorLeafEnd = anchorLeaf.get('end');
+    const focusLeafEnd = focusLeaf.get('end');
     if (focusLeafStart === anchorLeafStart && focusLeafEnd === anchorLeafEnd) {
       isBackward = focusOffset < anchorOffset;
     } else {
