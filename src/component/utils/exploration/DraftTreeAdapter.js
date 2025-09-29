@@ -12,18 +12,18 @@
  * @oncall draft_js
  */
 
-import type {DraftBlockType} from 'DraftBlockType';
-import type {EntityRange} from 'EntityRange';
-import type {InlineStyleRange} from 'InlineStyleRange';
-import type {RawDraftContentBlock} from 'RawDraftContentBlock';
-import type {RawDraftContentState} from 'RawDraftContentState';
+import {DraftBlockType} from 'DraftBlockType';
+import {EntityRange} from 'EntityRange';
+import {InlineStyleRange} from 'InlineStyleRange';
+import {RawDraftContentBlock} from 'RawDraftContentBlock';
+import {RawDraftContentState} from 'RawDraftContentState';
 
 const generateRandomKey = require('generateRandomKey');
 const invariant = require('invariant');
 
 const traverseInDepthOrder = (
-  blocks: Array<RawDraftContentBlock>,
-  fn: (block: RawDraftContentBlock) => void,
+  blocks,
+  fn,
 ) => {
   let stack = [...blocks].reverse();
   while (stack.length) {
@@ -39,7 +39,7 @@ const traverseInDepthOrder = (
   }
 };
 
-const isListBlock = (block?: RawDraftContentBlock): boolean => {
+const isListBlock = (block) => {
   if (!(block && block.type)) {
     return false;
   }
@@ -47,7 +47,7 @@ const isListBlock = (block?: RawDraftContentBlock): boolean => {
   return type === 'unordered-list-item' || type === 'ordered-list-item';
 };
 
-const addDepthToChildren = (block: RawDraftContentBlock) => {
+const addDepthToChildren = (block) => {
   if (Array.isArray(block.children)) {
     block.children = block.children.map(child =>
       child.type === block.type
@@ -62,13 +62,13 @@ const addDepthToChildren = (block: RawDraftContentBlock) => {
  *
  * draft state <=====> draft tree state
  */
-const DraftTreeAdapter = {
+const DraftTreeAdapter {
   /**
    * Converts from a tree raw state back to draft raw state
    */
   fromRawTreeStateToRawState(
-    draftTreeState: RawDraftContentState,
-  ): RawDraftContentState {
+    draftTreeState,
+  ) => {
     const {blocks} = draftTreeState;
     const transformedBlocks = [];
 
@@ -110,25 +110,25 @@ const DraftTreeAdapter = {
    * Converts from draft raw state to tree draft state
    */
   fromRawStateToRawTreeState(
-    draftState: RawDraftContentState,
-  ): RawDraftContentState {
-    const transformedBlocks: Array<RawDraftContentBlock> = [];
-    const parentStack: Array<{
-      children: Array<RawDraftContentBlock>,
-      depth: number,
-      entityRanges: Array<EntityRange>,
-      inlineStyleRanges: Array<InlineStyleRange>,
-      key: string,
-      text: string,
-      type: DraftBlockType,
-    }> = [];
+    draftState,
+  ) => {
+    const transformedBlocks = [];
+    const parentStack = Array<{
+      children,
+      depth,
+      entityRanges,
+      inlineStyleRanges,
+      key,
+      text,
+      type,
+    }>
 
     draftState.blocks.forEach(block => {
       const isList = isListBlock(block);
       const depth = block.depth || 0;
       const treeBlock = {
         ...block,
-        children: ([]: Array<RawDraftContentBlock>),
+        children,
       };
 
       if (!isList) {
@@ -148,9 +148,9 @@ const DraftTreeAdapter = {
           text: '',
           depth: depth - 1,
           type: block.type,
-          children: ([]: Array<RawDraftContentBlock>),
-          entityRanges: ([]: Array<EntityRange>),
-          inlineStyleRanges: ([]: Array<InlineStyleRange>),
+          children: (Array),
+          entityRanges: ( Array),
+          inlineStyleRanges: ( Array),
         };
 
         parentStack.unshift(newParent);
