@@ -10,10 +10,10 @@
  */
 
 'use strict';
-import type {BlockNodeKey} from 'BlockNode';
-import type CharacterMetadata from 'CharacterMetadata';
-import type {DraftBlockType} from 'DraftBlockType';
-import type {List, Map} from 'immutable';
+import {BlockNodeKey} from 'BlockNode';
+import CharacterMetadata from 'CharacterMetadata';
+import {DraftBlockType} from 'DraftBlockType';
+import {List, Map} from 'immutable';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const ContentBlock = require('ContentBlock');
@@ -34,10 +34,10 @@ const createLink = () => {
 };
 
 const getSample = (
-  textBlocks: $TEMPORARY$array<
+  textBlocks = $TEMPORARY$array<
     $TEMPORARY$object<{
-      characterList?: List<CharacterMetadata>,
-      data?: Map<$FlowFixMe, $FlowFixMe>,
+      characterList?: List,
+      data?: Map,
       depth?: number,
       key?: BlockNodeKey,
       text?: string,
