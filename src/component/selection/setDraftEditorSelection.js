@@ -11,8 +11,8 @@
 
 'use strict';
 
-import type {SelectionObject} from 'DraftDOMTypes';
-import type SelectionState from 'SelectionState';
+import {SelectionObject} from 'DraftDOMTypes';
+import SelectionState from 'SelectionState';
 
 const DraftEffects = require('DraftEffects');
 const DraftJsDebugLogging = require('DraftJsDebugLogging');
@@ -27,9 +27,9 @@ const isElement = require('isElement');
 const isIE = UserAgent.isBrowser('IE');
 
 function getAnonymizedDOM(
-  node: Node,
-  getNodeLabels?: (n: Node) => Array<string>,
-): string {
+  node,
+  getNodeLabels,
+) {
   if (!node) {
     return '[empty]';
   }
@@ -43,14 +43,14 @@ function getAnonymizedDOM(
     isElement(anonymized),
     'Node must be an Element if it is not a text node.',
   );
-  const castedElement: Element = (anonymized: any);
+  const castedElement = (anonymized);
   return castedElement.outerHTML;
 }
 
 function anonymizeTextWithin(
-  node: Node,
-  getNodeLabels?: (n: Node) => Array<string>,
-): Node {
+  node,
+  getNodeLabels,
+) {
   const labels = getNodeLabels !== undefined ? getNodeLabels(node) : [];
 
   if (node.nodeType === Node.TEXT_NODE) {
@@ -65,7 +65,7 @@ function anonymizeTextWithin(
 
   const clone = node.cloneNode();
   if (clone.nodeType === 1 && labels.length) {
-    ((clone: any): Element).setAttribute('data-labels', labels.join(', '));
+    ((clone)).setAttribute('data-labels', labels.join(', '));
   }
   const childNodes = node.childNodes;
   for (let ii = 0; ii < childNodes.length; ii++) {
@@ -76,26 +76,26 @@ function anonymizeTextWithin(
 }
 
 function getAnonymizedEditorDOM(
-  node: Node,
-  getNodeLabels?: (n: Node) => Array<string>,
-): string {
+  node,
+  getNodeLabels,
+) {
   // grabbing the DOM content of the Draft editor
-  let currentNode: ?Node = node;
+  let currentNode = node;
   // this should only be used after checking with isElement
-  let castedNode: Element = (currentNode: any);
+  let castedNode = (currentNode);
   while (currentNode) {
-    if (isElement(currentNode) && castedNode.hasAttribute('contenteditable')) {
+    if (isElement(currentNode) && castedNode.hasAttribute('content-editable')) {
       // found the Draft editor container
       return getAnonymizedDOM(currentNode, getNodeLabels);
     } else {
       currentNode = currentNode.parentNode;
-      castedNode = (currentNode: any);
+      castedNode = (currentNode);
     }
   }
   return 'Could not find contentEditable parent of node';
 }
 
-function getNodeLength(node: Node): number {
+function getNodeLength(node) {
   return node.nodeValue === null
     ? node.childNodes.length
     : node.nodeValue.length;
@@ -107,16 +107,16 @@ function getNodeLength(node: Node): number {
  *
  * Note: IE10+ supports the Selection object, but it does not support
  * the `extend` method, which means that even in modern IE, it's not possible
- * to programatically create a backward selection. Thus, for all IE
+ * to programmatically create a backward selection. Thus, for all IE
  * versions, we use the old IE API to create our selections.
  */
 function setDraftEditorSelection(
-  selectionState: SelectionState,
-  node: Node,
-  blockKey: string,
-  nodeStart: number,
-  nodeEnd: number,
-): void {
+  selectionState,
+  node,
+  blockKey,
+  nodeStart,
+  nodeEnd,
+) {
   // It's possible that the editor has been removed from the DOM but
   // our selection code doesn't know it yet. Forcing selection in
   // this case may lead to errors, so just bail now.
@@ -125,7 +125,7 @@ function setDraftEditorSelection(
     return;
   }
 
-  const selection: SelectionObject = documentObject.defaultView.getSelection();
+  const selection = documentObject.defaultView.getSelection();
   let anchorKey = selectionState.getAnchorKey();
   let anchorOffset = selectionState.getAnchorOffset();
   let focusKey = selectionState.getFocusKey();
@@ -236,11 +236,11 @@ function setDraftEditorSelection(
  * Extend selection towards focus point.
  */
 function addFocusToSelection(
-  selection: SelectionObject,
-  node: ?Node,
-  offset: number,
-  selectionState: SelectionState,
-): void {
+  selection,
+  node,
+  offset,
+  selectionState,
+) {
   const activeElement = getActiveElement();
   const extend = selection.extend;
   // containsNode returns false if node is null.
@@ -327,11 +327,11 @@ function addFocusToSelection(
 }
 
 function addPointToSelection(
-  selection: SelectionObject,
-  node: Node,
-  offset: number,
-  selectionState: SelectionState,
-): void {
+  selection,
+  node,
+  offset,
+  selectionState,
+) {
   const range = getCorrectDocumentFromNode(node).createRange();
   // logging to catch bug that is being reported in t16250795
   if (offset > getNodeLength(node)) {
