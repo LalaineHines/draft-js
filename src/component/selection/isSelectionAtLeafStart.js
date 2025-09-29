@@ -11,9 +11,9 @@
 
 'use strict';
 
-import type EditorState from 'EditorState';
+import EditorState from 'EditorState';
 
-function isSelectionAtLeafStart(editorState: EditorState): boolean {
+function isSelectionAtLeafStart(editorState) {
   const selection = editorState.getSelection();
   const anchorKey = selection.getAnchorKey();
   const blockTree = editorState.getBlockTree(anchorKey);
